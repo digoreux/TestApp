@@ -1,0 +1,3 @@
+C:/Users/Intern/Desktop/TestApp/build/Effect/tmp/CMakeFiles/Effect.dir
+C:/Users/Intern/Desktop/TestApp/build/Effect/tmp/CMakeFiles/ALL_BUILD.dir
+C:/Users/Intern/Desktop/TestApp/build/Effect/tmp/CMakeFiles/ZERO_CHECK.dir

@@ -137,6 +137,8 @@ int copy_wav(arg_p a, header_p meta)
         if (meta->audio_format == 3) effect_process(&a->gain, buffer, num_samples);
         fwrite(buffer, 1, size, out);
     }
+    fclose(out);
+    free(buffer);
     return 1;
 }
 
@@ -150,8 +152,9 @@ int gen_wav(arg_p a, header_p meta)
     size_t num_samples = (meta->sample_rate / 1000) * a->time;
     size_t size = ((num_samples * meta->block_align) / 2);
     void *buffer = malloc(size);
-
     generator(buffer, num_samples, a->type, a);
     fwrite(buffer, 1, size, out);
+    fclose(out);
+    free(buffer);
     return 1;
 }

@@ -12,76 +12,6 @@
 #define K0  0.0759776172978545212494579946726
 
 
-
-flt negf(flt x)
-{
-    return -x;
-}
-
-flt absf(flt x) 
-{   
-    return fabs(x);
-}
-
-flt addf(flt x, flt y) 
-{
-    flt r = x + y;
-    return r;
-}
-
-flt subf(flt x, flt y)
-{   
-    flt r = x - y;
-    return r;
-}
-
-flt mulf(flt x, flt y)
-{
-    flt r = x * y;
-    return r;
-}
-
-flt macf(flt x, flt y, flt z)
-{   
-    z += (x * y);   
-    return z;
-}
-
-flt msubf(flt x, flt y, flt z) 
-{
-    z -= (x * y);
-    return z;
-}
-
-flt divf(flt x, flt y) 
-{
-    flt N  = K0 * x;
-    flt D  = K0 * y;
-    flt xi = KF1 - KF2 * D;
-    //printf("ref xi: %f\n", xi);
-    
-    for (int i = 0; i < 5; i++) 
-    {
-        xi = xi + xi * (1 - D * xi);
-        printf("%d. %f\n", i, xi);
-    }
-    
-    return N * xi;
-}
-
-flt pow2(flt n) // -1.0 < n < 0.0
-{
-    
-    return pow(2.0, n);
-}
-
-flt flog2(flt x)
-{
-    return log2(x);
-}
-
-
-
 q63 saturate(q63 r) {
 
     if (r > INT32_MAX) r = INT32_MAX;
@@ -211,7 +141,7 @@ q31 div_q31(q31 x, q31 y)
     xi = sub_q63(K1, xi);
 
     for (int i = 0; i < 3; i++)
-    {
+    { 
         xn = mul_q63(xi, D);  
         xn >>= Q25;
         xn = sub_q63(one , xn);
@@ -236,7 +166,7 @@ q31 pow2_q31(q31 x)
     k = (k * idelta) >> 22;
     q31 r = pow2lookup[i] + k;
 
-    printf("index %d\n", i);
+    printf("Pow2 index: %d\n", i);
     
     return (q31)r;
 }
@@ -249,7 +179,7 @@ q31 log2_q31(q31 x)
     q63 k = (log2lookup[i + 1] - log2lookup[i]);
     k = (k * idelta) >> 22;
     
-   printf("index: %d\n", i);
+   printf("Log2 index: %d\n", i);
 
     return log2lookup[i] + k;
 }
@@ -294,8 +224,8 @@ double fixed2double_q(q31 x)
 }
 
 
-
-void gentable(int type)
+// 1 = log2;  2 = pow2
+void gentable(int type)   
 {   
     if(type == 1) //log2
     {
@@ -326,5 +256,73 @@ void gentable(int type)
     }
 
     
+}
+
+
+
+flt negf(flt x)
+{
+    return -x;
+}
+
+flt absf(flt x)
+{
+    return fabs(x);
+}
+
+flt addf(flt x, flt y)
+{
+    flt r = x + y;
+    return r;
+}
+
+flt subf(flt x, flt y)
+{
+    flt r = x - y;
+    return r;
+}
+
+flt mulf(flt x, flt y)
+{
+    flt r = x * y;
+    return r;
+}
+
+flt macf(flt x, flt y, flt z)
+{
+    z += (x * y);
+    return z;
+}
+
+flt msubf(flt x, flt y, flt z)
+{
+    z -= (x * y);
+    return z;
+}
+
+flt divf(flt x, flt y)
+{
+    flt N = K0 * x;
+    flt D = K0 * y;
+    flt xi = KF1 - KF2 * D;
+    //printf("ref xi: %f\n", xi);
+
+    for (int i = 0; i < 5; i++)
+    {
+        xi = xi + xi * (1 - D * xi);
+        printf("%d. %f\n", i, xi);
+    }
+
+    return N * xi;
+}
+
+flt pow2(flt n) 
+{
+    return pow(2.0, n);
+}
+
+flt flog2(flt x)
+{
+    return log2(x);
 }
 
