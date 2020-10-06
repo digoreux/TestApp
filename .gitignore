@@ -1,6 +1,8 @@
 build/Effect/tmp
 build/TestApp/tmp
 build/Fractional/tmp
+build/FIR_fxd/tmp
+build/FIR_flt/tmp
 build/tmp
 .vs/
 

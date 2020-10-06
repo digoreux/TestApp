@@ -9,7 +9,7 @@ add_executable(TestApp
     ../../src/arg_parser.c)
 
 target_link_libraries(TestApp PRIVATE
-	 ../../Effect/tmp/Debug/Effect
+	 ../../FIR_flt/tmp/Debug/FIR_flt
 	 ../../Fractional/tmp/Debug/Fractional)
 
 target_include_directories(TestApp PRIVATE ../../include)

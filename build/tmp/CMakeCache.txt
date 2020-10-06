@@ -177,6 +177,18 @@ Effect_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/Effect
 Effect_SOURCE_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/Effect
 
 //Value Computed by CMake
+FIR_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/FIR
+
+//Value Computed by CMake
+FIR_SOURCE_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/FIR
+
+//Value Computed by CMake
+FIR_flt_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/FIR_flt
+
+//Value Computed by CMake
+FIR_flt_SOURCE_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/FIR_flt
+
+//Value Computed by CMake
 Fractional_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/Fractional
 
 //Value Computed by CMake

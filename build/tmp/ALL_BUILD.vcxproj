@@ -164,9 +164,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{51331595-B7D1-391E-B5E3-DE7EFECDDD97}</Project>
       <Name>ZERO_CHECK</Name>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\Intern\Desktop\TestApp\build\tmp\Effect\Effect.vcxproj">
-      <Project>{D02BFFE3-210E-33CB-9E50-876E2ACA2799}</Project>
-      <Name>Effect</Name>
+    <ProjectReference Include="C:\Users\Intern\Desktop\TestApp\build\tmp\FIR_flt\FIR_flt.vcxproj">
+      <Project>{EB4FDD4A-2D7F-3685-AD6D-4BEBCC3616DC}</Project>
+      <Name>FIR_flt</Name>
     </ProjectReference>
     <ProjectReference Include="C:\Users\Intern\Desktop\TestApp\build\tmp\Fractional\Fractional.vcxproj">
       <Project>{84E635A0-08CB-3474-8623-37368DEECE65}</Project>

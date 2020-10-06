@@ -1,5 +1,1 @@
-﻿  main.c
-c:\users\intern\desktop\testapp\src\main.c(41): warning C4305: 'initializing': truncation from 'double' to 'flt'
-c:\users\intern\desktop\testapp\src\main.c(42): warning C4305: 'initializing': truncation from 'double' to 'flt'
-c:\users\intern\desktop\testapp\src\main.c(46): warning C4244: 'initializing': conversion from 'int64_t' to 'q31', possible loss of data
-  TestApp.vcxproj -> C:\Users\Intern\Desktop\TestApp\build\tmp\TestApp\Debug\TestApp.exe
+﻿  TestApp.vcxproj -> C:\Users\Intern\Desktop\TestApp\build\tmp\TestApp\Debug\TestApp.exe

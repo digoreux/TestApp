@@ -57,7 +57,9 @@ flt pow2(flt n);
 flt flog2(flt x);
 
 
-void gentable();
+void gentable(void);
+void test_fractional(void);
+void bin(unsigned n);
 
 q31 float2fixed(flt x);
 flt fixed2float(q31 x);

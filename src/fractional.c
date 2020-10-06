@@ -12,6 +12,47 @@
 #define K0  0.0759776172978545212494579946726
 
 
+void bin(unsigned n)
+{
+    unsigned i;
+    int count = 0;
+    for (i = 1 << 7; i > 0; i = i / 2)
+    {
+        (n & i) ? printf("1") : printf("0");
+        count++;
+        if (count == 4) printf(" ");
+
+    }
+
+}
+
+void test_fractional(void)
+{
+    flt x = -0.43, y = 0.3464;
+    flt b = 0.456, c = 0.456;
+    q31 res;
+    q31 qb = float2fixed(b);
+    q31 qc = float2fixed(c);
+    q31 qx = double2fixed_q(x);
+    q31 qy = float2fixed(y);
+
+    res = pow2_q31(qx);
+    printf("Result:    %f\n", fixed2float(res));
+    printf("Reference: %f\n\n", pow(2.0, x));
+
+    res = pow_q31(qb, qc);
+    printf("Result:   %f\n", fixed2float(res));
+    printf("Reference %f\n\n", pow(b, c));
+
+    res = log2_q31(qy);
+    printf("Result:    %f\n", fixed2double_q(res));
+    printf("Reference: %lf\n\n", log2(y));
+
+    res = div_q31(qb, qc);
+    printf("Result:    %f\n", fixed2float(res));
+    printf("Reference: %f\n\n", b / c);
+}
+
 q63 saturate(q63 r) {
 
     if (r > INT32_MAX) r = INT32_MAX;
@@ -187,7 +228,7 @@ q31 log2_q31(q31 x)
 q31 pow_q31(q31 x, q31 y) 
 {
     q63 r = mul_q63(y, log2_q31(x));  // x ^ y = 2 ^ (y * log(x))
-    r >>= (Q31);
+    r >>= Q31;
     r = pow2_q31(r);
     return (q31)r;
 }
