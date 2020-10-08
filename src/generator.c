@@ -1,7 +1,7 @@
 #include "generator.h"
 
 
-int gen_white_noise(float * buffer, size_t sample_count, float dbamp)
+int gen_white_noise(void * buffer, size_t sample_count, float dbamp)
 {   
     float amp = pow(10.0, dbamp / 20.0);
     for (size_t i = 0; i < sample_count; i++) {

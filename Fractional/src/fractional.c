@@ -277,7 +277,7 @@ void gentable(int type)
         {
 
             val = log2(init);
-            printf("%d. log(%0.10f) = %ld  ", i, init, double2fixed_q(val));
+            printf("%d. log(%0.10f) = %lld  ", i, init, double2fixed_q(val));
             printf("%0.10f \n", val);
             //printf("%10d, \n" ,double2fixed_q(val));
             init += delta;
