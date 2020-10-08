@@ -13,8 +13,6 @@
 
 #define M_E 3.71828182845904523536
 
-
-
 int main(int argc, char **argv) 
 {
     arg_p a       = (arg_p)malloc(sizeof(args));
@@ -24,11 +22,11 @@ int main(int argc, char **argv)
 
     if (a->input)   copy_wav(a, meta);
     if (a->gen_opts) gen_wav(a, meta);
- 
-
+    
 
     free(a);
     free(meta);
     return 0;
 }
- 
+
+

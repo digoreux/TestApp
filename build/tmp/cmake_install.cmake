@@ -35,8 +35,8 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("C:/Users/Intern/Desktop/TestApp/build/tmp/TestApp/cmake_install.cmake")
-  include("C:/Users/Intern/Desktop/TestApp/build/tmp/Fractional/cmake_install.cmake")
-  include("C:/Users/Intern/Desktop/TestApp/build/tmp/FIR_flt/cmake_install.cmake")
+  include("C:/Users/Intern/Desktop/TestApp/build/tmp/Libs/Fractional/cmake_install.cmake")
+  include("C:/Users/Intern/Desktop/TestApp/build/tmp/Libs/IIR_flt/cmake_install.cmake")
 
 endif()
 

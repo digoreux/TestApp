@@ -171,28 +171,16 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-Effect_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/Effect
+Fractional_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/Libs/Fractional
 
 //Value Computed by CMake
-Effect_SOURCE_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/Effect
+Fractional_SOURCE_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/Libs/Fractional
 
 //Value Computed by CMake
-FIR_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/FIR
+IIR_flt_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/Libs/IIR_flt
 
 //Value Computed by CMake
-FIR_SOURCE_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/FIR
-
-//Value Computed by CMake
-FIR_flt_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/FIR_flt
-
-//Value Computed by CMake
-FIR_flt_SOURCE_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/FIR_flt
-
-//Value Computed by CMake
-Fractional_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/Fractional
-
-//Value Computed by CMake
-Fractional_SOURCE_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/Fractional
+IIR_flt_SOURCE_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/Libs/IIR_flt
 
 //Value Computed by CMake
 TestApp_BINARY_DIR:STATIC=C:/Users/Intern/Desktop/TestApp/build/tmp/TestApp

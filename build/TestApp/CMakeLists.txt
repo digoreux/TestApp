@@ -9,9 +9,11 @@ add_executable(TestApp
     ../../src/arg_parser.c)
 
 target_link_libraries(TestApp PRIVATE
-	 ../../FIR_flt/tmp/Debug/FIR_flt
-	 ../../Fractional/tmp/Debug/Fractional)
+	 IIR_flt
+	 Fractional)
 
-target_include_directories(TestApp PRIVATE ../../include)
+target_include_directories(TestApp PRIVATE ../../inc
+	 ../../Effects/inc
+	 ../../Fractional/inc)
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)

@@ -83,7 +83,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsC</CompileAs>
@@ -100,10 +100,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -111,7 +111,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>../../FIR_flt/tmp/Debug/FIR_flt.lib;../../Fractional/tmp/Debug/Fractional.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\Libs\IIR_flt\Debug\IIR_flt.lib;..\Libs\Fractional\Debug\Fractional.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -126,7 +126,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <ExceptionHandling>
@@ -143,10 +143,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -154,7 +154,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>../../FIR_flt/tmp/Debug/FIR_flt.lib;../../Fractional/tmp/Debug/Fractional.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\Libs\IIR_flt\Release\IIR_flt.lib;..\Libs\Fractional\Release\Fractional.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -169,7 +169,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <ExceptionHandling>
@@ -186,10 +186,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -197,7 +197,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>../../FIR_flt/tmp/Debug/FIR_flt.lib;../../Fractional/tmp/Debug/Fractional.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\Libs\IIR_flt\MinSizeRel\IIR_flt.lib;..\Libs\Fractional\MinSizeRel\Fractional.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -212,7 +212,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -228,10 +228,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Effects\inc;C:\Users\Intern\Desktop\TestApp\build\TestApp\..\..\Fractional\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -239,7 +239,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>../../FIR_flt/tmp/Debug/FIR_flt.lib;../../Fractional/tmp/Debug/Fractional.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\Libs\IIR_flt\RelWithDebInfo\IIR_flt.lib;..\Libs\Fractional\RelWithDebInfo\Fractional.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -318,6 +318,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ProjectReference Include="C:\Users\Intern\Desktop\TestApp\build\tmp\ZERO_CHECK.vcxproj">
       <Project>{51331595-B7D1-391E-B5E3-DE7EFECDDD97}</Project>
       <Name>ZERO_CHECK</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Intern\Desktop\TestApp\build\tmp\Libs\Fractional\Fractional.vcxproj">
+      <Project>{84E635A0-08CB-3474-8623-37368DEECE65}</Project>
+      <Name>Fractional</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Intern\Desktop\TestApp\build\tmp\Libs\IIR_flt\IIR_flt.vcxproj">
+      <Project>{A7044B40-4C26-3BE3-92C8-91240B2BE798}</Project>
+      <Name>IIR_flt</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

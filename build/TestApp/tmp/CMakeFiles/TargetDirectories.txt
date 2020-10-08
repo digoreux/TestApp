@@ -1,3 +1,0 @@
-C:/Users/Intern/Desktop/TestApp/build/TestApp/tmp/CMakeFiles/TestApp.dir
-C:/Users/Intern/Desktop/TestApp/build/TestApp/tmp/CMakeFiles/ALL_BUILD.dir
-C:/Users/Intern/Desktop/TestApp/build/TestApp/tmp/CMakeFiles/ZERO_CHECK.dir

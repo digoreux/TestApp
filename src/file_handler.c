@@ -1,4 +1,4 @@
-#include "file_handler.h"
+﻿#include "file_handler.h"
 
 
 int read_header(FILE * in, header_p meta)
@@ -124,17 +124,24 @@ int copy_wav(arg_p a, header_p meta)
     FILE * out = fopen(a->output, "wb");
 
     read_header(in, meta);
-    print_header(meta);
+    //print_header(meta);
     write_header(out, meta);
 
-    size_t num_samples = ((meta->sample_rate / 100) * 2 );  // 10ms   
+    //size_t num_samples = ((meta->sample_rate / 100) * 2 );  // 10ms   
+    size_t num_samples = 512;  
     size_t size = ((num_samples * meta->block_align) / 2);
     void *buffer = malloc(size);
-
+    void *states = malloc(sizeof(states_t));
+    void *coeffs = malloc(sizeof(coeffs_t));
+    effect_control_initialize(0, coeffs, 48000);
+    effect_reset(coeffs, states);
     while (!feof(in))
     {
         fread(buffer, 1, size, in);
-        if (meta->audio_format == 3) effect_process(&a->gain, buffer, num_samples);
+        if (meta->audio_format == 3) 
+        {   
+            effect_process(coeffs, states, buffer, num_samples);
+        }
         fwrite(buffer, 1, size, out);
     }
     fclose(out);
@@ -150,7 +157,7 @@ int gen_wav(arg_p a, header_p meta)
     write_header(out, meta);
     print_header(meta);
     size_t num_samples = (meta->sample_rate / 1000) * a->time;
-    size_t size = ((num_samples * meta->block_align) / 2);
+    size_t size = ((num_samples * meta->block_align));
     void *buffer = malloc(size);
     generator(buffer, num_samples, a->type, a);
     fwrite(buffer, 1, size, out);
