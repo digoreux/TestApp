@@ -5,15 +5,9 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <math.h>
 
-typedef struct coeffs_s {
-    double a1;
-    double a2;
-    double b0;
-    double b1;
-    double b2;
-} coeffs_t;
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.
@@ -45,7 +39,7 @@ int32_t effect_control_initialize(
 
 
 /*******************************************************************************
- * Set single parameter and calculate corresponding coefficients.
+ * Set single parameter 
  * 
  * @param[in] params    initialized params
  * @param[in] id        parameter ID
@@ -63,7 +57,6 @@ int32_t effect_set_parameter(
  * Calculate coefficients, corresponding to the parameters.
  * 
  * @param[in] params    initialized params
- * @param[in] id        parameter ID
  * @param[in] value     parameter value
  * 
  * @return 0 if success, non-zero error code otherwise

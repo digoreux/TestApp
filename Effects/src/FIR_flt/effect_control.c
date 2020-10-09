@@ -1,15 +1,15 @@
 #include "effect_control.h" 
 
+#define NTAPS 128
 
-extern float fir_flt_coeffs[128];
+extern double fir_flt_coeffs[128];
 
 int32_t effect_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes)
 
 {   
-    params_bytes = 0;
-    coeffs_bytes = sizeof(float) * 128;
+    *coeffs_bytes = sizeof(fir_flt_coeffs);
     return 0;
 }
 
@@ -19,9 +19,7 @@ int32_t effect_control_initialize(
     uint32_t    sample_rate)
 
 {   
-  
-    memcpy(coeffs, fir_flt_coeffs, sizeof(float) * 128);
-    params = NULL;
+    memcpy(coeffs, fir_flt_coeffs, sizeof(fir_flt_coeffs));
 
     return 0;
 } 

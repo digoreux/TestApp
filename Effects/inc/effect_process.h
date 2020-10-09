@@ -4,14 +4,6 @@
 #include "effect_control.h"
 
 
-typedef struct states_s {
-    double x0;
-    double x1;
-    double x2;
-    double y1;
-    double y2;
-} states_t;
-
 /*******************************************************************************
  * Provides with the required data sizes for states. It is caller responsibility
  *   to allocate enough memory (bytes) for them.
