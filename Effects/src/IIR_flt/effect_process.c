@@ -58,24 +58,43 @@ int32_t effect_process(
     void*       audio,
     size_t      samples_count)
 {   
-    double acc = 0;
+    double lacc = 0;
+    double racc = 0;
     coeffs_t *c = (coeffs_t*)coeffs;
     states_t *s = (states_t*)states;
     stereo_t *a = (stereo_t*)audio;
 
     for (int i = 0; i < samples_count; i++)
     {   
-        s->x1 = 
-        acc = c->b0 * s->x0 + c->b1 * s->x1 + c->b2 * s->x2 -
-            c->a1 * s->y1 - c->a2 * s->y2;
+        s->x0.left = a[i].left;
+        lacc = (c->b0 * s->x0.left) + 
+               (c->b1 * s->x1.left) + 
+               (c->b2 * s->x2.left) -
+               (c->a1 * s->y1.left) - 
+               (c->a2 * s->y2.left);
 
-        s->x2 = s->x1;
-        s->x1 = s->x0;
+        s->x2.left = s->x1.left;
+        s->x1.left = s->x0.left;
 
-        s->y2 = s->y1;
-        s->y1 = acc;
+        s->y2.left = s->y1.left;
+        s->y1.left = lacc;
+         
+        a[i].left = lacc;  
 
-        ((float*)audio)[i] = acc;
+        s->x0.right = a[i].right;
+        racc = (c->b0 * s->x0.right) + 
+               (c->b1 * s->x1.right) + 
+               (c->b2 * s->x2.right) -
+               (c->a1 * s->y1.right) - 
+               (c->a2 * s->y2.right);
+
+        s->x2.right = s->x1.right;
+        s->x1.right = s->x0.right;
+
+        s->y2.right = s->y1.right;
+        s->y1.right = racc;
+         
+        a[i].right = racc;
     }
    
    

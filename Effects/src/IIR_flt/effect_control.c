@@ -37,6 +37,11 @@ int32_t effect_control_initialize(
     coeffs_t * c = (coeffs_t*)coeffs;
     params_t * p = (params_t*)params;
 
+    p->freq = 0;
+    p->gain = 1;
+    p->Q = 0;
+    p->SR = 48000;
+
     c->b0 = 0;
     c->b1 = 0;
     c->b2 = 0;

@@ -20,6 +20,8 @@ int main(int argc, char **argv)
 
     get_args(argc, argv, a);
 
+
+
     if (a->input)   copy_wav(a, meta);
     if (a->gen_opts) gen_wav(a, meta);
     
