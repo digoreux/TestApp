@@ -1,23 +1,25 @@
 ﻿#include "effect_process.h"
 #include "effect_control.h"
 
+#include "fractional.h"
+
 #define NTAPS 128
 
 
-typedef struct stereo_s {
-    float left;
-    float right;
-} stereo;
+typedef struct stereo_t_s {
+    flt left;
+    flt right;
+} stereo_t;
 
 typedef struct state_s {
-    stereo cbuffer[NTAPS];
+    stereo_t cbuffer[NTAPS];
 } states_t;
 
 
 int32_t effect_process_get_sizes(
     size_t*     states_bytes)
 {   
-    *states_bytes = sizeof(state);
+    *states_bytes = sizeof(states_t);
     return 0;
 }
 
@@ -36,23 +38,24 @@ int32_t effect_process(
     void*       audio,
     size_t      samples_count)
 {   
-    double racc;
-    double lacc;
+    flt racc;
+    flt lacc;
     size_t index = -1;
-
-    stereo    *au = (stereo*)(audio);
+    size_t index0 = 0;
+    stereo_t  *au = (stereo_t*)(audio);
     states_t  *st = (states_t*)(states);
      
 
     for (size_t i = 0; i < samples_count; i++)
-    {
-        index = (i + 128) & 127;
+    { 
+        index = i & 127;
         st->cbuffer[index] = au[i];
         racc = 0;
         lacc = 0;
-        for (size_t j = 0; j <= 128; j++) {
-            lacc += st->cbuffer[(index + j) & 127].left  * ((double*)coeffs)[j];
-            racc += st->cbuffer[(index + j) & 127].right * ((double*)coeffs)[j];
+        for (size_t j = 0; j < 128; j++) {
+            index0 = (index + j) & 127;
+            lacc = macf(st->cbuffer[index0].left,  ((flt*)coeffs)[j], lacc);
+            racc = macf(st->cbuffer[index0].right, ((flt*)coeffs)[j], racc);
         }
 
         au[i].left  = lacc;

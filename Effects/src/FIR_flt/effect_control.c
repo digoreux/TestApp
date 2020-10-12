@@ -1,8 +1,10 @@
 #include "effect_control.h" 
 
+#include "fractional.h"
+
 #define NTAPS 128
 
-extern double fir_flt_coeffs[128];
+extern float fir_flt_coeffs[128];
 
 int32_t effect_control_get_sizes(
     size_t*     params_bytes,

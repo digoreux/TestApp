@@ -53,8 +53,10 @@ flt mulf(flt x, flt y);
 flt macf(flt x, flt y, flt z);
 flt msubf(flt x, flt y, flt z);
 flt divf(flt x, flt y);
+flt divnr(flt x, flt y);
 flt pow2(flt n);
 flt flog2(flt x);
+flt fpow(flt x, flt y);
 
 
 void gentable(int type);

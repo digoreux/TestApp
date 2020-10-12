@@ -313,35 +313,35 @@ flt absf(flt x)
 
 flt addf(flt x, flt y)
 {
-    flt r = x + y;
-    return r;
+    return x + y;
 }
 
 flt subf(flt x, flt y)
 {
-    flt r = x - y;
-    return r;
+    return  x - y;
 }
 
 flt mulf(flt x, flt y)
 {
-    flt r = x * y;
-    return r;
+    return x * y;
 }
 
 flt macf(flt x, flt y, flt z)
 {
-    z += (x * y);
-    return z;
+    return z + (x * y);
 }
 
 flt msubf(flt x, flt y, flt z)
 {
-    z -= (x * y);
-    return z;
+    return z - (x * y);
 }
 
 flt divf(flt x, flt y)
+{
+    return x/y;
+}
+
+flt divnr(flt x, flt y)
 {
     flt N = K0 * x;
     flt D = K0 * y;
@@ -367,3 +367,6 @@ flt flog2(flt x)
     return log2(x);
 }
 
+flt fpow(flt x, flt y) {
+    return pow(x, y);
+}

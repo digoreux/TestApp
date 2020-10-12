@@ -5,4 +5,4 @@ project(WholeSolution)
 
 add_subdirectory(TestApp)
 add_subdirectory(Libs/Fractional)
-add_subdirectory(Libs/IIR_flt)
+add_subdirectory(Libs/FIR_flt)

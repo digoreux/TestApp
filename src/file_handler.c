@@ -129,14 +129,14 @@ int copy_wav(arg_p a, header_p meta)
     size_t csize = 0;
     size_t ssize = 0;
     size_t psize = 0;
-    size_t num_samples = 480;  
+    size_t num_samples = 512;  
     size_t size = (num_samples * meta->block_align);
     
     effect_control_get_sizes(&psize, &csize);
     effect_process_get_sizes(&ssize);
 
     printf("coefs:  %d\n", csize);
-    printf("coefs:  %d\n", psize);
+    printf("params: %d\n", psize);
     printf("states: %d\n", ssize);
     printf("size:   %d\n", size);
 
@@ -172,16 +172,15 @@ int copy_wav(arg_p a, header_p meta)
     return 0;
 }
 
-
-
-// FIR
+//
+//
 //int copy_wav(arg_p a, header_p meta) 
 //{
 //    FILE * in  = fopen(a->input, "rb");
 //    FILE * out = fopen(a->output, "wb");
 //
 //    read_header(in, meta);
-//    print_header(meta);
+//    //print_header(meta);
 //    write_header(out, meta);
 //
 //    int size = sizeof(float) * 512;
@@ -194,17 +193,17 @@ int copy_wav(arg_p a, header_p meta)
 //    int index = -1;
 //    void *coeffs = malloc(sizeof(double)*128);
 //    effect_control_initialize(0, coeffs, 48000);
-//    while (!feof(in))
+//    while (!feof(in))   
 //    {
 //        fread(buffer, size, 1, in);
 //
 //        for (int i = 0; i < 512; i++)
 //        {
-//            index = (i + 128) & 127;
+//            index = i  & 127;
 //            cbuffer[index] = buffer[i];
 //            float acc = 0;
 //            for (int j = 0; j <= 128; j++) {
-//                acc += cbuffer[(index + j) & 127] * ((double*)coeffs)[j];
+//                acc += cbuffer[(index + j) & 127] * ((float*)coeffs)[j];
 //            }
 //            buffer[i] = acc;
 //        }
@@ -217,77 +216,7 @@ int copy_wav(arg_p a, header_p meta)
 //}
 
 
-// IIR
-//int copy_wav(arg_p a, header_p meta)
-//{
-//    FILE * in  = fopen(a->input, "rb");
-//    FILE * out = fopen(a->output, "wb");
-//
-//    read_header(in, meta);
-//    print_header(meta);
-//    write_header(out, meta);
-//
-//    double b0, b1, b2, a0, a1, a2;
-//    float x0 = 0, x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-//    float acc = 0;
-//
-//    int size = sizeof(float) * 512;
-//
-//    float *buffer = malloc(size);
-//
-//    double frequency = 240;
-//    double sample_rate = 48000;
-//    double Q = 0.9;
-//
-//    //double A = pow(10, dbGain / 40);
-//    double omega = 2 * M_PI * frequency / sample_rate;
-//    double sn = sin(omega);
-//    double cs = cos(omega);
-//    double alpha = sn / (2 * Q);
-//
-//    b0 = (1.0 - cs) / 2.0;
-//    b1 = 1.0 - cs;
-//    b2 = (1.0 - cs) / 2.0;
-//    a0 = 1.0 + alpha;
-//    a1 = -2.0 * cs;
-//    a2 = 1.0 - alpha;
-//
-//    a1 /= a0;
-//    a2 /= a0;
-//    b0 /= a0;
-//    b1 /= a0;
-//    b2 /= a0;
-//
-//    while (!feof(in))
-//    {
-//        fread(buffer, size, 1, in);
-//
-//        for (int i = 0; i < 512; i++)
-//        {
-//            x0 = buffer[i];
-//
-//            acc = (b0 * x0) +
-//                  (b1 * x1) +
-//                  (b2 * x2) -
-//                  (a1 * y1) -
-//                  (a2 * y2);
-//
-//            x2 = x1;
-//            x1 = x0;
-//
-//            y2 = y1;
-//            y1 = acc;
-//
-//            buffer[i] = acc;
-//        }
-//        fwrite(buffer, size, 1, out);
-//    }
-//
-//
-//    fclose(out);
-//    free(buffer);
-//    return 0;
-//}
+
 // TODO: fix num_samples
 int gen_wav(arg_p a, header_p meta)
 {

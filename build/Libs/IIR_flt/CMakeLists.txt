@@ -7,4 +7,10 @@ add_library(IIR_flt
     ../../../Effects/src/IIR_flt/effect_process.c)
 
 
-target_include_directories(IIR_flt PRIVATE ../../../Effects/inc/)
+target_include_directories(IIR_flt PRIVATE 
+     ../../../Effects/inc/
+     ../../../Fractional/inc)
+
+
+target_link_libraries(IIR_flt PRIVATE
+	 Fractional)
