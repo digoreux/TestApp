@@ -172,50 +172,6 @@ int copy_wav(arg_p a, header_p meta)
     return 0;
 }
 
-//
-//
-//int copy_wav(arg_p a, header_p meta) 
-//{
-//    FILE * in  = fopen(a->input, "rb");
-//    FILE * out = fopen(a->output, "wb");
-//
-//    read_header(in, meta);
-//    //print_header(meta);
-//    write_header(out, meta);
-//
-//    int size = sizeof(float) * 512;
-//    int csize = sizeof(float) * 128;
-//
-//    float *buffer = malloc(size);
-//    float *cbuffer = malloc(csize);
-//
-//    memset(cbuffer, 0, csize);
-//    int index = -1;
-//    void *coeffs = malloc(sizeof(double)*128);
-//    effect_control_initialize(0, coeffs, 48000);
-//    while (!feof(in))   
-//    {
-//        fread(buffer, size, 1, in);
-//
-//        for (int i = 0; i < 512; i++)
-//        {
-//            index = i  & 127;
-//            cbuffer[index] = buffer[i];
-//            float acc = 0;
-//            for (int j = 0; j <= 128; j++) {
-//                acc += cbuffer[(index + j) & 127] * ((float*)coeffs)[j];
-//            }
-//            buffer[i] = acc;
-//        }
-//
-//        fwrite(buffer, size, 1, out);
-//    }
-//    fclose(out);
-//    free(buffer);
-//    return 0;
-//}
-
-
 
 // TODO: fix num_samples
 int gen_wav(arg_p a, header_p meta)
