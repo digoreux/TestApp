@@ -4,12 +4,12 @@
 #define M_PI  3.14159265358979323846
 
 typedef struct coeffs_s {
-    double  b0;
-    double  b1;
-    double  b2;
-    double  a0;
-    double  a1;
-    double  a2;
+    q31  b0;
+    q31  b1;
+    q31  b2;
+    q31  a0;
+    q31  a1;
+    q31  a2;
 } coeffs_t;
 
 typedef struct params_s {
@@ -80,19 +80,51 @@ int32_t effect_update_coeffs(
     double alpha = divf(sn, mulf(2, p->Q));
 
 
-    c->b0 = divf(subf(1.0, cs), 2.0);
-    c->b1 = subf(1.0, cs);
-    c->b2 = divf(subf(1.0, cs), 2.0);
-    c->a0 = addf(1.0, alpha);
-    c->a1 = mulf(negf(2.0), cs);
-    c->a2 = subf(1.0, alpha);
+    double b0 = divf(subf(1.0, cs), 2.0);
+    double b1 = subf(1.0, cs);
+    double b2 = divf(subf(1.0, cs), 2.0);
+    double a0 = addf(1.0, alpha);
+    double a1 = mulf(negf(2.0), cs);
+    double a2 = subf(1.0, alpha);
 
-    c->a1 = divf(c->a1, c->a0);
-    c->a2 = divf(c->a2, c->a0);
-    c->b0 = divf(c->b0, c->a0);
-    c->b1 = divf(c->b1, c->a0);
-    c->b2 = divf(c->b2, c->a0);
 
+    a1 = divf(a1, a0);
+    a2 = divf(a2, a0);
+    b0 = divf(b0, a0);
+    b1 = divf(b1, a0);
+    b2 = divf(b2, a0);
+
+
+    printf("a0 %lf\n", a0);
+    printf("a1 %lf\n", a1);
+    printf("a2 %lf\n", a2);
+    printf("b0 %lf\n", b0);
+    printf("b1 %lf\n", b1);
+    printf("b2 %lf\n\n", b2);
+
+    c->a1 = double2fixed(a1); 
+    c->a2 = double2fixed(a2); 
+    c->b0 = double2fixed(b0); 
+    c->b1 = double2fixed(b1); 
+    c->b2 = double2fixed(b2); 
+    
+    //c->a1 <<= 1;
+    //c->a2 <<= 1;
+    //c->b0 <<= 1;
+    //c->b1 <<= 1;
+    //c->b2 <<= 1;
+
+    printf("a1 %ld\n", c->a1);
+    printf("a2 %ld\n", c->a2);
+    printf("b0 %ld\n", c->b0);
+    printf("b1 %ld\n", c->b1);
+    printf("b2 %ld\n\n", c->b2); 
+    
+    printf("a1 %lf\n", fixed2double(c->a1));
+    printf("a2 %lf\n", fixed2double(c->a2));
+    printf("b0 %lf\n", fixed2double(c->b0));
+    printf("b1 %lf\n", fixed2double(c->b1));
+    printf("b2 %lf\n", fixed2double(c->b2));
 
     return 0;
 }

@@ -2,8 +2,8 @@
 #include "effect_control.h"
 #include "fractional.h"
 typedef struct stereo {
-    float left;
-    float right;
+    flt left;
+    flt right;
 } stereo_t;
 
 typedef struct states_s {
@@ -15,12 +15,12 @@ typedef struct states_s {
 } states_t;
 
 typedef struct coeffs_s {
-    double  b0;
-    double  b1;
-    double  b2;
-    double  a0;
-    double  a1;
-    double  a2;
+    flt  b0;
+    flt  b1;
+    flt  b2;
+    flt  a0;
+    flt  a1;
+    flt  a2;
 } coeffs_t;
 
 int32_t effect_process_get_sizes(
@@ -57,8 +57,8 @@ int32_t effect_process(
     void*       audio,
     size_t      samples_count)
 {   
-    double lacc;
-    double racc;
+    flt lacc;
+    flt racc;
     coeffs_t *c = (coeffs_t*)coeffs;
     states_t *s = (states_t*)states;
     stereo_t *a = (stereo_t*)audio;

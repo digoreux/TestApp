@@ -1,6 +1,7 @@
 #include "fractional.h"
 
 #define Q31 31
+#define Q30 30
 #define Q25 25    //div
 #define Q26 26    //log
 
@@ -239,6 +240,21 @@ q31 float2fixed(flt x)
     x = min(x, INT32_MAX);
     x = max(x, INT32_MIN);
     return (q31)x;
+}
+
+q31 double2fixed(double x)
+{
+    x *= (1ll << Q30);
+    //x = min(x, INT64_MAX);
+    //x = max(x, INT64_MIN);
+    return (q31)x;
+}
+
+double fixed2double(q31 x)
+{
+    double r = (double)x / (double)(1u << Q30);
+
+    return r;
 }
 
 flt fixed2float(q31 x)

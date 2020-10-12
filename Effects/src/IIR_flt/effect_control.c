@@ -4,12 +4,12 @@
 #define M_PI  3.14159265358979323846
 
 typedef struct coeffs_s {
-    double  b0;
-    double  b1;
-    double  b2;
-    double  a0;
-    double  a1;
-    double  a2;
+    flt  b0;
+    flt  b1;
+    flt  b2;
+    flt  a0;
+    flt  a1;
+    flt  a2;
 } coeffs_t;
 
 typedef struct params_s {

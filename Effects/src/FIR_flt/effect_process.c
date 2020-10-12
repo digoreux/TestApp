@@ -54,7 +54,7 @@ int32_t effect_process(
         lacc = 0;
         for (size_t j = 0; j < 128; j++) {
             index0 = (index + j) & 127;
-            lacc = macf(st->cbuffer[index0].left,  ((flt*)coeffs)[j], lacc);
+            lacc = mac_q31(st->cbuffer[index0].left,  ((flt*)coeffs)[j], lacc);
             racc = macf(st->cbuffer[index0].right, ((flt*)coeffs)[j], racc);
         }
 

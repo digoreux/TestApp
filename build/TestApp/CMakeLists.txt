@@ -9,7 +9,7 @@ add_executable(TestApp
     ../../src/arg_parser.c)
 
 target_link_libraries(TestApp PRIVATE
-	 FIR_flt
+	 IIR_fxd
 	 Fractional)
 
 target_include_directories(TestApp PRIVATE ../../inc

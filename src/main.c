@@ -13,12 +13,14 @@
 
 #define M_E 3.71828182845904523536
 
+
 int main(int argc, char **argv) 
 {
     arg_p a       = (arg_p)malloc(sizeof(args));
     header_p meta = (header_p)malloc(sizeof(header));
 
     get_args(argc, argv, a);
+
 
     if (a->input)   copy_wav(a, meta);
     if (a->gen_opts) gen_wav(a, meta);

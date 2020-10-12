@@ -4,9 +4,10 @@ project(FIR_fxd)
 
 add_library(FIR_fxd
     ../../../Effects/src/FIR_fxd/effect_control.c 
-    ../../../Effects/src/FIR_fxd/effect_process.c)
+    ../../../Effects/src/FIR_fxd/effect_process.c
+    ../../../Effects/src/FIR_fxd/fir_fxd_coeffs.c)
 
-target_include_directories(FIR_flt PRIVATE 
+target_include_directories(FIR_fxd PRIVATE 
     ../../../Effects/inc/
     ../../../Fractional/inc)
 

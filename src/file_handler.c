@@ -123,7 +123,7 @@ int copy_wav(arg_p a, header_p meta)
     FILE * in = fopen(a->input, "rb");
     FILE * out = fopen(a->output, "wb");
     read_header(in, meta);
-    //print_header(meta);
+    print_header(meta);
     write_header(out, meta);
 
     size_t csize = 0;
@@ -147,7 +147,7 @@ int copy_wav(arg_p a, header_p meta)
     void *states = malloc(ssize);
 
     effect_control_initialize(params, coeffs, 48000);
-    effect_set_parameter(params, 0, 60);              // cutoff frequency
+    effect_set_parameter(params, 0, 240);              // cutoff frequency
     effect_set_parameter(params, 1, -6);              // gain
     effect_set_parameter(params, 2, 0.5);             // Q
     effect_set_parameter(params, 3, 48000);           // SR
@@ -157,10 +157,7 @@ int copy_wav(arg_p a, header_p meta)
     while (!feof(in))
     { 
         fread(buffer, size, 1, in);
-        if (meta->audio_format == 3) 
-        {   
-            effect_process(coeffs, states, buffer, num_samples);
-        }
+        effect_process(coeffs, states, buffer, num_samples);
         fwrite(buffer, size, 1, out);
     }
     fclose(in);

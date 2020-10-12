@@ -1,11 +1,17 @@
 #include "effect_control.h" 
 
+#include "fractional.h"
+
+#define NTAPS 128
+
+extern int fir_fxd_coeffs[128];
 
 int32_t effect_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes)
 
 {
+    *coeffs_bytes = sizeof(fir_fxd_coeffs);
     return 0;
 }
 
@@ -15,6 +21,8 @@ int32_t effect_control_initialize(
     uint32_t    sample_rate)
 
 {
+    memcpy(coeffs, fir_fxd_coeffs, sizeof(fir_fxd_coeffs));
+
     return 0;
 }
 
@@ -32,3 +40,5 @@ int32_t effect_update_coeffs(
 {
     return 0;
 }
+
+
