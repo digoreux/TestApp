@@ -4,9 +4,10 @@
 #include "fractional.h"
 
 #define NTAPS 128
+#define MASK  (NTAPS - 1)
 
 
-typedef struct stereo_t_s {
+typedef struct stereo_s {
     flt left;
     flt right;
 } stereo_t;
@@ -48,13 +49,13 @@ int32_t effect_process(
 
     for (size_t i = 0; i < samples_count; i++)
     { 
-        index = i & 127;
+        index = i & MASK;
         st->cbuffer[index] = au[i];
         racc = 0;
         lacc = 0;
-        for (size_t j = 0; j < 128; j++) {
-            index0 = (index + j) & 127;
-            lacc = mac_q31(st->cbuffer[index0].left,  ((flt*)coeffs)[j], lacc);
+        for (size_t j = 0; j < NTAPS; j++) {
+            index0 = (index + j) & MASK;
+            lacc = macf(st->cbuffer[index0].left,  ((flt*)coeffs)[j], lacc);
             racc = macf(st->cbuffer[index0].right, ((flt*)coeffs)[j], racc);
         }
 

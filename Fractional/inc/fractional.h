@@ -63,13 +63,13 @@ void gentable(int type);
 void test_fractional(void);
 void bin(unsigned n);
 
-q31 float2fixed(flt x);
-flt fixed2float(q31 x);
+q31 float2fixed_q31(flt x);
+flt fixed2float_q31(q31 x);
 
 q31 double2fixed(double x);
 double fixed2double(q31 x);
 
-int64_t double2fixed_q(double x);
-double fixed2double_q(q31 x);
+q31 double2fixed_q(double x, size_t Q);
+double fixed2double_q(q31 x, size_t Q);
 
 #endif // !__FRACTIONAL_H__

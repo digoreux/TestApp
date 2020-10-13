@@ -40,7 +40,7 @@ void print_header(header_p meta);
 
 int get_fmt(header_p meta);
 
-int copy_wav(arg_p a, header_p meta);
+int read_wav(arg_p a, header_p meta);
 
 int gen_wav(arg_p a, header_p meta);
 

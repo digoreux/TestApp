@@ -32,28 +32,28 @@ void bin(unsigned n)
 
 void test_fractional(void)
 {
-    flt x = -0.43, y = 0.3464;
-    flt b = 0.456, c = 0.456;
+    flt x = -0.43f, y = 0.3464f;
+    flt b = 0.456f, c = 0.456f;
     q31 res;
-    q31 qb = float2fixed(b);
-    q31 qc = float2fixed(c);
-    q31 qx = double2fixed_q(x);
-    q31 qy = float2fixed(y);
+    q31 qb = float2fixed_q31(b);
+    q31 qc = float2fixed_q31(c);
+    q31 qx = double2fixed_q(x, 26);
+    q31 qy = float2fixed_q31(y);
 
     res = pow2_q31(qx);
-    printf("Result:    %f\n", fixed2float(res));
+    printf("Result:    %f\n", fixed2float_q31(res));
     printf("Reference: %f\n\n", pow(2.0, x));
 
     res = pow_q31(qb, qc);
-    printf("Result:   %f\n", fixed2float(res));
+    printf("Result:   %f\n", fixed2float_q31(res));
     printf("Reference %f\n\n", pow(b, c));
 
     res = log2_q31(qy);
-    printf("Result:    %f\n", fixed2double_q(res));
+    printf("Result:    %f\n", fixed2double_q(res, 26));
     printf("Reference: %lf\n\n", log2(y));
 
     res = div_q31(qb, qc);
-    printf("Result:    %f\n", fixed2float(res));
+    printf("Result:    %f\n", fixed2float_q31(res));
     printf("Reference: %f\n\n", b / c);
 }
 
@@ -156,8 +156,11 @@ q63 msub_q31(q31 x, q31 y, q63 z)
 q31 gethigh(q63 x) 
 {
     x += (1u << (Q31 - 1));
-    return x >> Q31; 
+    //x = left_shift(x, 1);
+    x >>= 31;
+    return (q31)x; 
 }
+
 
 q31 mul_q31(q31 x, q31 y)
 {   
@@ -177,7 +180,7 @@ q63 mul_q63(q31 x, q31 y)
 q31 div_q31(q31 x, q31 y) 
 {   
 
-    int64_t xi, xn, N, D, tmp, r;
+    q63 xi, xn, N, D, r;
     q31 one = (1 << Q25);
     
     N = (x >> (Q31 - Q25));
@@ -198,7 +201,6 @@ q31 div_q31(q31 x, q31 y)
         xn = add_q63(xi, xn);
         xi = xn;
     }
-
      r = mul_q63(N, xi);
      r >>= (Q25 - (Q31 - Q25));
 
@@ -212,7 +214,7 @@ q31 pow2_q31(q31 x)
 
     q63 k = (pow2lookup[i - 1] - pow2lookup[i]);
     k = (k * idelta) >> 22;
-    q31 r = pow2lookup[i] + k;
+    q31 r = pow2lookup[i] + (q31)k;
 
     printf("Pow2 index: %d\n", i);
     
@@ -229,7 +231,7 @@ q31 log2_q31(q31 x)
     
    printf("Log2 index: %d\n", i);
 
-    return log2lookup[i] + k;
+    return log2lookup[i] + (q31)k;
 }
 
 q31 pow_q31(q31 x, q31 y) 
@@ -240,7 +242,10 @@ q31 pow_q31(q31 x, q31 y)
     return (q31)r;
 }
 
-q31 float2fixed(flt x)
+
+
+
+q31 float2fixed_q31(flt x)
 {
     x *= (1u << Q31);
     x = min(x, INT32_MAX);
@@ -248,41 +253,54 @@ q31 float2fixed(flt x)
     return (q31)x;
 }
 
-q31 double2fixed(double x)
+flt fixed2float_q31(q31 x)
 {
-    x *= (1ll << Q30);
-    //x = min(x, INT64_MAX);
-    //x = max(x, INT64_MIN);
+    flt r = (flt) x / (flt)(1u << Q31);
+    return r;
+}
+
+q31 float2fixed_q(flt x, size_t Q)
+{
+    x *= (1u << Q);
+    x = min(x, INT32_MAX);
+    x = max(x, INT32_MIN);
     return (q31)x;
 }
 
-double fixed2double(q31 x)
+flt fixed2float_q(q31 x, size_t Q)
 {
-    double r = (double)x / (double)(1u << Q30);
-
+    flt r = (flt) x / (flt)(1u << Q);
     return r;
 }
 
-flt fixed2float(q31 x)
-{
- 
-    flt r = (flt) x / (flt)(1u << Q31);
+//
+//q31 double2fixed(double x)
+//{
+//    x *= (1ll << Q30);
+//    //x = min(x, INT64_MAX);
+//    //x = max(x, INT64_MIN);
+//    return (q31)x;
+//}
+//
+//double fixed2double(q31 x)
+//{
+//    double r = (double)x / (double)(1u << Q30);
+//
+//    return r;
+//}
 
-    return r;
-}
 
-int64_t double2fixed_q(double x)
+q31 double2fixed_q(double x, size_t Q)
 {
-    x *= (1ll << Q26);
+    x *= (1ll << Q);
     x = min(x, INT32_MAX);
     x = max(x, INT32_MIN);
-    return (int64_t)x;
+    return (q31)x;
 }
 
-double fixed2double_q(q31 x)
+double fixed2double_q(q31 x, size_t Q)
 {
-    double r = (double)x / (double)(1ll << Q26);
-
+    double r = (double)x / (double)(1ll << Q);
     return r;
 }
 
@@ -293,15 +311,15 @@ void gentable(int type)
     if(type == 1) //log2
     {
         double delta = 1.0 / 512;
-        double init = fixed2float(1);
+        double init = fixed2float_q31(1);
         double val = 0;
         for (int i = 0; i < 512; i++)
         {
 
             val = log2(init);
-            printf("%d. log(%0.10f) = %lld  ", i, init, double2fixed_q(val));
+            printf("%d. log(%0.10f) = %d  ", i, init, double2fixed_q(val, 26));
             printf("%0.10f \n", val);
-            //printf("%10d, \n" ,double2fixed_q(val));
+            //printf("%10d, \n" ,double2fixed_q(val, 26));
             init += delta;
         }
     }
@@ -312,13 +330,12 @@ void gentable(int type)
         for (int i = 0; i < 512; i++)
         {
             val = pow(2.0, ((double)-i / (double)16.0));
-            qval = float2fixed(val);
+            qval = float2fixed_q31(val);
             //printf("%d pow(2, %0.10lf) = %0.10lf  ", i, (double)-i / (double)16.0, val);
             printf("%d,\n", qval);
         }
     }
 
-    
 }
 
 
@@ -330,7 +347,7 @@ flt negf(flt x)
 
 flt absf(flt x)
 {
-    return fabs(x);
+    return fabsf(x);
 }
 
 flt addf(flt x, flt y)
@@ -365,8 +382,8 @@ flt divf(flt x, flt y)
 
 flt divnr(flt x, flt y)
 {
-    flt N = K0 * x;
-    flt D = K0 * y;
+    flt N  = K0 * x;
+    flt D  = K0 * y;
     flt xi = KF1 - KF2 * D;
     //printf("ref xi: %f\n", xi);
 
@@ -381,14 +398,14 @@ flt divnr(flt x, flt y)
 
 flt pow2(flt n) 
 {
-    return pow(2.0, n);
+    return powf(2.0, n);
 }
 
 flt flog2(flt x)
 {
-    return log2(x);
+    return log2f(x);
 }
 
 flt fpow(flt x, flt y) {
-    return pow(x, y);
+    return powf(x, y);
 }

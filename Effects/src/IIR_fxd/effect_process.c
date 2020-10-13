@@ -63,7 +63,7 @@ int32_t effect_process(
     coeffs_t *c = (coeffs_t*)coeffs;
     states_t *s = (states_t*)states;
     stereo_t *a = (stereo_t*)audio;
-
+    q31 lo = 0;
     for (int i = 0; i < samples_count; i++)
     {   
         s->x0.left  = a[i].left;
@@ -72,6 +72,7 @@ int32_t effect_process(
         acc = mac_q31(c->b0, s->x0.left, acc);
         acc = mac_q31(c->b1, s->x1.left, acc);
         acc = mac_q31(c->b2, s->x2.left, acc);
+
         acc = msub_q31(c->a1, s->y1.left, acc); 
         acc = msub_q31(c->a2, s->y2.left, acc);
 

@@ -93,11 +93,12 @@ int32_t effect_update_coeffs(
     double a1 = mulf(negf(2.0), cs);
     double a2 = subf(1.0, alpha);
 
-    c->a1 = double2fixed(divf(a1, a0));
-    c->a2 = double2fixed(divf(a2, a0));
-    c->b0 = double2fixed(divf(b0, a0));
-    c->b1 = double2fixed(divf(b1, a0));
-    c->b2 = double2fixed(divf(b2, a0));
+    c->a1 = double2fixed_q(divf(a1, a0), 30);
+    c->a2 = double2fixed_q(divf(a2, a0), 30);
+    c->b0 = double2fixed_q(divf(b0, a0), 30);
+    c->b1 = double2fixed_q(divf(b1, a0), 30);
+    c->b2 = double2fixed_q(divf(b2, a0), 30);
+
 
     return 0;
 }

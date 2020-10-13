@@ -118,7 +118,7 @@ int get_fmt(header_p meta)
     else return 0;
 }
 
-int copy_wav(arg_p a, header_p meta)
+int read_wav(arg_p a, header_p meta)
 {
     FILE * in = fopen(a->input, "rb");
     FILE * out = fopen(a->output, "wb");
@@ -170,7 +170,6 @@ int copy_wav(arg_p a, header_p meta)
 }
 
 
-// TODO: fix num_samples
 int gen_wav(arg_p a, header_p meta)
 {
     FILE * out = fopen(a->output, "wb");
@@ -182,22 +181,41 @@ int gen_wav(arg_p a, header_p meta)
 
     size_t csize = 0;
     size_t ssize = 0;
+    size_t psize = 0;
+    size_t num_samples = (meta->sample_rate / 1000) * a->time;
+    size_t buff_size   = (num_samples * meta->block_align);
 
-    size_t num_samples = ((meta->sample_rate / 1000)) * a->time;
-    size_t size = ((num_samples * meta->block_align));
+    effect_control_get_sizes(&psize, &csize);
+    effect_process_get_sizes(&ssize);
+
+    printf("coefs:  %d\n", csize);
+    printf("params: %d\n", psize);
+    printf("states: %d\n", ssize);
+    printf("buff_size:   %d\n", buff_size);
 
 
-    void *buffer = malloc(size);
+    void *buffer = malloc(buff_size);
+    void *params = malloc(psize);
+    void *coeffs = malloc(csize);
+    void *states = malloc(ssize);
 
-    //effect_control_initialize(0, coeffs, 48000);
-    //effect_reset(0, states);
+    effect_control_initialize(params, coeffs, 48000);
+    effect_set_parameter(params, 0, 240);             // cutoff frequency
+    effect_set_parameter(params, 1, -6);              // gain
+    effect_set_parameter(params, 2, 0.5);             // Q
+    effect_set_parameter(params, 3, 48000);           // SR
+    effect_update_coeffs(params, coeffs);
+    effect_reset(coeffs, states);
 
     generator(buffer, num_samples, a->type, a);
-    //effect_process(coeffs, states, buffer, num_samples);
+    effect_process(coeffs, states, buffer, num_samples);
 
-    fwrite(buffer, size, 1, out);
+    fwrite(buffer, buff_size, 1, out);
 
     fclose(out);
     free(buffer);
+    free(params);
+    free(coeffs);
+    free(states);
     return 0;
 }
