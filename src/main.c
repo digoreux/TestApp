@@ -26,8 +26,6 @@ int main(int argc, char **argv)
     if (a->gen_opts) gen_wav(a, meta);
     
 
-    printf("add %lld\n", add_q63(INT64_MIN, -23));
-    printf("add %d", add_q31(INT32_MAX, 1));
 
     free(a);
     free(meta);

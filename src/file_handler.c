@@ -123,7 +123,7 @@ int copy_wav(arg_p a, header_p meta)
     FILE * in = fopen(a->input, "rb");
     FILE * out = fopen(a->output, "wb");
     read_header(in, meta);
-    print_header(meta);
+    //print_header(meta);
     write_header(out, meta);
 
     size_t csize = 0;
@@ -183,32 +183,21 @@ int gen_wav(arg_p a, header_p meta)
     size_t csize = 0;
     size_t ssize = 0;
 
-    size_t num_samples = (meta->sample_rate / 1000) * a->time;
-    size_t size = ((num_samples * meta->block_align));
+    size_t num_samples = ((meta->sample_rate / 1000)*2) * a->time;
+    size_t size = ((num_samples * meta->block_align) / 2);
 
-    effect_control_get_sizes(0, &csize);
-    effect_process_get_sizes(&ssize);
-
-    printf("coefs:  %d\n", csize);
-    printf("states: %d\n", ssize);
-    printf("size:   %d\n", size);
-    printf("nsmp:   %d\n", num_samples);
 
     void *buffer = malloc(size);
-    void *coeffs = malloc(csize);
-    void *states = malloc(ssize);
 
-    effect_control_initialize(0, coeffs, 48000);
-    effect_reset(0, states);
+    //effect_control_initialize(0, coeffs, 48000);
+    //effect_reset(0, states);
 
     generator(buffer, num_samples, a->type, a);
-    effect_process(coeffs, states, buffer, num_samples);
+    //effect_process(coeffs, states, buffer, num_samples);
 
     fwrite(buffer, size, 1, out);
 
     fclose(out);
     free(buffer);
-    free(coeffs);
-    free(states);
     return 0;
 }

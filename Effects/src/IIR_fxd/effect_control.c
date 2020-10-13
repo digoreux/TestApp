@@ -29,6 +29,7 @@ int32_t effect_control_get_sizes(
     return 0;
 }
 
+
 int32_t effect_control_initialize(
     void*       params,
     void*       coeffs,
@@ -53,6 +54,12 @@ int32_t effect_control_initialize(
     return 0;
 } 
 
+/****************************
+    id0: frequency
+    id1: gain
+    id2: Q
+    id3: sample rate
+*****************************/
 int32_t effect_set_parameter(
     void*       params,
     int32_t     id,
@@ -79,7 +86,6 @@ int32_t effect_update_coeffs(
     double cs = cos(omega);
     double alpha = divf(sn, mulf(2, p->Q));
 
-
     double b0 = divf(subf(1.0, cs), 2.0);
     double b1 = subf(1.0, cs);
     double b2 = divf(subf(1.0, cs), 2.0);
@@ -87,44 +93,11 @@ int32_t effect_update_coeffs(
     double a1 = mulf(negf(2.0), cs);
     double a2 = subf(1.0, alpha);
 
-
-    a1 = divf(a1, a0);
-    a2 = divf(a2, a0);
-    b0 = divf(b0, a0);
-    b1 = divf(b1, a0);
-    b2 = divf(b2, a0);
-
-
-    //printf("a0 %lf\n", a0);
-    //printf("a1 %lf\n", a1);
-    //printf("a2 %lf\n", a2);
-    //printf("b0 %lf\n", b0);
-    //printf("b1 %lf\n", b1);
-    //printf("b2 %lf\n\n", b2);
-
-    c->a1 = double2fixed(a1); 
-    c->a2 = double2fixed(a2); 
-    c->b0 = double2fixed(b0); 
-    c->b1 = double2fixed(b1); 
-    c->b2 = double2fixed(b2); 
-    
-    //c->a1 <<= 1;
-    //c->a2 <<= 1;
-    //c->b0 <<= 1;
-    //c->b1 <<= 1;
-    //c->b2 <<= 1;
-
-    //printf("a1 %ld\n", c->a1);
-    //printf("a2 %ld\n", c->a2);
-    //printf("b0 %ld\n", c->b0);
-    //printf("b1 %ld\n", c->b1);
-    //printf("b2 %ld\n\n", c->b2); 
-    //
-    //printf("a1 %lf\n", fixed2double(c->a1));
-    //printf("a2 %lf\n", fixed2double(c->a2));
-    //printf("b0 %lf\n", fixed2double(c->b0));
-    //printf("b1 %lf\n", fixed2double(c->b1));
-    //printf("b2 %lf\n", fixed2double(c->b2));
+    c->a1 = double2fixed(divf(a1, a0));
+    c->a2 = double2fixed(divf(a2, a0));
+    c->b0 = double2fixed(divf(b0, a0));
+    c->b1 = double2fixed(divf(b1, a0));
+    c->b2 = double2fixed(divf(b2, a0));
 
     return 0;
 }

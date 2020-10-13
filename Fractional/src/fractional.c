@@ -59,8 +59,9 @@ void test_fractional(void)
 
 q63 saturate(q63 r) 
 {
-    if (r > INT32_MAX) r = INT32_MAX;
-    if (r < INT32_MIN) r = INT32_MIN;
+    if (r > INT32_MAX) return INT32_MAX;
+    if (r < INT32_MIN) return INT32_MIN;
+
     return r;
 }
 
@@ -102,14 +103,16 @@ q31 abs_q31(q31 x)
 
 q31 add_q31(q31 x, q31 y)
 {   
-    q63 r = x + y;
+    q63 r = x;
+    r += y;
     r = saturate(r);
     return (q31)r;
 }
 
 q31 sub_q31(q31 x, q31 y)
 {   
-    q63 r = x + y;
+    q63 r = x;
+    r -= y;
     r = saturate(r);
     return (q31)r;
 }
@@ -146,7 +149,7 @@ q63 mac_q31(q31 x, q31 y, q63 z)
 
 q63 msub_q31(q31 x, q31 y, q63 z)
 {   
-    z = sub_q63(mul_q63(x, y), z);
+    z = sub_q63(z, mul_q63(x, y));
     return z;
 } 
 

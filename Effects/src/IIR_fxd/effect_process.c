@@ -1,7 +1,9 @@
 ﻿#include "effect_process.h"
 #include "effect_control.h"
 #include "fractional.h"
-typedef struct stereo {
+
+
+typedef struct stereo_s {
     q31 left;
     q31 right;
 } stereo_t;
@@ -57,62 +59,45 @@ int32_t effect_process(
     void*       audio,
     size_t      samples_count)
 {   
-    q63 lacc;
-    q63 racc;
+    q63 acc = 0;
     coeffs_t *c = (coeffs_t*)coeffs;
     states_t *s = (states_t*)states;
     stereo_t *a = (stereo_t*)audio;
 
     for (int i = 0; i < samples_count; i++)
     {   
-        lacc = 0;
-        s->x0.left = a[i].left;
-
-        lacc = add_q63(lacc, mul_q63(c->b0, s->x0.left));
-        lacc = add_q63(lacc, mul_q63(c->b1, s->x1.left));
-        lacc = add_q63(lacc, mul_q63(c->b2, s->x2.left));
-        lacc = sub_q63(lacc, mul_q63(c->a1, s->y1.left));
-        lacc = sub_q63(lacc, mul_q63(c->a2, s->y2.left));
-
-        //lacc = mac_q31(c->b0, s->x0.left, lacc);
-        //lacc = mac_q31(c->b1, s->x1.left, lacc);
-        //lacc = mac_q31(c->b2, s->x2.left, lacc);
-        //lacc = msub_q31(c->a1, s->y1.left, lacc); 
-        //lacc = msub_q31(c->a2, s->y2.left, lacc);
-
-        lacc >>= 30;
-        a[i].left = (q31)lacc;  
-
-        racc = 0;
+        s->x0.left  = a[i].left;
         s->x0.right = a[i].right;
 
-        racc = add_q63(racc, mul_q63(c->b0, s->x0.right));
-        racc = add_q63(racc, mul_q63(c->b1, s->x1.right));
-        racc = add_q63(racc, mul_q63(c->b2, s->x2.right));
-        racc = sub_q63(racc, mul_q63(c->a1, s->y1.right));
-        racc = sub_q63(racc, mul_q63(c->a2, s->y2.right));
+        acc = mac_q31(c->b0, s->x0.left, acc);
+        acc = mac_q31(c->b1, s->x1.left, acc);
+        acc = mac_q31(c->b2, s->x2.left, acc);
+        acc = msub_q31(c->a1, s->y1.left, acc); 
+        acc = msub_q31(c->a2, s->y2.left, acc);
 
-        //racc = mac_q31(c->b0, s->x0.right, racc);
-        //racc = mac_q31(c->b1, s->x1.right, racc);
-        //racc = mac_q31(c->b2, s->x2.right, racc);
-        //racc = msub_q31(c->a1, s->y1.right, racc);
-        //racc = msub_q31(c->a2, s->y2.right, racc);
-
-        racc >>= 30;
-        a[i].right = (q31)racc;
+        acc >>= 30;
+        a[i].left = (q31)acc;  
 
         s->x2.left = s->x1.left;
         s->x1.left = s->x0.left;
         s->y2.left = s->y1.left;
-        s->y1.left = lacc;
+        s->y1.left = acc;
 
+        acc = mac_q31(c->b0, s->x0.right, acc);
+        acc = mac_q31(c->b1, s->x1.right, acc);
+        acc = mac_q31(c->b2, s->x2.right, acc);
+        acc = msub_q31(c->a1, s->y1.right, acc);
+        acc = msub_q31(c->a2, s->y2.right, acc);
+
+        acc >>= 30;
+        a[i].right = (q31)acc;  
+        
         s->x2.right = s->x1.right;
         s->x1.right = s->x0.right;
         s->y2.right = s->y1.right;
-        s->y1.right = racc;
+        s->y1.right = acc;
+
     }
-   
-   
     return 0;
 }
 
