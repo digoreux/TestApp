@@ -95,12 +95,12 @@ int32_t effect_update_coeffs(
     b2 = divf(b2, a0);
 
 
-    printf("a0 %lf\n", a0);
-    printf("a1 %lf\n", a1);
-    printf("a2 %lf\n", a2);
-    printf("b0 %lf\n", b0);
-    printf("b1 %lf\n", b1);
-    printf("b2 %lf\n\n", b2);
+    //printf("a0 %lf\n", a0);
+    //printf("a1 %lf\n", a1);
+    //printf("a2 %lf\n", a2);
+    //printf("b0 %lf\n", b0);
+    //printf("b1 %lf\n", b1);
+    //printf("b2 %lf\n\n", b2);
 
     c->a1 = double2fixed(a1); 
     c->a2 = double2fixed(a2); 
@@ -114,17 +114,17 @@ int32_t effect_update_coeffs(
     //c->b1 <<= 1;
     //c->b2 <<= 1;
 
-    printf("a1 %ld\n", c->a1);
-    printf("a2 %ld\n", c->a2);
-    printf("b0 %ld\n", c->b0);
-    printf("b1 %ld\n", c->b1);
-    printf("b2 %ld\n\n", c->b2); 
-    
-    printf("a1 %lf\n", fixed2double(c->a1));
-    printf("a2 %lf\n", fixed2double(c->a2));
-    printf("b0 %lf\n", fixed2double(c->b0));
-    printf("b1 %lf\n", fixed2double(c->b1));
-    printf("b2 %lf\n", fixed2double(c->b2));
+    //printf("a1 %ld\n", c->a1);
+    //printf("a2 %ld\n", c->a2);
+    //printf("b0 %ld\n", c->b0);
+    //printf("b1 %ld\n", c->b1);
+    //printf("b2 %ld\n\n", c->b2); 
+    //
+    //printf("a1 %lf\n", fixed2double(c->a1));
+    //printf("a2 %lf\n", fixed2double(c->a2));
+    //printf("b0 %lf\n", fixed2double(c->b0));
+    //printf("b1 %lf\n", fixed2double(c->b1));
+    //printf("b2 %lf\n", fixed2double(c->b2));
 
     return 0;
 }

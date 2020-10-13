@@ -12,6 +12,9 @@
 #define KF2 1.882353
 #define K0  0.0759776172978545212494579946726
 
+#define SIGN_Q31            (-1<<31)
+#define SIGN_Q63            (-1ll<<63)
+
 
 void bin(unsigned n)
 {
@@ -54,8 +57,8 @@ void test_fractional(void)
     printf("Reference: %f\n\n", b / c);
 }
 
-q63 saturate(q63 r) {
-
+q63 saturate(q63 r) 
+{
     if (r > INT32_MAX) r = INT32_MAX;
     if (r < INT32_MIN) r = INT32_MIN;
     return r;
@@ -64,7 +67,7 @@ q63 saturate(q63 r) {
 q31 left_shift(q31 x, q31 n)
 {
     q31 r = x << n;
-    if(x > 0 && r < 0) r =  INT32_MAX;
+    if(x > 0 && r < 0) r = INT32_MAX;
     if(x < 0 && r > 0) r = INT32_MIN;
     return r;
 }

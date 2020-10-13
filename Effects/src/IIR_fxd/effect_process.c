@@ -68,38 +68,48 @@ int32_t effect_process(
         lacc = 0;
         s->x0.left = a[i].left;
 
-        lacc = mac_q31(c->b0, s->x0.left, lacc);
-        lacc = mac_q31(c->b1, s->x1.left, lacc);
-        lacc = mac_q31(c->b2, s->x2.left, lacc);
-        lacc = msub_q31(c->a1, s->y1.left, lacc); 
-        lacc = msub_q31(c->a2, s->y2.left, lacc);
-        s->x2.left = s->x1.left;
-        s->x1.left = s->x0.left;
+        lacc = add_q63(lacc, mul_q63(c->b0, s->x0.left));
+        lacc = add_q63(lacc, mul_q63(c->b1, s->x1.left));
+        lacc = add_q63(lacc, mul_q63(c->b2, s->x2.left));
+        lacc = sub_q63(lacc, mul_q63(c->a1, s->y1.left));
+        lacc = sub_q63(lacc, mul_q63(c->a2, s->y2.left));
 
-        s->y2.left = s->y1.left;
-        s->y1.left = lacc;
+        //lacc = mac_q31(c->b0, s->x0.left, lacc);
+        //lacc = mac_q31(c->b1, s->x1.left, lacc);
+        //lacc = mac_q31(c->b2, s->x2.left, lacc);
+        //lacc = msub_q31(c->a1, s->y1.left, lacc); 
+        //lacc = msub_q31(c->a2, s->y2.left, lacc);
 
-        a[i].left = lacc;  
-
-
-
+        lacc >>= 30;
+        a[i].left = (q31)lacc;  
 
         racc = 0;
         s->x0.right = a[i].right;
 
-        racc = mac_q31(c->b0, s->x0.right, racc);
-        racc = mac_q31(c->b1, s->x1.right, racc);
-        racc = mac_q31(c->b2, s->x2.right, racc);
-        racc = msub_q31(c->a1, s->y1.right, racc);
-        racc = msub_q31(c->a2, s->y2.right, racc);
+        racc = add_q63(racc, mul_q63(c->b0, s->x0.right));
+        racc = add_q63(racc, mul_q63(c->b1, s->x1.right));
+        racc = add_q63(racc, mul_q63(c->b2, s->x2.right));
+        racc = sub_q63(racc, mul_q63(c->a1, s->y1.right));
+        racc = sub_q63(racc, mul_q63(c->a2, s->y2.right));
+
+        //racc = mac_q31(c->b0, s->x0.right, racc);
+        //racc = mac_q31(c->b1, s->x1.right, racc);
+        //racc = mac_q31(c->b2, s->x2.right, racc);
+        //racc = msub_q31(c->a1, s->y1.right, racc);
+        //racc = msub_q31(c->a2, s->y2.right, racc);
+
+        racc >>= 30;
+        a[i].right = (q31)racc;
+
+        s->x2.left = s->x1.left;
+        s->x1.left = s->x0.left;
+        s->y2.left = s->y1.left;
+        s->y1.left = lacc;
 
         s->x2.right = s->x1.right;
         s->x1.right = s->x0.right;
-
         s->y2.right = s->y1.right;
         s->y1.right = racc;
-         
-        a[i].right = racc;
     }
    
    
