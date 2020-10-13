@@ -20,10 +20,10 @@ typedef struct args_list {
     float end_freq;
     float st_amp;
     float end_amp;
+    float sample_rate;
+    float period;
 
-    size_t sample_rate;
     size_t time;
-    size_t period;
 } args;
 
 typedef struct args_list * arg_p;

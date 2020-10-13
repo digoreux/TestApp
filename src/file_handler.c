@@ -47,12 +47,12 @@ int write_header(FILE * out, header_p meta)
     return 0;
 }
 
-int create_header(header_p meta, size_t sampleRate, size_t length)
+int create_header(header_p meta, float sampleRate, size_t length)
 {   
     uint32_t subchunk1_size = 16;
     uint16_t audio_format = 3;
     uint16_t num_channels = 2;
-    uint32_t sample_rate = sampleRate;
+    uint32_t sample_rate = (uint32_t)sampleRate;
     uint16_t block_align = 8;
     uint32_t byte_rate = sample_rate * block_align;
     uint16_t bits_per_sample = 32;
@@ -183,8 +183,8 @@ int gen_wav(arg_p a, header_p meta)
     size_t csize = 0;
     size_t ssize = 0;
 
-    size_t num_samples = ((meta->sample_rate / 1000)*2) * a->time;
-    size_t size = ((num_samples * meta->block_align) / 2);
+    size_t num_samples = ((meta->sample_rate / 1000)) * a->time;
+    size_t size = ((num_samples * meta->block_align));
 
 
     void *buffer = malloc(size);

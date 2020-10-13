@@ -1,40 +1,59 @@
 #include "generator.h"
 
+typedef struct stereo_s {
+    float left;
+    float right;
+} stereo_t;
 
 int gen_white_noise(void * buffer, size_t sample_count, float dbamp)
 {   
-    float amp = pow(10.0, dbamp / 20.0);
-    for (size_t i = 0; i < sample_count; i++) {
-        ((float*)buffer)[i] = amp * ((float)rand() / (float)(RAND_MAX) * 2 - 1);
+    stereo_t * audio = (stereo_t*)buffer;
+    float amp = powf(10.0f, dbamp / 20.0f);
+
+    for (size_t i = 0; i < sample_count; i++) 
+    {
+        audio[i].left  = amp * ((float)rand() / (float)(RAND_MAX) * 2 - 1);
+        audio[i].right = amp * ((float)rand() / (float)(RAND_MAX) * 2 - 1);
     }
     return 0;
 }
 
 int gen_delta(void * buffer, size_t sample_count) 
 { 
-    ((float *)buffer)[0] = 1.0;
-    ((float *)buffer)[1] = 1.0;
-    for (size_t i = 2; i < sample_count; i++) {
-        ((float *)buffer)[i] = 0;
+    stereo_t * audio = (stereo_t*)buffer;
+    audio[0].left  = 1.0;
+    audio[0].right = 1.0;
+
+    for (size_t i = 2; i < sample_count; i++) 
+    {
+        audio[i].left  = 0;
+        audio[i].right = 0;
     }
     return 0;
 }
 
 int gen_step(void * buffer, size_t sample_count)
 {
-    for (size_t i = 0; i < sample_count; i++) {
-        ((float *)buffer)[i] = 1.0;
+    stereo_t * audio = (stereo_t*)buffer;
+    for (size_t i = 0; i < sample_count; i++)
+    {
+        audio[i].left  = 1.0;
+        audio[i].right = 1.0;
     }
     return 0;
 }
 
-int gen_square(void * buffer, size_t sample_count, size_t period, float dbamp)
+int gen_square(void * buffer, size_t sample_count, float period, float dbamp)
 {
+    stereo_t * audio = (stereo_t*)buffer;
+    float amp = powf(10.0f, dbamp / 20.0f);
     size_t count = 0;
-    float k = 1.0;
-    float amp = pow(10.0, dbamp / 20.0);
-    for (size_t i = 0; i < sample_count; i++) {
-        ((float *)buffer)[i] = 1.0*k;
+    float k = 1.0f;
+
+    for (size_t i = 0; i < sample_count; i++) 
+    {
+        audio[i].left  = amp * 1.0f * k;
+        audio[i].right = amp * 1.0f * k;
         count++;
         if (count == period) {
             count = 0;
@@ -46,9 +65,13 @@ int gen_square(void * buffer, size_t sample_count, size_t period, float dbamp)
 
 int gen_sine(void * buffer, size_t sample_count, float freq, float dbamp, float sample_rate)
 {
-    float amp = pow(10.0, dbamp / 20.0);
-    for (size_t i = 0; i < sample_count; i++) {
-        ((float *)buffer)[i] = amp *  (sinf(M_PI * (float)i * freq / sample_rate));
+    stereo_t * audio = (stereo_t*)buffer;
+    float amp = powf(10.0f, dbamp / 20.0f);
+
+    for (size_t i = 0; i < sample_count; i++)
+    {
+        audio[i].left  = amp * (sinf(2.0f * (float)M_PI * (float)i * freq / sample_rate));
+        audio[i].right = amp * (sinf(2.0f * (float)M_PI * (float)i * freq / sample_rate));
     }
     return 0;
 }
@@ -57,19 +80,21 @@ int gen_sine(void * buffer, size_t sample_count, float freq, float dbamp, float 
 int gen_chirp_log(void * buffer, size_t sample_count, float freq_start,
     float freq_end, float dbamp, float sample_rate)
 {   
-    float amp = pow(10.0, dbamp / 20.0);
-    freq_start = 2.0 * M_PI * freq_start / sample_rate;
-    freq_end = 2.0 * M_PI * freq_end / sample_rate;
-    float phi = 0;
+    stereo_t * audio = (stereo_t*)buffer;
+    float amp  = powf(10.0f, dbamp / 20.0f);
     float freq = freq_start;
+    float phi  = 0.0f;
+    freq_start = 2.0f * (float)M_PI * freq_start / sample_rate;
+    freq_end   = 2.0f * (float)M_PI * freq_end   / sample_rate;
 
-    for (size_t i = 0; i < sample_count; i += 2) {
+    for (size_t i = 0; i < sample_count; i ++) 
+    {
+        audio[i].left  = amp * sinf(phi);
+        audio[i].right = amp * sinf(phi);
 
-        ((float *)buffer)[i] = amp * sinf(phi);
-        ((float *)buffer)[i + 1] = amp * sinf(phi);
-        freq = powf(10.0, log10f(freq_start) + log10f(freq_end)
-            - log10f(freq_start) * ((float)i / (float)sample_count));
-        phi = fmodf(phi + freq, 2.0 * M_PI);
+        freq = powf(10.0f, log10f(freq_start) + log10f(freq_end)
+             - log10f(freq_start) * ((float)i / (float)sample_count));
+        phi  = fmodf(phi + freq, 2.0f * (float)M_PI);
     }
 
     return 0;
@@ -78,18 +103,20 @@ int gen_chirp_log(void * buffer, size_t sample_count, float freq_start,
 int gen_chirp_lin(void * buffer, size_t sample_count, float freq_start,
     float freq_end, float dbamp, float sample_rate)
 {   
-    float amp = pow(10.0, dbamp / 20.0);
-    freq_start = 2.0 * M_PI * freq_start / sample_rate;
-    freq_end = 2.0 * M_PI * freq_end / sample_rate;
-    float phi = 0;
+    stereo_t * audio = (stereo_t*)buffer;
+    float amp  = powf(10.0f, dbamp / 20.0f);
     float freq = freq_start;
+    float phi  = 0.0f;
+    freq_start = 2.0f * (float)M_PI * freq_start / sample_rate;
+    freq_end   = 2.0f * (float)M_PI * freq_end   / sample_rate;
 
-    for (size_t i = 0; i < sample_count; i+=2) {
+    for (size_t i = 0; i < sample_count; i++) 
+    {
+        audio[i].left  = amp * sinf(phi);
+        audio[i].right = amp * sinf(phi);
 
-        ((float *)buffer)[i] = amp * sinf(phi);
-        ((float *)buffer)[i+1] = amp * sinf(phi);
         freq = (freq_end - freq_start) * ((float)i / (float)sample_count) + freq_start;
-        phi = fmodf(phi + freq, 2.0 * M_PI);
+        phi  = fmodf(phi + freq, 2.0f * (float)M_PI);
     }
 
     return 0;
@@ -99,17 +126,18 @@ int gen_chirp_lin(void * buffer, size_t sample_count, float freq_start,
 int gen_level_sweep(void * buffer, size_t sample_count, float freq,
     float amp_start, float amp_end, float sample_rate) 
 {
-
-    float amp_start_c = (float)pow(10.0, amp_start / 20.0);
-    float amp_end_c = (float)pow(10.0, amp_end / 20.0);
+    stereo_t * audio = (stereo_t*)buffer;
+    float amp_start_c = (float)powf(10.0f, amp_start / 20.0f);
+    float amp_end_c   = (float)powf(10.0f, amp_end   / 20.0f);
 
     float a_delta = (amp_end_c - amp_start_c) / sample_count;
 
-    for (size_t i = 0; i < sample_count; i++) {
-        ((float *)buffer)[i] = amp_start_c * sinf(M_PI * i * freq / sample_rate);
+    for (size_t i = 0; i < sample_count; i++)
+    {
+        audio[i].left  = amp_start_c * sinf(2.0f * (float)M_PI * (float)i * freq / sample_rate);
+        audio[i].right = amp_start_c * sinf(2.0f * (float)M_PI * (float)i * freq / sample_rate);
         amp_start_c += a_delta;
     }
-
     return 0;
 }
 
@@ -122,7 +150,7 @@ void generator(void * buffer, size_t sample_count, char * type, arg_p a)
     if (!strcmp(type, "step")) {
         gen_step(buffer, sample_count);
     }
-    if (!strcmp(type, "white_noise")) {
+    if (!strcmp(type, "noise")) {
         gen_white_noise(buffer, sample_count, a->dbamp);
     }
     if (!strcmp(type, "square")) {

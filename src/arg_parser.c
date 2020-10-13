@@ -21,7 +21,7 @@ void get_args(int argc, char ** argv, arg_p a) {
     { 
         char * token = strtok(a->gen_opts, ",:");
 
-        a->sample_rate = atoi(token);
+        a->sample_rate = (float)atof(token);
         token = strtok(NULL, ",:");
         a->time = atoi(token);
         token = strtok(NULL, ",:");
@@ -29,34 +29,33 @@ void get_args(int argc, char ** argv, arg_p a) {
         token = strtok(NULL, ",:");
 
         if (!strcmp(a->type, "white_noise")) {
-            a->dbamp = atof(token);
+            a->dbamp = (float)atof(token);
         }
         if (!strcmp(a->type, "sine")) {
-            a->freq = atof(token);
+            a->freq = (float)atof(token);
             token = strtok(NULL, ",:");
-            a->dbamp = atof(token);
+            a->dbamp = (float)atof(token);
         }
         if (!strcmp(a->type, "square")) {
-            a->period = atof(token);
+            a->period = (float)atof(token);
             token = strtok(NULL, ",:");
-            a->dbamp = atof(token);
+            a->dbamp = (float)atof(token);
         }
         if (!strcmp(a->type, "chirp_lin") || !strcmp(a->type, "chirp_log")) {
-            a->st_freq = atof(token);
+            a->st_freq = (float)atof(token);
             token = strtok(NULL, ",:");
-            a->end_freq = atof(token);
+            a->end_freq = (float)atof(token);
             token = strtok(NULL, ",:");
-            a->dbamp = atof(token);
+            a->dbamp = (float)atof(token);
         }
 
         if (!strcmp(a->type, "sweep")) {
-            a->freq = atof(token);
+            a->freq = (float)atof(token);
             token = strtok(NULL, ",:");
-            a->st_amp = atof(token);
+            a->st_amp = (float)atof(token);
             token = strtok(NULL, ",:");
-            a->end_amp = atof(token);
+            a->end_amp = (float)atof(token);
         }
     }
-
 
 }

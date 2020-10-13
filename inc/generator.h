@@ -15,7 +15,7 @@ int gen_delta(void * buffer, size_t sample_count);
 
 int gen_step(void * buffer, size_t sample_count);
 
-int gen_square(void * buffer, size_t sample_count, size_t period, float amp);
+int gen_square(void * buffer, size_t sample_count, float period, float amp);
 
 int gen_sine(void * buffer, size_t sample_count, float freq, float amp, float sample_rate);
 
