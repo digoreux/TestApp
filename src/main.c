@@ -24,7 +24,6 @@ int main(int argc, char **argv)
     if (a->input)   read_wav(a, meta);
     if (a->gen_opts) gen_wav(a, meta);
     
-
     free(a);
     free(meta);
     return 0;

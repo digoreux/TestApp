@@ -80,24 +80,24 @@ int32_t effect_update_coeffs(
     coeffs_t * c = (coeffs_t*)coeffs;
     params_t * p = (params_t*)params;
 
-    double A = fpow(10, divf(p->gain, 40));
-    double omega = divf(mulf(mulf(2, M_PI), p->freq), p->SR);
+    double A = pow(10, p->gain / 40);
+    double omega = 2 * M_PI * p->freq / p->SR;
     double sn = sin(omega);
     double cs = cos(omega);
-    double alpha = divf(sn, mulf(2, p->Q));
+    double alpha = sn / (2 * p->Q);
 
-    double b0 = divf(subf(1.0, cs), 2.0);
-    double b1 = subf(1.0, cs);
-    double b2 = divf(subf(1.0, cs), 2.0);
-    double a0 = addf(1.0, alpha);
-    double a1 = mulf(negf(2.0), cs);
-    double a2 = subf(1.0, alpha);
+    double b0 = (1.0 - cs) / 2.0;
+    double b1 =  1.0 - cs;
+    double b2 = (1.0 - cs) / 2.0;
+    double a0 =  1.0 + alpha;
+    double a1 = -2.0 * cs;
+    double a2 =  1.0 - alpha;
 
-    c->a1 = double2fixed_q(divf(a1, a0), 30);
-    c->a2 = double2fixed_q(divf(a2, a0), 30);
-    c->b0 = double2fixed_q(divf(b0, a0), 30);
-    c->b1 = double2fixed_q(divf(b1, a0), 30);
-    c->b2 = double2fixed_q(divf(b2, a0), 30);
+    c->a1 = double2fixed_q((a1 / a0), 30);
+    c->a2 = double2fixed_q((a2 / a0), 30);
+    c->b0 = double2fixed_q((b0 / a0), 30);
+    c->b1 = double2fixed_q((b1 / a0), 30);
+    c->b2 = double2fixed_q((b2 / a0), 30);
 
 
     return 0;

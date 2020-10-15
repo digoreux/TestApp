@@ -20,12 +20,14 @@ void bin(unsigned n)
 {
     unsigned i;
     int count = 0;
-    for (i = 1 << 7; i > 0; i = i / 2)
+    for (i = 1 << 31; i > 0; i = i / 2)
     {
         (n & i) ? printf("1") : printf("0");
         count++;
-        if (count == 4) printf(" ");
-
+        if (count == 16) {
+            printf(" ");
+            count = 0;
+        }
     }
 
 }

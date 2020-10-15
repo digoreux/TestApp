@@ -57,47 +57,44 @@ int32_t effect_process(
     void*       audio,
     size_t      samples_count)
 {   
-    flt lacc;
-    flt racc;
+    flt acc = 0;
     coeffs_t *c = (coeffs_t*)coeffs;
     states_t *s = (states_t*)states;
     stereo_t *a = (stereo_t*)audio;
 
-    for (int i = 0; i < samples_count; i++)
+    for (size_t i = 0; i < samples_count; i++)
     {   
-        lacc = 0;
-        s->x0.left = a[i].left;
+        s->x0.left  = a[i].left;
+        s->x0.right = a[i].right;
 
-        lacc = macf(c->b0, s->x0.left, lacc);
-        lacc = macf(c->b1, s->x1.left, lacc);
-        lacc = macf(c->b2, s->x2.left, lacc);
-        lacc = msubf(c->a1, s->y1.left, lacc); 
-        lacc = msubf(c->a2, s->y2.left, lacc);
+        acc = 0;
+        acc = macf(c->b0, s->x0.left, acc);
+        acc = macf(c->b1, s->x1.left, acc);
+        acc = macf(c->b2, s->x2.left, acc);
+        acc = msubf(c->a1, s->y1.left, acc);
+        acc = msubf(c->a2, s->y2.left, acc);
+
+        a[i].left = acc;
 
         s->x2.left = s->x1.left;
         s->x1.left = s->x0.left;
-
         s->y2.left = s->y1.left;
-        s->y1.left = lacc;
-         
-        a[i].left = lacc;  
+        s->y1.left = acc;
 
-        racc = 0;
-        s->x0.right = a[i].right;
-
-        racc = macf(c->b0, s->x0.right, racc);
-        racc = macf(c->b1, s->x1.right, racc);
-        racc = macf(c->b2, s->x2.right, racc);
-        racc = msubf(c->a1, s->y1.right, racc);
-        racc = msubf(c->a2, s->y2.right, racc);
+        acc = 0;
+        acc = macf(c->b0, s->x0.right, acc);
+        acc = macf(c->b1, s->x1.right, acc);
+        acc = macf(c->b2, s->x2.right, acc);
+        acc = msubf(c->a1, s->y1.right, acc);
+        acc = msubf(c->a2, s->y2.right, acc);
 
         s->x2.right = s->x1.right;
         s->x1.right = s->x0.right;
-
         s->y2.right = s->y1.right;
-        s->y1.right = racc;
-         
-        a[i].right = racc;
+        s->y1.right = acc;
+
+        a[i].right = acc;
+
     }
    
    

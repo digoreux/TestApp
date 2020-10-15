@@ -147,9 +147,9 @@ int read_wav(arg_p a, header_p meta)
     void *states = malloc(ssize);
 
     effect_control_initialize(params, coeffs, 48000);
-    effect_set_parameter(params, 0, 240);              // cutoff frequency
+    effect_set_parameter(params, 0, 5000);              // cutoff frequency
     effect_set_parameter(params, 1, -6);              // gain
-    effect_set_parameter(params, 2, 0.5);             // Q
+    effect_set_parameter(params, 2, 1);             // Q
     effect_set_parameter(params, 3, 48000);           // SR
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);

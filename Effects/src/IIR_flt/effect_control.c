@@ -73,26 +73,30 @@ int32_t effect_update_coeffs(
     coeffs_t * c = (coeffs_t*)coeffs;
     params_t * p = (params_t*)params;
 
-    double A = fpow(10, divf(p->gain, 40));
-    double omega = divf(mulf(mulf(2, M_PI), p->freq), p->SR);
+    double A = pow(10, p->gain / 40);
+    double omega = 2 * M_PI * p->freq / p->SR;
     double sn = sin(omega);
     double cs = cos(omega);
-    double alpha = divf(sn, mulf(2, p->Q));
+    double alpha = sn / (2 * p->Q);
 
+    double b0 = (1.0 - cs) / 2.0;
+    double b1 =  1.0 - cs;
+    double b2 = (1.0 - cs) / 2.0;
+    double a0 =  1.0 + alpha;
+    double a1 = -2.0 * cs;
+    double a2 =  1.0 - alpha;
 
-    c->b0 = divf(subf(1.0, cs), 2.0);
-    c->b1 = subf(1.0, cs);
-    c->b2 = divf(subf(1.0, cs), 2.0);
-    c->a0 = addf(1.0, alpha);
-    c->a1 = mulf(negf(2.0), cs);
-    c->a2 = subf(1.0, alpha);
+    c->a1 = (float)(a1 / a0);
+    c->a2 = (float)(a2 / a0);
+    c->b0 = (float)(b0 / a0);
+    c->b1 = (float)(b1 / a0);
+    c->b2 = (float)(b2 / a0);
 
-    c->a1 = divf(c->a1, c->a0);
-    c->a2 = divf(c->a2, c->a0);
-    c->b0 = divf(c->b0, c->a0);
-    c->b1 = divf(c->b1, c->a0);
-    c->b2 = divf(c->b2, c->a0);
-
+    //printf("a1: %f\n", c->a1);
+    //printf("a2: %f\n", c->a2);
+    //printf("b0: %f\n", c->b0);
+    //printf("b1: %f\n", c->b1);
+    //printf("b2: %f\n", c->b2);
 
     return 0;
 }
