@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,13 +16,21 @@
 
 int main(int argc, char **argv) 
 {
-    arg_p a       = (arg_p)malloc(sizeof(args));
+    arg_p a       = (arg_p)malloc(sizeof(args_t));
     header_p meta = (header_p)malloc(sizeof(header));
 
     get_args(argc, argv, a);
 
     if (a->input)   read_wav(a, meta);
     if (a->gen_opts) gen_wav(a, meta);
+
+    //test_fractional();
+
+    //filter_params_t * p = (filter_params_t*)a->filter_params;
+    //printf("freq: %f\n", p->frequency);
+    //printf("amp: %f\n", p->amp);
+    //printf("Q: %f\n", p->Q);
+    //printf("SR: %f\n", p->SR);
     
     free(a);
     free(meta);

@@ -9,6 +9,7 @@
 #include "effect_process.h"
 #define M_PI 3.14159265358979323846
 
+
 int gen_white_noise(void * buffer, size_t sample_count, float amp);
 
 int gen_delta(void * buffer, size_t sample_count);

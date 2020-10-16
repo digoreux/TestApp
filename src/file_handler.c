@@ -120,7 +120,7 @@ int get_fmt(header_p meta)
 
 int read_wav(arg_p a, header_p meta)
 {
-    FILE * in = fopen(a->input, "rb");
+    FILE * in  = fopen(a->input, "rb");
     FILE * out = fopen(a->output, "wb");
     read_header(in, meta);
     //print_header(meta);
@@ -147,9 +147,9 @@ int read_wav(arg_p a, header_p meta)
     void *states = malloc(ssize);
 
     effect_control_initialize(params, coeffs, 48000);
-    effect_set_parameter(params, 0, 5000);              // cutoff frequency
+    effect_set_parameter(params, 0, 5000);            // cutoff frequency
     effect_set_parameter(params, 1, -6);              // gain
-    effect_set_parameter(params, 2, 1);             // Q
+    effect_set_parameter(params, 2, 0.5);               // Q
     effect_set_parameter(params, 3, 48000);           // SR
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);

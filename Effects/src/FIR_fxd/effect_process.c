@@ -60,6 +60,9 @@ int32_t effect_process(
             racc = mac_q31(st->cbuffer[index0].right, ((q31*)coeffs)[j], racc);
         }
 
+        lacc = left_shift_q63(lacc, 4);     // coeffs in Q5.26   L  + M  + log2(NTAPS)
+        racc = left_shift_q63(racc, 4);     // states in Q1.31   26 + 31 + 7 = 64
+
         au[i].left  = gethigh(lacc);
         au[i].right = gethigh(racc);
     }

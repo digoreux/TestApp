@@ -4,6 +4,7 @@
 
 #define NTAPS 128
 
+// coeffs in Q5.26
 extern int fir_fxd_coeffs[128];
 
 int32_t effect_control_get_sizes(

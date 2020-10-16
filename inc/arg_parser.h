@@ -4,12 +4,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "effect_process.h"
 
-typedef struct args_list {
+typedef struct args_s {
     char *input;
     char *output;
     char *gen_opts;
     char *type;
+    char *filter_params;
 
     float gaindb;
     float gain_value;
@@ -24,9 +26,16 @@ typedef struct args_list {
     float period;
 
     size_t time;
-} args;
+} args_t;
 
-typedef struct args_list * arg_p;
+typedef struct filter_params_s {
+    float frequency;
+    float amp;
+    float Q;
+    float SR;
+} filter_params_t;
+
+typedef struct args_s * arg_p;
 
 void get_args(int argc, char ** argv, arg_p a);
 

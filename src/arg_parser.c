@@ -5,6 +5,7 @@ void get_args(int argc, char ** argv, arg_p a) {
     a->input = NULL;
     a->output = NULL;
     a->gen_opts = NULL;
+    a->filter_params = NULL;
 
     for (int i = 1; i < argc; i++)
     {   
@@ -14,9 +15,26 @@ void get_args(int argc, char ** argv, arg_p a) {
             a->output = argv[++i];
         if (!strcmp(argv[i], "--gain"))
             a->gain_value = (float)atof(argv[++i]);
+        if (!strcmp(argv[i], "--iir"))
+            a->filter_params = argv[++i];
         if (!strcmp(argv[i], "--generator"))
             a->gen_opts = argv[++i];
     }
+    //if (a->filter_params != NULL) {
+    //    filter_params_t * p = (filter_params_t *)a->filter_params;
+    //    char * token = strtok(a->filter_params, ",");
+    //    //printf("params: %s\n", a->filter_params);
+    //    p->frequency = (float)atof(token);
+    //    token = strtok(NULL, ",");
+    //    printf("token: %s\n    ", token);
+    //    p->amp = atof(token);
+    //    token = strtok(NULL, ",");
+    //    printf("token: %s\n", token);
+    //    p->Q = atof(token);
+    //    token = strtok(NULL, ",");
+    //    printf("token: %s\n", token);
+    //    p->SR = atof(token);
+    //}
     if (a->gen_opts != NULL)
     { 
         char * token = strtok(a->gen_opts, ",:");

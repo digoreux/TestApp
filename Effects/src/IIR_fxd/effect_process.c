@@ -2,7 +2,7 @@
 #include "effect_control.h"
 #include "fractional.h"
 
-#define MASK ((1u << 30) - 1)
+#define MASK ((1u << 31) - 1)
 
 typedef struct stereo_s {
     q31 left;
@@ -15,6 +15,7 @@ typedef struct states_s {
    stereo_t x2;
    stereo_t y1;
    stereo_t y2;
+   stereo_t error;
 } states_t;
 
 typedef struct coeffs_s {
@@ -70,36 +71,40 @@ int32_t effect_process(
         s->x0.left  = a[i].left;
         s->x0.right = a[i].right;
 
-        acc = add_q63(acc, error);
+        acc = 0;
+        acc = add_q63(acc, s->error.left);
         acc = mac_q31(c->b0, s->x0.left, acc);
         acc = mac_q31(c->b1, s->x1.left, acc);
         acc = mac_q31(c->b2, s->x2.left, acc);
         acc = msub_q31(c->a1, s->y1.left, acc); 
         acc = msub_q31(c->a2, s->y2.left, acc);
 
-        error = (q31)(acc & MASK);
-        acc >>= 30; 
-        a[i].left = (q31)acc;  
+        s->error.left = getlow(acc);
+        acc = left_shift_q63(acc, 1);           // compensate Q30 coeffs
+        a[i].left = gethigh(acc);  
+
 
         s->x2.left = s->x1.left;
         s->x1.left = s->x0.left;
         s->y2.left = s->y1.left;
-        s->y1.left = acc;
+        s->y1.left = gethigh(acc);
 
         acc = 0;
+        acc = add_q63(acc, s->error.right);
         acc = mac_q31(c->b0, s->x0.right, acc);
         acc = mac_q31(c->b1, s->x1.right, acc);
         acc = mac_q31(c->b2, s->x2.right, acc);
         acc = msub_q31(c->a1, s->y1.right, acc);
         acc = msub_q31(c->a2, s->y2.right, acc);
 
-        acc >>= 30;
-        a[i].right = (q31)acc;  
+        s->error.right = getlow(acc);
+        acc = left_shift_q63(acc, 1);           // compensate Q30 coeffs
+        a[i].right = gethigh(acc);  
 
         s->x2.right = s->x1.right;
         s->x1.right = s->x0.right;
         s->y2.right = s->y1.right;
-        s->y1.right = acc;
+        s->y1.right = gethigh(acc);
 
     }
     return 0;
