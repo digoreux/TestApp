@@ -36,51 +36,68 @@ void test_fractional(void)
 
     q31 max = INT32_MAX;
     q31 min = INT32_MIN;
-    printf("neg(MAX) = %d \n", neg_q31(max));
-    printf("neg(MIN) =  %d \n", neg_q31(min));
-    printf("--------------------------------\n");
-    printf("abs(MAX) = %d \n", abs_q31(max));
-    printf("abs(MIN) = %d  \n", abs_q31(min));
-    printf("--------------------------------\n");
-    printf("lshift(1, 31)  =  %d \n", left_shift_q31(1, 31));
-    printf("lshift(-1, 31) = %d \n", left_shift_q31(-1, 31));
-    printf("--------------------------------\n");
-    printf("add(MAX, 10)  =  %d\n", add_q31(max, 10));
-    printf("add(MIN, -10) = %d\n", add_q31(min, -10));
-    printf("--------------------------------\n");   
-    printf("sub(MAX, -10)  =  %d\n", sub_q31(max, -10));
-    printf("sub(MIN, 10)   = %d\n", sub_q31(min, 10));
-    printf("--------------------------------\n");
-    printf("mul(MIN, MIN) =  %d\n", mul_q31(min, min));
-    printf("--------------------------------\n");
-    printf("div(MIN, MIN) =  %d\n", div_q31(min, min));
-    printf("div(MIN, MAX) = %d\n", div_q31(min, max));
-    printf("div(MAX, MAX) =  %d\n", div_q31(max, max));
-    printf("div(MAX, MAX) =  %f\n", fixed2float_q31(div_q31(max, max)));
-    printf("--------------------------------\n");
 
-    flt x = -0.43f, y = 0.3464f;
-    flt b = 0.23f, c = 0.6f;
+    // printf("\n");
+    // printf("neg(MAX) = %d  \n", neg_q31(max));
+    // printf("neg(MIN) =  %d \n", neg_q31(min));
+    // printf("----------------------\n");
+    // printf("abs(MAX) =  %d  \n", abs_q31(max));
+    // printf("abs(MIN) =  %d  \n", abs_q31(min));
+    // printf("----------------------\n");
+    // printf("lshift( 1, 31) =  %d \n", left_shift_q31(1, 31));
+    // printf("lshift(-1, 31) = %d  \n", left_shift_q31(-1, 31));
+    // printf("----------------------------\n");
+    // printf("add(MAX,  10) =  %d\n", add_q31(max, 10));
+    // printf("add(MIN, -10) = %d\n", add_q31(min, -10));
+    // printf("---------------------------\n");
+    // printf("sub(MAX, -10) =  %d\n", sub_q31(max, -10));
+    // printf("sub(MIN,  10) = %d\n", sub_q31(min, 10));
+    // printf("---------------------------\n");
+    // printf("mul(MIN, MIN) =  %d\n", mul_q31(min, min));
+    // printf("---------------------------\n");
+    // printf("div(MIN, MIN) =  %d\n", div_q31(min, min));
+    // printf("div(MIN, MAX) = %d\n", div_q31(min, max));
+    // printf("div(MAX, MAX) =  %d\n", div_q31(max, max));
+    // printf("div(MAX, MAX) =  %0.8f\n", fixed2float_q31(div_q31(max, max)));
+    // printf("---------------------------\n");
+
     q31 res;
+    flt b =  0.23f, c = 0.6f;
     q31 qb = float2fixed_q31(b);
     q31 qc = float2fixed_q31(c);
-    q31 qx = double2fixed_q(x, 26);
-    q31 qy = float2fixed_q31(y);
 
-    res = div_q31(qb, qc);
-    printf("div(%f, %f)\n", x, y);
-    printf("Result:    %f\n", fixed2float_q31(res));
-    printf("Reference: %f\n\n", b / c);
+    flt x = 0.9980468755f, y = 0.0000000005f, z = -31.8750000000f;
+    q31 qx = float2fixed_q31(x);
+    q31 qy = float2fixed_q31(y);
+    q31 qx26 = float2fixed_q(x, 26);
+    q31 qy26 = float2fixed_q(y, 26);
+    q31 qz26 = float2fixed_q(z, 26);
+
+    // res = div_q31(qb, qc);
+    // printf("div(%f, %f)\n", x, y);
+    // printf("Result:    %f\n", fixed2float_q31(res));
+    // printf("Reference: %f\n\n", b / c);
 
     res = log2_q31(qy);
-    printf("log2(%f)\n", y);
-    printf("Result:    %f\n", fixed2double_q(res, 26));
+    printf("log2(%0.10f)\n", y);
+    printf("Result:    %f\n", fixed2float_q(res, 26));
     printf("Reference: %lf\n\n", log2(y));
 
-    res = pow2_q31(qx);
-    printf("pow2(%f)\n", x);
+    res = log2_q31(qx);
+    printf("log2(%0.10f)\n", x);
+    printf("Result:    %f\n", fixed2float_q(res, 26));
+    printf("Reference: %lf\n\n", log2(x));
+
+
+    res = pow2_q31(qy26);
+    printf("pow2(%0.10f)\n", y);
     printf("Result:    %f\n", fixed2float_q31(res));
-    printf("Reference: %f\n\n", pow(2.0, x));
+    printf("Reference: %f\n\n", pow(2.0, y));
+
+    res = pow2_q31(qz26);
+    printf("pow2(%0.10f)\n", z);
+    printf("Result:    %0.16f\n", fixed2float_q31(res));
+    printf("Reference: %0.16f\n\n", pow(2.0, z));
 
     res = pow_q31(qb, qc);
     printf("pow(%f, %f)\n", b, c);
@@ -197,21 +214,21 @@ q63 sub_q63(q63 x, q63 y)
 
 
 
-
 union bytes {
     q63 all;
     struct {
-        q31 high;
         q31 low;
+        q31 high;
     } part;
 };
 
-q31 gethigh(q63 x) 
-{   
-    q63 r = x;
-    r += (1lu << (Q31 - 1));
-    r = right_shift_q63(r, 31);
-    return (q31)r; 
+q31 gethigh(q63 x)
+{
+    union bytes r;
+    r.all = x;
+    r.all += (1lu << (Q31 - 1));
+    // r = right_shift_q63(r, 32);
+    return r.part.high;
 }
 
 q31 getlow(q63 x)
@@ -317,8 +334,8 @@ q31 pow_q31(q31 x, q31 y)
 {
     q63 r = y;
     r *= log2_q31(x);  
-    r = right_shift_q63(r, 31);
-    r = pow2_q31(r);
+    r = right_shift_q63(r, 31);   // Q37.26
+    r = pow2_q31((q31)r);
     return (q31)r;
 }
 
@@ -373,8 +390,7 @@ flt fixed2float_q(q32 x, size_t Q)
 }
 
 
-// 1 = log2;  2 = pow2
-void gentable(int type)   
+void gen_table(int type)   
 {   
     if(type == 1) //log2
     {
@@ -398,15 +414,13 @@ void gentable(int type)
         for (int i = 0; i < 512; i++)
         {
             val = pow(2.0, ((double)-i / (double)16.0));
-            qval = float2fixed_q31(val);
+            qval = float2fixed_q31((float)val);
             printf("%d pow(2, %0.10lf) = %0.10lf  ", i, (double)-i / (double)16.0, val);
             printf("%d,\n", qval);
         }
     }
 
 }
-
-
 
 flt negf(flt x)
 {
@@ -450,9 +464,9 @@ flt divf(flt x, flt y)
 
 flt divnr(flt x, flt y)
 {
-    flt N  = K0 * x;
-    flt D  = K0 * y;
-    flt xi = KF1 - KF2 * D;
+    flt N  = (flt)K0 * x;
+    flt D  = (flt)K0 * y;
+    flt xi = (flt)KF1 - (flt)KF2 * D;
     //printf("ref xi: %f\n", xi);
 
     for (int i = 0; i < 5; i++)

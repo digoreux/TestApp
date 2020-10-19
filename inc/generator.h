@@ -7,6 +7,7 @@
 #include <math.h>
 #include "arg_parser.h"
 #include "effect_process.h"
+#include "fractional.h"
 #define M_PI 3.14159265358979323846
 
 

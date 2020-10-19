@@ -1,5 +1,89 @@
 ﻿#include "file_handler.h"
 
+int apply_effect(utils_p utils) 
+{
+    size_t csize = 0;
+    size_t ssize = 0;
+    size_t psize = 0;
+    effect_control_get_sizes(&psize, &csize);
+    effect_process_get_sizes(&ssize);
+
+    printf("coefs:  %d\n", csize);
+    printf("params: %d\n", psize);
+    printf("states: %d\n", ssize);
+
+    void *params = malloc(psize);
+    void *coeffs = malloc(csize);
+    void *states = malloc(ssize);
+
+    effect_control_initialize(params, coeffs, 48000);
+    effect_set_parameter(params, 0, 1000);            // cutoff frequency
+    effect_set_parameter(params, 1, -6);              // gain
+    effect_set_parameter(params, 2, 0.5);             // Q
+    effect_set_parameter(params, 3, 48000);           // SR
+    effect_update_coeffs(params, coeffs);
+    effect_reset(coeffs, states);
+
+    if(utils->reading == 1) 
+    {   
+
+        while (!feof(utils->in))
+        {   
+        fread(utils->buffer, utils->buff_size, 1, utils->in);
+        effect_process(coeffs, states, utils->buffer, utils->num_samples);
+        fwrite(utils->buffer, utils->buff_size, 1, utils->out);
+        }
+    } else {
+        effect_process(coeffs, states, utils->buffer, utils->num_samples);
+        fwrite(utils->buffer, utils->buff_size, 1, utils->out);
+    }
+
+    return 0;
+}
+
+int read_wav(utils_p utils, arg_p a, header_p meta)
+{   
+    utils->in = fopen(a->input, "rb");
+    utils->out = fopen(a->output, "wb");
+
+    read_header(utils->in, meta);
+    print_header(meta);
+    write_header(utils->out, meta);
+
+    utils->num_samples = 512;  
+    utils->buff_size = (utils->num_samples * meta->block_align);
+    utils->buffer = malloc(utils->buff_size);
+    utils->reading = 1;
+    
+    apply_effect(utils);
+
+    fclose(utils->in);
+    fclose(utils->out);
+    free(utils->buffer);
+    
+    return 0;
+}
+
+
+int gen_wav(utils_p utils, arg_p a, header_p meta)
+{
+    utils->out = fopen(a->output, "wb");
+    create_header(meta, a->sample_rate, a->time);
+    print_header(meta);
+    write_header(utils->out, meta);
+
+    utils->num_samples = (meta->sample_rate / 1000) * a->time;
+    utils->buff_size   = (utils->num_samples * meta->block_align);
+    utils->buffer = malloc(utils->buff_size);
+
+    generator(utils->buffer, utils->num_samples, a->type, a);
+    apply_effect(utils);
+
+    fclose(utils->out);
+    free(utils->buffer);
+    return 0;
+}
+
 
 int read_header(FILE * in, header_p meta)
 {
@@ -118,104 +202,3 @@ int get_fmt(header_p meta)
     else return 0;
 }
 
-int read_wav(arg_p a, header_p meta)
-{
-    FILE * in  = fopen(a->input, "rb");
-    FILE * out = fopen(a->output, "wb");
-    read_header(in, meta);
-    //print_header(meta);
-    write_header(out, meta);
-
-    size_t csize = 0;
-    size_t ssize = 0;
-    size_t psize = 0;
-    size_t num_samples = 512;  
-    size_t size = (num_samples * meta->block_align);
-    
-    effect_control_get_sizes(&psize, &csize);
-    effect_process_get_sizes(&ssize);
-
-    printf("coefs:  %d\n", csize);
-    printf("params: %d\n", psize);
-    printf("states: %d\n", ssize);
-    printf("size:   %d\n", size);
-
-
-    void *buffer = malloc(size);
-    void *params = malloc(psize);
-    void *coeffs = malloc(csize);
-    void *states = malloc(ssize);
-
-    effect_control_initialize(params, coeffs, 48000);
-    effect_set_parameter(params, 0, 5000);            // cutoff frequency
-    effect_set_parameter(params, 1, -6);              // gain
-    effect_set_parameter(params, 2, 0.5);               // Q
-    effect_set_parameter(params, 3, 48000);           // SR
-    effect_update_coeffs(params, coeffs);
-    effect_reset(coeffs, states);
-
-    while (!feof(in))
-    { 
-        fread(buffer, size, 1, in);
-        effect_process(coeffs, states, buffer, num_samples);
-        fwrite(buffer, size, 1, out);
-    }
-    fclose(in);
-    fclose(out);
-    free(buffer);
-    free(params);
-    free(coeffs);
-    free(states);
-    return 0;
-}
-
-
-int gen_wav(arg_p a, header_p meta)
-{
-    FILE * out = fopen(a->output, "wb");
-
-    create_header(meta, a->sample_rate, a->time);
-    write_header(out, meta);
-    print_header(meta);
-    printf("here: %d\n", ftell(out));
-
-    size_t csize = 0;
-    size_t ssize = 0;
-    size_t psize = 0;
-    size_t num_samples = (meta->sample_rate / 1000) * a->time;
-    size_t buff_size   = (num_samples * meta->block_align);
-
-    effect_control_get_sizes(&psize, &csize);
-    effect_process_get_sizes(&ssize);
-
-    printf("coefs:  %d\n", csize);
-    printf("params: %d\n", psize);
-    printf("states: %d\n", ssize);
-    printf("buff_size:   %d\n", buff_size);
-
-
-    void *buffer = malloc(buff_size);
-    void *params = malloc(psize);
-    void *coeffs = malloc(csize);
-    void *states = malloc(ssize);
-
-    effect_control_initialize(params, coeffs, 48000);
-    effect_set_parameter(params, 0, 240);             // cutoff frequency
-    effect_set_parameter(params, 1, -6);              // gain
-    effect_set_parameter(params, 2, 0.5);             // Q
-    effect_set_parameter(params, 3, 48000);           // SR
-    effect_update_coeffs(params, coeffs);
-    effect_reset(coeffs, states);
-
-    generator(buffer, num_samples, a->type, a);
-    effect_process(coeffs, states, buffer, num_samples);
-
-    fwrite(buffer, buff_size, 1, out);
-
-    fclose(out);
-    free(buffer);
-    free(params);
-    free(coeffs);
-    free(states);
-    return 0;
-}

@@ -28,6 +28,17 @@ typedef struct header_file
 
 } header;
 
+typedef struct utils_s 
+{
+    FILE *in;
+    FILE *out;
+    void * buffer;
+    uint32_t buff_size;
+    uint32_t num_samples;
+    uint8_t reading;
+} utils_t;
+
+typedef struct utils_s* utils_p;
 typedef struct header_file* header_p;
 
 int read_header(FILE * in, header_p meta);
@@ -40,8 +51,10 @@ void print_header(header_p meta);
 
 int get_fmt(header_p meta);
 
-int read_wav(arg_p a, header_p meta);
+int apply_effect(utils_p utils);
 
-int gen_wav(arg_p a, header_p meta);
+int read_wav(utils_p utils, arg_p a, header_p meta);
+
+int gen_wav(utils_p utils, arg_p a, header_p meta);
 
 #endif // !__FILE_HANDLER_H__

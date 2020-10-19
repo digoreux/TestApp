@@ -60,13 +60,13 @@ q31 div_q31(q31 x, q31 y);
  
 /*************************
   pow2
-  input:  Q26 (-32; 0]
-  output: Q31 [1; 0)
+  input:  Q26 [-32; 0]
+  output: Q31 [0; 1]
 *************************/
 q31 pow2_q31(q31 x);
 /*
   log2
-  input:  Q31 [0; 1)
+  input:  Q31 [0; 1]
   output: Q26 [-32; 0]
 */
 q31 log2_q31(q31 x);
@@ -91,8 +91,10 @@ flt pow2(flt n);
 flt flog2(flt x);
 flt fpow(flt x, flt y);
 
-
-void gentable(int type);
+// log2 = 1;  pow2 = 2
+void gen_table(int type);   
+// log2 = 1;  pow2 = 2
+void test_table(int type);   
 void test_fractional(void);
 void bin(unsigned n);
 

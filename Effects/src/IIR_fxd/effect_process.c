@@ -98,7 +98,7 @@ int32_t effect_process(
         acc = msub_q31(c->a2, s->y2.right, acc);
 
         s->error.right = getlow(acc);
-        acc = left_shift_q63(acc, 1);           // compensate Q30 coeffs
+        acc = left_shift_q63(acc, 1);           
         a[i].right = gethigh(acc);  
 
         s->x2.right = s->x1.right;

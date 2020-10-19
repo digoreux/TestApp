@@ -18,20 +18,15 @@ int main(int argc, char **argv)
 {
     arg_p a       = (arg_p)malloc(sizeof(args_t));
     header_p meta = (header_p)malloc(sizeof(header));
+    utils_p utils = (utils_p)malloc(sizeof(utils_t));
 
     get_args(argc, argv, a);
 
-    if (a->input)   read_wav(a, meta);
-    if (a->gen_opts) gen_wav(a, meta);
+    if (a->input)   read_wav(utils, a, meta);
+    if (a->gen_opts) gen_wav(utils, a, meta);
 
-    //test_fractional();
+    // test_fractional();
 
-    //filter_params_t * p = (filter_params_t*)a->filter_params;
-    //printf("freq: %f\n", p->frequency);
-    //printf("amp: %f\n", p->amp);
-    //printf("Q: %f\n", p->Q);
-    //printf("SR: %f\n", p->SR);
-    
     free(a);
     free(meta);
     return 0;

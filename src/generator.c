@@ -11,7 +11,7 @@ int gen_white_noise(void * buffer, size_t sample_count, float dbamp)
     float amp = powf(10.0f, dbamp / 20.0f);
 
     for (size_t i = 0; i < sample_count; i++) 
-    {
+    {   
         audio[i].left  = amp * ((float)rand() / (float)(RAND_MAX) * 2 - 1);
         audio[i].right = amp * ((float)rand() / (float)(RAND_MAX) * 2 - 1);
     }
