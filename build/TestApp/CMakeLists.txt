@@ -6,10 +6,11 @@ add_executable(TestApp
     ../../src/main.c
     ../../src/file_handler.c
     ../../src/generator.c
-    ../../src/arg_parser.c)
+    ../../src/arg_parser.c
+    ../../src/cJSON.c)
 
 target_link_libraries(TestApp PRIVATE
-	 Comp_flt
+	 EQ_flt
 	 Fractional)
 
 target_include_directories(TestApp PRIVATE ../../inc

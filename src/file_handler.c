@@ -16,13 +16,15 @@ int apply_effect(utils_p utils)
     void *coeffs = malloc(csize);
     void *states = malloc(ssize);
 
+
+
     effect_control_initialize(params, coeffs, 48000);
-    effect_set_parameter(params, 0, 1000);            // cutoff frequency
-    effect_set_parameter(params, 1, -6);              // gain
-    effect_set_parameter(params, 2, 0.5);             // Q
-    effect_set_parameter(params, 3, 48000);           // SR
+    // effect_set_parameter(params, 0, 1000);            // cutoff frequency
+    // effect_set_parameter(params, 1, -6);              // gain
+    // effect_set_parameter(params, 2, 0.5);             // Q
+    // effect_set_parameter(params, 3, 48000);           // SR
     effect_update_coeffs(params, coeffs);
-    effect_reset(coeffs, states);
+    // effect_reset(coeffs, states);
 
     if(utils->reading == 1) 
     {   
@@ -30,7 +32,7 @@ int apply_effect(utils_p utils)
         while (!feof(utils->in))
         {   
         fread(utils->buffer, utils->buff_size, 1, utils->in);
-        effect_process(coeffs, states, utils->buffer, utils->num_samples);
+        // effect_process(coeffs, states, utils->buffer, utils->num_samples);
         fwrite(utils->buffer, utils->buff_size, 1, utils->out);
         }
     } else {

@@ -1,0 +1,22 @@
+{
+    "eq_params":
+    [
+        {
+         "id"  : 0, "val" : 100,
+         "name": "B1_frequency" 
+        },
+        {
+         "id"  : 1, "val" : -6,
+         "name": "B1_gain" 
+        },
+        {
+         "id"  : 2, "val" : 0.5,
+         "name": "B1_Q" 
+        },
+        {
+         "id"  : 3, "val" : 4,
+         "name": "B1_type" 
+        }
+    ]   
+}
+

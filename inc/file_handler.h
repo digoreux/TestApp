@@ -7,8 +7,9 @@
 #include "arg_parser.h"
 #include "generator.h"
 #include "effect_process.h"
+#include "effect_control.h"
 
-typedef struct header_file
+typedef struct header_file 
 {
     char chunk_id[4];
     uint32_t chunk_size;
