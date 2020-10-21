@@ -1,6 +1,7 @@
 ﻿#include "effect_process.h"
 #include "effect_control.h"
 #include "fractional.h"
+
 typedef struct stereo {
     flt left;
     flt right;

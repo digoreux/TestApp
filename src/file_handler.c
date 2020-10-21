@@ -1,5 +1,34 @@
 ﻿#include "file_handler.h"
 
+int set_params(void * params)
+{   
+    
+    FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
+    
+    fseek(js, 0, SEEK_END);
+    size_t size = ftell(js);
+    fseek(js, 0, SEEK_SET);
+
+    char * buffer = malloc(size);
+    memset(buffer, 0, size);
+    fread(buffer, size, 1, js);
+
+    const cJSON *band = NULL;
+    const cJSON *bands = NULL;
+
+    cJSON *json = cJSON_Parse(buffer);
+
+    bands = cJSON_GetObjectItemCaseSensitive(json, "eq_params");
+    cJSON_ArrayForEach(band, bands)
+    {
+        cJSON *id    = cJSON_GetObjectItemCaseSensitive(band, "id");
+        cJSON *value = cJSON_GetObjectItemCaseSensitive(band, "val");
+
+        effect_set_parameter(params, id->valueint, (float)value->valuedouble);
+    }
+    return 0;
+}
+
 int apply_effect(utils_p utils) 
 {
     size_t csize = 0;
@@ -16,15 +45,10 @@ int apply_effect(utils_p utils)
     void *coeffs = malloc(csize);
     void *states = malloc(ssize);
 
-
-
     effect_control_initialize(params, coeffs, 48000);
-    // effect_set_parameter(params, 0, 1000);            // cutoff frequency
-    // effect_set_parameter(params, 1, -6);              // gain
-    // effect_set_parameter(params, 2, 0.5);             // Q
-    // effect_set_parameter(params, 3, 48000);           // SR
+    set_params(params);
     effect_update_coeffs(params, coeffs);
-    // effect_reset(coeffs, states);
+    effect_reset(coeffs, states);
 
     if(utils->reading == 1) 
     {   
@@ -32,7 +56,7 @@ int apply_effect(utils_p utils)
         while (!feof(utils->in))
         {   
         fread(utils->buffer, utils->buff_size, 1, utils->in);
-        // effect_process(coeffs, states, utils->buffer, utils->num_samples);
+        effect_process(coeffs, states, utils->buffer, utils->num_samples);
         fwrite(utils->buffer, utils->buff_size, 1, utils->out);
         }
     } else {

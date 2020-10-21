@@ -2,8 +2,6 @@
 #include "effect_control.h"
 #include "fractional.h"
 
-#define MASK ((1u << 31) - 1)
-
 typedef struct stereo_s {
     q31 left;
     q31 right;

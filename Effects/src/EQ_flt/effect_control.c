@@ -11,12 +11,18 @@ typedef enum {
 	HSH	 = 4,
 } filter_types;
 
+typedef struct param_s {
+    int32_t id;
+    double  value;
+} param_t;
+
+
 typedef struct params_s {
     double sample_rate;
-    double freq[10]; 
-    double gain[10]; 
-    double    Q[10];   
-    filter_types type[10];
+    param_t  freq[10]; 
+    param_t  gain[10]; 
+    param_t     Q[10];   
+    param_t  type[10];
 } params_t;
 
 
@@ -50,13 +56,18 @@ int32_t effect_control_initialize(
     coeffs_t * c = (coeffs_t*)coeffs;
     params_t * p = (params_t*)params;
 
-    p->sample_rate = 48000;
+    p->sample_rate = sample_rate;
     for (size_t i = 0; i < 10; i++)
     {
-        p->freq[i] = 100;
-        p->gain[i] = 0;
-        p->Q[i] = 3;
-        p->type[i] = PEAK;
+        p->freq[i].id = 0 + i*4;
+        p->gain[i].id = 1 + i*4;
+        p->Q[i].id    = 2 + i*4;
+        p->type[i].id = 3 + i*4;
+
+        p->freq[i].value = 0;
+        p->gain[i].value = 0;
+        p->Q[i].value    = 0;
+        p->type[i].value = 0;
 
         c->b0[i] = 0;
         c->b1[i] = 0;
@@ -65,22 +76,6 @@ int32_t effect_control_initialize(
         c->a1[i] = 0;
         c->a2[i] = 0;
     }
-    p->freq[1] = 100;
-    p->gain[1] = 6;
-    p->freq[2] = 1000;
-    p->gain[2] = 6;
-    p->freq[4] = 4000;
-    p->gain[4] = 6;
-
-    p->type[9] = HSH;
-    p->gain[9] = -6;
-    p->freq[9] = 8000;
-    p->Q[9] = 0.5;
-
-    p->type[0] = LSH;
-    p->gain[0] = -6;
-    p->freq[0] = 60;
-    p->Q[0] = 0.5;
     return 0;
 } 
 
@@ -89,7 +84,16 @@ int32_t effect_set_parameter(
     int32_t     id,
     float       value)
 {   
-   
+    params_t * p = (params_t*)params;
+    if(id == 40) p->sample_rate = value;
+    for(int i = 0; i < 10; i++) 
+    {
+        if(p->freq[i].id == id) p->freq[i].value = value;
+        if(p->gain[i].id == id) p->gain[i].value = value;
+        if(p->Q[i].id    == id)    p->Q[i].value = value;
+        if(p->type[i].id == id) p->type[i].value = value;
+    }           
+    
     return 0;
 }
 
@@ -97,22 +101,21 @@ int32_t effect_update_coeffs(
     void const* params,
     void*       coeffs)
 {   
-    double  A[10], sn[10], cs[10], omega[10], alpha[10], beta[10];
+    double  A[10], sn[10], cs[10], alpha[10], beta[10], omega[10];
     double b0[10], b1[10], b2[10], a0[10], a1[10], a2[10];
 
     coeffs_t * c = (coeffs_t*)coeffs;
     params_t * p = (params_t*)params;
-    
 
     for (size_t i = 0; i < 10; i++) 
     {
-        A[i] = pow(10, p->gain[i] / 40);
-        omega[i] = 2 * M_PI * p->freq[i] / p->sample_rate;
+        A[i] = pow(10, p->gain[i].value / 40);
+        omega[i] = 2 * M_PI * p->freq[i].value / p->sample_rate;
         sn[i] = sin(omega[i]);
         cs[i] = cos(omega[i]);
-        alpha[i] = sn[i] / (2 * p->Q[i]);
+        alpha[i] = sn[i] / (2 * p->Q[i].value);
         beta[i]  = sqrt(A[i] + A[i]);
-        switch (p->type[i])
+        switch ((int)p->type[i].value)
         {
         case LP:
             b0[i] = (1.0 - cs[i]) / 2.0;
@@ -162,11 +165,11 @@ int32_t effect_update_coeffs(
         c->b1[i] = (float)(b1[i] / a0[i]);
         c->b2[i] = (float)(b2[i] / a0[i]);
 
-        // printf("a1[%d]: %f\n",i, c->a1[i]);
-        // printf("a2[%d]: %f\n",i, c->a2[i]);
-        // printf("b0[%d]: %f\n",i, c->b0[i]);
-        // printf("b1[%d]: %f\n",i, c->b1[i]);
-        // printf("b2[%d]: %f\n\n",i, c->b2[i]);
+        printf("a1[%d]: %f\n",i, c->a1[i]);
+        printf("a2[%d]: %f\n",i, c->a2[i]);
+        printf("b0[%d]: %f\n",i, c->b0[i]);
+        printf("b1[%d]: %f\n",i, c->b1[i]);
+        printf("b2[%d]: %f\n\n",i, c->b2[i]);
 
     }
 

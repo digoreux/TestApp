@@ -8,6 +8,7 @@
 #include "generator.h"
 #include "effect_process.h"
 #include "effect_control.h"
+#include "cjson.h"
 
 typedef struct header_file 
 {
@@ -53,6 +54,8 @@ void print_header(header_p meta);
 int get_fmt(header_p meta);
 
 int apply_effect(utils_p utils);
+
+int set_params(void * params);
 
 int read_wav(utils_p utils, arg_p a, header_p meta);
 

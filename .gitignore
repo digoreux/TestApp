@@ -1,6 +1,9 @@
 Audio/
+audio/
 build/tmp
 .vs/
+.vscode/
 
 *.sfk
 *.DS_Store
+*.wav
