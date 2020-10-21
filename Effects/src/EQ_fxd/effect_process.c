@@ -7,12 +7,20 @@ typedef struct stereo {
     q31 right;
 } stereo_t;
 
+typedef struct stereo_acc {
+    q63 left;
+    q63 right;
+} stereo_acc_t;
+
 typedef struct states_s {
    stereo_t x0[10];
    stereo_t x1[10];
    stereo_t x2[10];
    stereo_t y1[10];
    stereo_t y2[10];
+   stereo_acc_t w0[10];
+   stereo_t w1[10];
+   stereo_t w2[10];
    stereo_t error[10];
 } states_t;
 
@@ -52,6 +60,14 @@ int32_t effect_reset(
         s->y1[i].right = 0;
         s->y2[i].right = 0;
 
+        s->w0[i].left = 0;
+        s->w1[i].left = 0;
+        s->w2[i].left = 0;
+
+        s->w0[i].right = 0;
+        s->w1[i].right = 0;
+        s->w2[i].right = 0;
+
     }
 
     return 0;
@@ -77,21 +93,23 @@ int32_t effect_process(
             s->x0[j].right = a[i].right;
 
             acc = 0;
-            acc =  add_q63(acc, s->error[j].left);
-            acc =  mac_q31(c->b0[j], s->x0[j].left, acc);
-            acc =  mac_q31(c->b1[j], s->x1[j].left, acc);
-            acc =  mac_q31(c->b2[j], s->x2[j].left, acc);
-            acc = msub_q31(c->a1[j], s->y1[j].left, acc);
-            acc = msub_q31(c->a2[j], s->y2[j].left, acc);
+            // acc =  add_q63(acc, s->error[j].left);
 
-            s->error[j].left = getlow(acc);
+            s->w0[j].left = msub_q31(c->a1[j], s->w1[j].left, s->x0[j].left);
+            s->w0[j].left = msub_q31(c->a2[j], s->w2[j].left, s->w0[j].left);
+
+            acc =  mac_q31(c->b0[j], s->w0[j].left, acc);
+            acc =  mac_q31(c->b1[j], s->w1[j].left, acc);
+            acc =  mac_q31(c->b2[j], s->w2[j].left, acc);
+
+            // s->error[j].left = getlow(acc);
             acc = left_shift_q63(acc, 1);               // compensate Q30 coeffs
             a[i].left = gethigh(acc);
 
-            s->x2[j].left = s->x1[j].left;
-            s->x1[j].left = s->x0[j].left;
-            s->y2[j].left = s->y1[j].left;
-            s->y1[j].left = gethigh(acc);
+            // s->x2[j].left = s->x1[j].left;
+            // s->x1[j].left = s->x0[j].left;
+            s->w2[j].left = s->w1[j].left;
+            s->w1[j].left = s->w0[j].left;
 
             acc = 0;
             acc =  add_q63(acc, s->error[j].right);
@@ -108,8 +126,49 @@ int32_t effect_process(
             s->x2[j].right = s->x1[j].right;
             s->x1[j].right = s->x0[j].right;
             s->y2[j].right = s->y1[j].right;
-            s->y1[j].right = gethigh(acc);
+            s->y1[j].right = gethigh(acc); 
         }
+
+        //Direct Form 1
+        // for(size_t j = 0; j < 10; j++)
+        // {
+        //     s->x0[j].left  = a[i].left;
+        //     s->x0[j].right = a[i].right;
+
+        //     acc = 0;
+        //     acc =  add_q63(acc, s->error[j].left);
+        //     acc =  mac_q31(c->b0[j], s->x0[j].left, acc);
+        //     acc =  mac_q31(c->b1[j], s->x1[j].left, acc);
+        //     acc =  mac_q31(c->b2[j], s->x2[j].left, acc);
+        //     acc = msub_q31(c->a1[j], s->y1[j].left, acc);
+        //     acc = msub_q31(c->a2[j], s->y2[j].left, acc);
+
+        //     s->error[j].left = getlow(acc);
+        //     acc = left_shift_q63(acc, 1);               // compensate Q30 coeffs
+        //     a[i].left = gethigh(acc);
+
+        //     s->x2[j].left = s->x1[j].left;
+        //     s->x1[j].left = s->x0[j].left;
+        //     s->y2[j].left = s->y1[j].left;
+        //     s->y1[j].left = gethigh(acc);
+
+        //     acc = 0;
+        //     acc =  add_q63(acc, s->error[j].right);
+        //     acc =  mac_q31(c->b0[j], s->x0[j].right, acc);
+        //     acc =  mac_q31(c->b1[j], s->x1[j].right, acc);
+        //     acc =  mac_q31(c->b2[j], s->x2[j].right, acc);
+        //     acc = msub_q31(c->a1[j], s->y1[j].right, acc);
+        //     acc = msub_q31(c->a2[j], s->y2[j].right, acc);
+
+        //     s->error[j].right = getlow(acc);
+        //     acc = left_shift_q63(acc, 1);               // compensate Q30 coeffs
+        //     a[i].right = gethigh(acc);
+
+        //     s->x2[j].right = s->x1[j].right;
+        //     s->x1[j].right = s->x0[j].right;
+        //     s->y2[j].right = s->y1[j].right;
+        //     s->y1[j].right = gethigh(acc); 
+        // }
 
 
     }

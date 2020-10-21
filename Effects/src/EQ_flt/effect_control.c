@@ -165,12 +165,6 @@ int32_t effect_update_coeffs(
         c->b1[i] = (float)(b1[i] / a0[i]);
         c->b2[i] = (float)(b2[i] / a0[i]);
 
-        printf("a1[%d]: %f\n",i, c->a1[i]);
-        printf("a2[%d]: %f\n",i, c->a2[i]);
-        printf("b0[%d]: %f\n",i, c->b0[i]);
-        printf("b1[%d]: %f\n",i, c->b1[i]);
-        printf("b2[%d]: %f\n\n",i, c->b2[i]);
-
     }
 
     return 0;
