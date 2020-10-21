@@ -1,10 +1,9 @@
 TestApp
 
-effect initialization in filehandler.c read_wav(), gen_wav()
-filter parameters are hardcoded via effect_set_parameter()
-generators only support floating point
-noise shaping aplies only to left channel in IIR_fxd
-to change effect - configure CMakeLists in build and build/TestApp (IIR_fxd, IIR_flt, FIR_fxd, FIR_flt)
+effect initialization in filehandler.c 
+EQ parameters are set in Effect/eq_preset.json
+Generators only support floating point
+to change effect - configure CMakeLists in build and build/TestApp.
 
 --in <path-to-file>
 
