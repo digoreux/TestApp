@@ -223,13 +223,19 @@ union bytes {
 };
 
 q31 gethigh(q63 x)
-{
+{   
     union bytes r;
     r.all = x;
     r.all += (1lu << (Q31 - 1));
-    // r = right_shift_q63(r, 32);
     return r.part.high;
 }
+// q31 gethigh(q63 x)
+// {   
+//     q63 r = x;
+//     r += (1lu << (Q31 - 1));
+//     r = right_shift_q63(r, 32);
+//     return (q31)r;
+// }
 
 q31 getlow(q63 x)
 {

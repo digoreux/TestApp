@@ -93,14 +93,25 @@ int32_t effect_update_coeffs(
     double a1 = -2.0 * cs;
     double a2 =  1.0 - alpha;
 
+    printf("a1: %f\n", a1);
+    printf("a2: %f\n", a2);
+    printf("b0: %f\n", b0);
+    printf("b1: %f\n", b1);
+    printf("b2: %f\n", b2);
+
     c->a1 = double2fixed_q((a1 / a0), 30);
     c->a2 = double2fixed_q((a2 / a0), 30);
     c->b0 = double2fixed_q((b0 / a0), 30);
     c->b1 = double2fixed_q((b1 / a0), 30);
     c->b2 = double2fixed_q((b2 / a0), 30);
 
+    printf("a1: %d\n", c->a1);
+    printf("a2: %d\n", c->a2);
+    printf("b0: %d\n", c->b0);
+    printf("b1: %d\n", c->b1);
+    printf("b2: %d\n", c->b2);
 
+    
     return 0;
 }
-
 

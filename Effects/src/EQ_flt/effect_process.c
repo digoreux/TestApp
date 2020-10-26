@@ -12,7 +12,6 @@ typedef struct states_s {
    stereo_t x0[10];
    stereo_t x1[10];
    stereo_t x2[10];
-   stereo_t y0[10];
    stereo_t y1[10];
    stereo_t y2[10];
    stereo_t w0[10];
@@ -64,6 +63,7 @@ int32_t effect_reset(
         s->w0[i].left = 0;
         s->w1[i].left = 0;
         s->w2[i].left = 0;
+
         s->w0[i].right = 0;
         s->w1[i].right = 0;
         s->w2[i].right = 0;
@@ -72,6 +72,7 @@ int32_t effect_reset(
         s->s12[i].left = 0;
         s->s21[i].left = 0;
         s->s22[i].left = 0;
+
         s->s11[i].right = 0;
         s->s12[i].right = 0;
         s->s21[i].right = 0;
@@ -96,7 +97,10 @@ int32_t effect_process(
     for (size_t i = 0; i < samples_count; i++)
     {   
 
-        // Direct Form I
+        /* 
+             DIRECT FORM I
+        */
+
         // for(uint8_t j = 0; j < 10; j++)
         // {
         //     s->x0[j].left  = a[i].left;
@@ -132,81 +136,125 @@ int32_t effect_process(
         // }
 
 
-        // Direct Form II
+        /* 
+             DIRECT FORM II
+        */
+
+        for(uint8_t j = 0; j < 10; j++)
+        {
+            s->x0[j].left  = a[i].left;
+            s->x0[j].right = a[i].right;
+
+            acc = 0;
+            s->w0[j].left = msubf(c->a1[j], s->w1[j].left, s->x0[j].left);
+            s->w0[j].left = msubf(c->a2[j], s->w2[j].left, s->w0[j].left);
+
+            acc =  macf(c->b0[j], s->w0[j].left, acc);
+            acc =  macf(c->b1[j], s->w1[j].left, acc);
+            acc =  macf(c->b2[j], s->w2[j].left, acc);
+
+
+            s->w2[j].left  = s->w1[j].left;
+            s->w1[j].left = s->w0[j].left;
+            
+            a[i].left = acc;
+
+            acc = 0;
+            s->w0[j].right = msubf(c->a1[j], s->w1[j].right, s->x0[j].right);
+            s->w0[j].right = msubf(c->a2[j], s->w2[j].right, s->w0[j].right);
+
+            acc =  macf(c->b0[j], s->w0[j].right, acc);
+            acc =  macf(c->b1[j], s->w1[j].right, acc);
+            acc =  macf(c->b2[j], s->w2[j].right, acc);
+
+            s->w2[j].right = s->w1[j].right;
+            s->w1[j].right = s->w0[j].right;
+
+            a[i].right = acc;
+
+        }
+
+        /* 
+             DIRECT FORM I TRANSPOSED
+        */
+
         // for(uint8_t j = 0; j < 10; j++)
+        // {
+        //     s->x0[j].left  = addf(a[i].left, s->s21[j].left);
+        //     s->x0[j].right = addf(a[i].right, s->s21[j].right);
+
+        //     acc = 0;
+        //     acc = macf(c->b0[j], s->x0[j].left, s->s11[j].left);
+            
+        //     s->s11[j].left = macf(c->b1[j], s->x0[j].left, s->s12[j].left);
+        //     s->s12[j].left = mulf(c->b2[j], s->x0[j].left);
+
+        //     s->s21[j].left = macf(negf(c->a1[j]), s->x0[j].left, s->s22[j].left);
+        //     s->s22[j].left = mulf(negf(c->a2[j]), s->x0[j].left);
+
+        //     a[i].left  = acc;
+
+        //     acc = 0;
+        //     acc = macf(c->b0[j], s->x0[j].right, s->s11[j].right);
+            
+        //     s->s11[j].right = macf(c->b1[j], s->x0[j].right, s->s12[j].right);
+        //     s->s12[j].right = mulf(c->b2[j], s->x0[j].right);
+
+        //     s->s21[j].right = macf(negf(c->a1[j]), s->x0[j].right, s->s22[j].right);
+        //     s->s22[j].right = mulf(negf(c->a2[j]), s->x0[j].right);
+
+        //     a[i].right  = acc;
+
+        // }    
+
+        /* 
+             DIRECT FORM II TRANSPOSED
+        */
+
+        // for (uint8_t j = 0; j < 10; j++)
         // {
         //     s->x0[j].left  = a[i].left;
         //     s->x0[j].right = a[i].right;
 
         //     acc = 0;
-        //     s->w0[j].left = msubf(c->a1[j], s->w1[j].left, s->x0[j].left);
-        //     s->w0[j].left = msubf(c->a2[j], s->w2[j].left, s->w0[j].left);
+        //     acc = macf(c->b0[j], s->x0[j].left, s->s12[j].left);
 
-        //     acc =  macf(c->b0[j], s->w0[j].left, acc);
-        //     acc =  macf(c->b1[j], s->w1[j].left, acc);
-        //     acc =  macf(c->b2[j], s->w2[j].left, acc);
+        //     s->s11[j].left =  macf(c->b1[j], s->x0[j].left, s->s22[j].left);
+        //     s->s11[j].left = msubf(c->a1[j], acc, s->s11[j].left);
 
+        //     s->s21[j].left =  macf(c->b2[j], s->x0[j].left, s->s21[j].left);
+        //     s->s21[j].left = msubf(c->a2[j], acc, s->s21[j].left);
 
-        //     s->w2[j].left = s->w1[j].left;
-        //     s->w1[j].left = s->w0[j].left;
-            
+        //     s->s12[j].left = s->s11[j].left;
+        //     s->s11[j].left = 0;
+        //     s->s22[j].left = s->s21[j].left;
+        //     s->s21[j].left = 0;
+
         //     a[i].left = acc;
 
-        //     acc = 0;
-        //     s->w0[j].right = msubf(c->a1[j], s->w1[j].right, s->x0[j].right);
-        //     s->w0[j].right = msubf(c->a2[j], s->w2[j].right, s->w0[j].right);
+        //     acc  = 0;
+        //     acc  =  macf(c->b0[j], s->x0[j].right, s->s12[j].right);
 
-        //     acc =  macf(c->b0[j], s->w0[j].right, acc);
-        //     acc =  macf(c->b1[j], s->w1[j].right, acc);
-        //     acc =  macf(c->b2[j], s->w2[j].right, acc);
+        //     s->s21[j].right =  macf(c->b2[j], s->x0[j].right, s->s21[j].right);
+        //     s->s21[j].right = msubf(c->a2[j], acc, s->s21[j].right);
 
-        //     s->w2[j].right = s->w1[j].right;
-        //     s->w1[j].right = s->w0[j].right;
+        //     s->s11[j].right =  macf(c->b1[j], s->x0[j].right, s->s22[j].right);
+        //     s->s11[j].right = msubf(c->a1[j], acc, s->s11[j].right);
+
+
+        //     s->s12[j].right = s->s11[j].right;
+        //     s->s11[j].right = 0;
+        //     s->s22[j].right = s->s21[j].right;
+        //     s->s21[j].right = 0;
 
         //     a[i].right = acc;
 
         // }
 
-        // Direct Form II Transposed (not working)
-        for (uint8_t j = 0; j < 10; j++)
-        {
-            s->x0[j].left  = a[i].left;
-            s->x0[j].right = a[i].right;
 
-            s->y0[j].left  = 0;
-            s->y0[j].left  =  macf(c->b0[j], s->x0[j].left, s->s12[j].left);
-
-            s->s11[j].left =  macf(c->b1[j], s->x0[j].left, s->s22[j].left);
-            s->s11[j].left = msubf(c->a1[j], s->y0[j].left, s->s11[j].left);
-
-            s->s21[j].left =  macf(c->b2[j], s->x0[j].left, s->s21[j].left);
-            s->s21[j].left = msubf(c->a2[j], s->y0[j].left, s->s21[j].left);
-
-            s->s12[j].left = s->s11[j].left;
-            s->s22[j].left = s->s21[j].left;
-
-            a[i].left = s->y0[j].left;
-
-            s->y0[j].right  = 0;
-            s->y0[j].right  =  macf(c->b0[j], s->x0[j].right, s->s12[j].right);
-
-            s->s21[j].right =  macf(c->b2[j], s->x0[j].right, s->s21[j].right);
-            s->s21[j].right = msubf(c->a2[j], s->y0[j].right, s->s21[j].right);
-
-            s->s11[j].right =  macf(c->b1[j], s->x0[j].right, s->s22[j].right);
-            s->s11[j].right = msubf(c->a1[j], s->y0[j].right, s->s11[j].right);
-
-
-            s->s12[j].right = s->s11[j].right;
-            s->s22[j].right = s->s21[j].right;
-
-            a[i].right = s->y0[j].right;
-
-        }
         
     }
    
    
     return 0;
 }
-
