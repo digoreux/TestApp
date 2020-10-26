@@ -98,50 +98,43 @@ int32_t effect_process(
     for (size_t i = 0; i < samples_count; i++)
     {   
     
-        s->x0.left  = add_q31(a[i].left,  s->s21.left);
-        s->x0.right = add_q31(a[i].right, s->s21.right);
+        s->x0.left  = a[i].left;
+        s->x0.right = a[i].right;
 
-        /* Output */
-        acc = 0;
-        acc = mac_q31(c->b0, s->x0.left, (left_shift_q63(s->s11.left, 31)));
-        a[i].left = gethigh(left_shift_q63(acc, 1));
+        /* warning mul_q63 temporarily does not shift left */
 
-        /* Feedforward state */
-        acc = mac_q31(c->b1, s->x0.left, (left_shift_q63(s->s12.left, 31)));
-        s->s11.left = gethigh(left_shift_q63(acc, 1));
-        acc = mul_q63(c->b2, s->x0.left);
-        s->s12.left = gethigh(left_shift_q63(acc, 1));          
-
-        /* Feedback state */
-        acc = mac_q31(neg_q31(c->a1), s->x0.left, (left_shift_q63(s->s22.left, 31)));
-        s->s21.left = gethigh(left_shift_q63(acc, 1)); 
-
-        acc = mul_q63(neg_q31(c->a2), s->x0.left);
-        s->s22.left = gethigh(left_shift_q63(acc, 1));
+        acc = left_shift_q63((q63)s->x0.left, 27);          //Q31 << 27 = Q58
+        acc = msub_q31(c->a1, s->w1.left, acc);             //Q30 * Q28 = Q58
+        acc = msub_q31(c->a2, s->w2.left, acc);             //Q30 * Q28 = Q58
         
+        // s->w0.left = gethigh(left_shift_q63(acc, 2));       //Q28
+        s->w0.left = (q31)(acc >> 30);                         //Q58 >> 30 = Q28
 
-                         /*  RIGHT CHANNEL */
+        acc =  mul_q63(c->b0, s->w0.left);                  //Q30 * Q28 = Q58
+        acc =  mac_q31(c->b1, s->w1.left,  acc);            //Q30 * Q28 = Q58
+        acc =  mac_q31(c->b2, s->w2.left,  acc);            //Q30 * Q28 = Q58
+ 
+        s->w2.left  = s->w1.left;                             //Q28
+        s->w1.left  = s->w0.left;                             //Q28
 
-        /* Output */
-        acc = 0;
-        acc = mac_q31(c->b0, s->x0.right, (left_shift_q63(s->s11.right, 31)));
-        a[i].right = gethigh(left_shift_q63(acc, 1));
-
-
-        /* Feedforward state */
-        acc = mac_q31(c->b1, s->x0.right, (left_shift_q63(s->s12.right, 31)));
-        s->s11.right = gethigh(left_shift_q63(acc, 1));
-
-        acc = mul_q63(c->b2, s->x0.right);
-        s->s12.right = gethigh(left_shift_q63(acc, 1));
+        // acc = left_shift_q63(acc, 5);
+        a[i].left = (q31)(acc >> 27);                       //Q58 >> 27 = Q31
 
 
-        /* Feedback state */
-        acc = mac_q31(neg_q31(c->a1), s->x0.right, (left_shift_q63(s->s22.right, 31)));
-        s->s21.right = gethigh(left_shift_q63(acc, 1));
+        w0 = (s->x0.right << 32);
+        w0 = msub_q31(c->a1, s->w1.right, w0);
+        w0 = msub_q31(c->a2, s->w2.right, w0);
 
-        acc = mul_q63(neg_q31(c->a2), s->x0.right);
-        s->s22.right = gethigh(left_shift_q63(acc, 1));
+        acc =  0;
+        acc =  mac_q31(c->b0, gethigh(w0),  acc);
+        acc =  mac_q31(c->b1, s->w1.right,  acc);
+        acc =  mac_q31(c->b2, s->w2.right,  acc);
+ 
+        s->w2.right  = s->w1.right;
+        s->w1.right  = gethigh(w0);
+
+        acc = left_shift_q63(acc, 1);
+        a[i].right = gethigh(acc);
          
     }
     return 0;

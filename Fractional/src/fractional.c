@@ -258,7 +258,7 @@ q63 mul_q63(q31 x, q31 y)
 {   
     q63 r = x;
     r *= y;
-    r = left_shift_q63(r, 1);
+    // r = left_shift_q63(r, 1);
     return r;
 }
 
