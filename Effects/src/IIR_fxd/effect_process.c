@@ -297,22 +297,22 @@ int32_t effect_process(
 
         // /* Output */
         // acc = left_shift_q63(s->x1.right, 31);
-        // acc = add_q63(s->error.right, acc);
+        // acc = add_q63(s->error.left, acc);
         // acc = mac_q31(c->b0, s->x0.right, acc);
 
-        // s->error.right = getlow(left_shift_q63(acc, 1));
+        // s->error.left = getlow(left_shift_q63(acc, 1));
         // a[i].right= gethigh(left_shift_q63(acc, 1));
 
         // /* State 1 */
         // acc = left_shift_q63(s->x2.right, 31);
         // acc =  mac_q31(c->b1, s->x0.right, acc);
         // acc = msub_q31(c->a1, a[i].right,  acc);
-        // s->x1.right = gethigh(left_shift_q63(acc, 1));
+        // s->x1.right= gethigh(left_shift_q63(acc, 1));
 
         // /* State 2 */
         // acc =  mul_q63(c->b2, s->x0.right);
         // acc = msub_q31(c->a2, a[i].right,  acc);
-        // s->x2.right = gethigh(left_shift_q63(acc, 1));
+        // s->x2.right= gethigh(left_shift_q63(acc, 1));
 
      
 

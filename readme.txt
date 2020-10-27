@@ -1,5 +1,7 @@
 TestApp
 
+IIR implemented in all forms, both fixed and float.
+
 effect initialization in filehandler.c 
 EQ parameters are set in Effect/eq_preset.json
 Generators only support floating point
