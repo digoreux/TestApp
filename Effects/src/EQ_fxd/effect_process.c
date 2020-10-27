@@ -121,47 +121,58 @@ int32_t effect_process(
         /* 
              DIRECT FORM II
         */
-       
-        // for(uint8_t j = 0; j < 10; j++)
-        // {
-        //     s->x0[j].left  = a[i].left;
-        //     s->x0[j].right = a[i].right;
 
-        //     acc = 0;
-        //     acc = add_q63(acc, s->error[j].left);
+        for(uint8_t j = 0; j < 10; j++)
+        {
 
-        //     s->w0[j].left = msub_q31(c->a1[j], s->w1[j].left, s->x0[j].left);
-        //     s->w0[j].left = msub_q31(c->a2[j], s->w2[j].left, s->w0[j].left);
+            s->x0[j].left  = a[i].left;
+            s->x0[j].right = a[i].right;
 
+            /* Feedback state */
+            acc = left_shift_q63((q63)s->x0[j].left, 20);         
+            acc = msub_q31(c->a1[j], s->x1[j].left, acc);            
+            acc = msub_q31(c->a2[j], s->x2[j].left, acc);            
 
-        //     acc =  mac_q31(c->b0[j], s->w0[j].left, acc);
-        //     acc =  mac_q31(c->b1[j], s->w1[j].left, acc);
-        //     acc =  mac_q31(c->b2[j], s->w2[j].left, acc);
+            s->x0[j].left = gethigh(left_shift_q63(acc, 1));      
 
-        //     s->w2[j].left = s->w1[j].left;
-        //     s->w1[j].left = gethigh(s->w0[j].left);
-            
-        //     s->error[j].left = getlow(acc);
-        //     acc = left_shift_q63(acc, 1);  
-        //     a[i].left = gethigh(acc);
+            /* Feedforward state */
+            acc = s->error[j].left;
+            acc = mul_q63(c->b0[j], s->x0[j].left);                  
+            acc = mac_q31(c->b1[j], s->x1[j].left,  acc);            
+            acc = mac_q31(c->b2[j], s->x2[j].left,  acc);            
+    
+            s->x2[j].left  = s->x1[j].left;                          
+            s->x1[j].left  = s->x0[j].left;                          
 
-        //     acc = 0;
-        //     acc =  add_q63(acc, s->error[j].right);
-        //     s->w0[j].right = msub_q31(c->a1[j], s->w1[j].right, s->x0[j].right);
-        //     s->w0[j].right = msub_q31(c->a2[j], s->w2[j].right, s->w0[j].right);
+            /* Output */
+            acc = left_shift_q63(acc, 12);                     
+            s->error[j].left = getlow(acc);
+            a[i].left = gethigh(acc);                          
 
-        //     acc =  mac_q31(c->b0[j], s->w0[j].right, acc);
-        //     acc =  mac_q31(c->b1[j], s->w1[j].right, acc);
-        //     acc =  mac_q31(c->b2[j], s->w2[j].right, acc);
+            /*  RIGHT CHANNEL */
 
-        //     s->w2[j].right = s->w1[j].right;
-        //     s->w1[j].right = gethigh(s->w0[j].right);
+            /* Feedback state */
+            acc = left_shift_q63((q63)s->x0[j].right, 20);         
+            acc = msub_q31(c->a1[j], s->x1[j].right, acc);            
+            acc = msub_q31(c->a2[j], s->x2[j].right, acc);            
 
-        //     s->error[j].right = getlow(acc);
-        //     acc = left_shift_q63(acc, 1);   
-        //     a[i].right = gethigh(acc);
+            s->x0[j].right = gethigh(left_shift_q63(acc, 1));      
 
-        // }       
+            /* Feedforward state */
+            acc = s->error[j].right;
+            acc = mul_q63(c->b0[j], s->x0[j].right);                  
+            acc = mac_q31(c->b1[j], s->x1[j].right,  acc);            
+            acc = mac_q31(c->b2[j], s->x2[j].right,  acc);            
+    
+            s->x2[j].right  = s->x1[j].right;                          
+            s->x1[j].right  = s->x0[j].right;                          
+
+            /* Output */
+            acc = left_shift_q63(acc, 12);                     
+            s->error[j].right = getlow(acc);
+            a[i].right = gethigh(acc);                          
+
+        }       
 
         /* 
              DIRECT FORM I TRANSPOSED
@@ -229,55 +240,55 @@ int32_t effect_process(
              DIRECT FORM II TRANSPOSED
         */
 
-        for (uint8_t j = 0; j < 10; j++)
-        {
+        // for (uint8_t j = 0; j < 10; j++)
+        // {
 
-            s->x0[j].left  = a[i].left;
-            s->x0[j].right = a[i].right;
+        //     s->x0[j].left  = a[i].left;
+        //     s->x0[j].right = a[i].right;
 
-            /* Output */
-            acc = left_shift_q63(s->x1[j].left, 31);                 
-            acc = add_q63(s->error[j].left, acc);
-            acc = mac_q31(c->b0[j], s->x0[j].left, acc);                 
+        //     /* Output */
+        //     acc = left_shift_q63(s->x1[j].left, 31);                 
+        //     acc = add_q63(s->error[j].left, acc);
+        //     acc = mac_q31(c->b0[j], s->x0[j].left, acc);                 
 
-            s->error[j].left = getlow(left_shift_q63(acc, 1));
-            s->y0[j].left = gethigh(left_shift_q63(acc, 1));
-            a[i].left = s->y0[j].left;
+        //     s->error[j].left = getlow(left_shift_q63(acc, 1));
+        //     s->y0[j].left = gethigh(left_shift_q63(acc, 1));
+        //     a[i].left = s->y0[j].left;
 
-            /* State 1 */
-            acc = left_shift_q63(s->x2[j].left, 31);
-            acc =  mac_q31(c->b1[j], s->x0[j].left, acc);
-            acc = msub_q31(c->a1[j], s->y0[j].left, acc);
-            s->x1[j].left = gethigh(left_shift_q63(acc, 1));
+        //     /* State 1 */
+        //     acc = left_shift_q63(s->x2[j].left, 31);
+        //     acc =  mac_q31(c->b1[j], s->x0[j].left, acc);
+        //     acc = msub_q31(c->a1[j], s->y0[j].left, acc);
+        //     s->x1[j].left = gethigh(left_shift_q63(acc, 1));
 
-            /* State 2 */
-            acc =  mul_q63(c->b2[j], s->x0[j].left);
-            acc = msub_q31(c->a2[j], s->y0[j].left, acc);
-            s->x2[j].left = gethigh(left_shift_q63(acc, 1));
+        //     /* State 2 */
+        //     acc =  mul_q63(c->b2[j], s->x0[j].left);
+        //     acc = msub_q31(c->a2[j], s->y0[j].left, acc);
+        //     s->x2[j].left = gethigh(left_shift_q63(acc, 1));
 
 
 
-            /* Output */
-            acc = left_shift_q63(s->x1[j].right, 31);
-            acc = add_q63(s->error[j].right, acc);
-            acc = mac_q31(c->b0[j], s->x0[j].right, acc);
+        //     /* Output */
+        //     acc = left_shift_q63(s->x1[j].right, 31);
+        //     acc = add_q63(s->error[j].right, acc);
+        //     acc = mac_q31(c->b0[j], s->x0[j].right, acc);
 
-            s->error[j].right = getlow(left_shift_q63(acc, 1));
-            s->y0[j].right = gethigh(left_shift_q63(acc, 1));
-            a[i].right = s->y0[j].right;
+        //     s->error[j].right = getlow(left_shift_q63(acc, 1));
+        //     s->y0[j].right = gethigh(left_shift_q63(acc, 1));
+        //     a[i].right = s->y0[j].right;
 
-            /* State 1 */
-            acc = left_shift_q63(s->x2[j].right, 31);
-            acc =  mac_q31(c->b1[j], s->x0[j].right, acc);
-            acc = msub_q31(c->a1[j], s->y0[j].right, acc);
-            s->x1[j].right = gethigh(left_shift_q63(acc, 1));
+        //     /* State 1 */
+        //     acc = left_shift_q63(s->x2[j].right, 31);
+        //     acc =  mac_q31(c->b1[j], s->x0[j].right, acc);
+        //     acc = msub_q31(c->a1[j], s->y0[j].right, acc);
+        //     s->x1[j].right = gethigh(left_shift_q63(acc, 1));
 
-            /* State 2 */
-            acc =  mul_q63(c->b2[j], s->x0[j].right);
-            acc = msub_q31(c->a2[j], s->y0[j].right, acc);
-            s->x2[j].right = gethigh(left_shift_q63(acc, 1));
+        //     /* State 2 */
+        //     acc =  mul_q63(c->b2[j], s->x0[j].right);
+        //     acc = msub_q31(c->a2[j], s->y0[j].right, acc);
+        //     s->x2[j].right = gethigh(left_shift_q63(acc, 1));
 
-        }        
+        // }        
 
     }
     return 0;
