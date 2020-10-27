@@ -46,11 +46,11 @@ int apply_effect(utils_p utils)
     void *states = malloc(ssize);
 
     effect_control_initialize(params, coeffs, 48000);
-    // set_params(params);
-    effect_set_parameter(params, 0, 240);           
-    effect_set_parameter(params, 1, -3);              
-    effect_set_parameter(params, 2, 0.5);              
-    effect_set_parameter(params, 3, 48000);
+    set_params(params);
+    // effect_set_parameter(params, 0, 240);           
+    // effect_set_parameter(params, 1, -3);              
+    // effect_set_parameter(params, 2, 0.5);              
+    // effect_set_parameter(params, 3, 48000);
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);
 

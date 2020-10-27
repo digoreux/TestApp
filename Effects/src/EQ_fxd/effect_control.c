@@ -165,11 +165,11 @@ int32_t effect_update_coeffs(
         c->b1[i] = double2fixed_q((b1[i] / a0[i]), 30);
         c->b2[i] = double2fixed_q((b2[i] / a0[i]), 30);
 
-        // printf("a1[%d]: %d \n",i, c->a1[i]);
-        // printf("a2[%d]: %d \n",i, c->a2[i]);
-        // printf("b0[%d]: %d \n",i, c->b0[i]);
-        // printf("b1[%d]: %d \n",i, c->b1[i]);
-        // printf("b2[%d]: %d \n\n",i, c->b2[i]);
+        printf("a1[%d]: %d \n",i, c->a1[i]);
+        printf("a2[%d]: %d \n",i, c->a2[i]);
+        printf("b0[%d]: %d \n",i, c->b0[i]);
+        printf("b1[%d]: %d \n",i, c->b1[i]);
+        printf("b2[%d]: %d \n\n",i, c->b2[i]);
 
 
     }

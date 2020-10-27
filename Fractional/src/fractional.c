@@ -145,7 +145,7 @@ q31 left_shift_q31(q31 x, q31 n)
     return r;
 }
 
-q31 right_shift(q31 x, q31 n)
+q31 right_shift_q31(q31 x, q31 n)
 {
     q31 r = x >> n;
     assert(n < 32);
@@ -258,7 +258,7 @@ q63 mul_q63(q31 x, q31 y)
 {   
     q63 r = x;
     r *= y;
-    // r = left_shift_q63(r, 1);
+    r = left_shift_q63(r, 1);
     return r;
 }
 

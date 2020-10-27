@@ -10,7 +10,7 @@ add_executable(TestApp
     ../../src/cjson.c)
 
 target_link_libraries(TestApp PRIVATE
-	 IIR_fxd
+	 EQ_fxd
 	 Fractional)
 
 target_include_directories(TestApp PRIVATE ../../inc
