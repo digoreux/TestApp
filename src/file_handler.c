@@ -37,9 +37,9 @@ int apply_effect(utils_p utils)
     effect_control_get_sizes(&psize, &csize);
     effect_process_get_sizes(&ssize);
 
-    printf("coefs:  %d\n", csize);
-    printf("params: %d\n", psize);
-    printf("states: %d\n", ssize);
+    // printf("coefs:  %d\n", csize);
+    // printf("params: %d\n", psize);
+    // printf("states: %d\n", ssize);
 
     void *params = malloc(psize);
     void *coeffs = malloc(csize);
@@ -47,9 +47,9 @@ int apply_effect(utils_p utils)
 
     effect_control_initialize(params, coeffs, 48000);
     set_params(params);
-    // effect_set_parameter(params, 0, 240);           
-    // effect_set_parameter(params, 1, -3);              
-    // effect_set_parameter(params, 2, 0.5);              
+    // effect_set_parameter(params, 0, 1);           
+    // effect_set_parameter(params, 1, 6);              
+    // effect_set_parameter(params, 2, 10);              
     // effect_set_parameter(params, 3, 48000);
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);
@@ -77,7 +77,7 @@ int read_wav(utils_p utils, arg_p a, header_p meta)
     utils->out = fopen(a->output, "wb");
 
     read_header(utils->in, meta);
-    print_header(meta);
+    // print_header(meta);
     write_header(utils->out, meta);
 
     utils->num_samples = 512;  

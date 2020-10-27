@@ -86,12 +86,21 @@ int32_t effect_update_coeffs(
     double cs = cos(omega);
     double alpha = sn / (2 * p->Q);
 
-    double b0 = (1.0 - cs) / 2.0;
-    double b1 =  1.0 - cs;
-    double b2 = (1.0 - cs) / 2.0;
-    double a0 =  1.0 + alpha;
-    double a1 = -2.0 * cs;
-    double a2 =  1.0 - alpha;
+    /* LPF */
+    // double b0 = (1.0 - cs) / 2.0;
+    // double b1 =  1.0 - cs;
+    // double b2 = (1.0 - cs) / 2.0;
+    // double a0 =  1.0 + alpha;
+    // double a1 = -2.0 * cs;
+    // double a2 =  1.0 - alpha;
+
+    /* PEAK */
+    double b0 =  1 + (alpha * A);
+    double b1 = -2 * cs;
+    double b2 =  1 - (alpha * A);
+    double a0 =  1 + (alpha / A);
+    double a1 = -2 * cs;
+    double a2 =  1 - (alpha / A);
 
     printf("a1: %f\n", a1);
     printf("a2: %f\n", a2);
@@ -105,11 +114,11 @@ int32_t effect_update_coeffs(
     c->b1 = double2fixed_q((b1 / a0), 30);
     c->b2 = double2fixed_q((b2 / a0), 30);
 
-    printf("a1: %d\n", c->a1);
-    printf("a2: %d\n", c->a2);
-    printf("b0: %d\n", c->b0);
-    printf("b1: %d\n", c->b1);
-    printf("b2: %d\n", c->b2);
+    // printf("a1: %d\n", c->a1);
+    // printf("a2: %d\n", c->a2);
+    // printf("b0: %d\n", c->b0);
+    // printf("b1: %d\n", c->b1);
+    // printf("b2: %d\n", c->b2);
 
     
     return 0;
