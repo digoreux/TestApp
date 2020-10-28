@@ -486,14 +486,14 @@ flt divnr(flt x, flt y)
 
 flt pow2(flt n) 
 {
-    return powf(2.0, n);
+    return (flt)powf(2.0, n);
 }
 
 flt flog2(flt x)
 {
-    return log2f(x);
+    return (flt)log2f(x);
 }
 
 flt fpow(flt x, flt y) {
-    return powf(x, y);
+    return (flt)powf(x, y);
 }

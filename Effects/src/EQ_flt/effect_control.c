@@ -164,6 +164,12 @@ int32_t effect_update_coeffs(
             break;
         }
 
+        // c->a1[i] = (a1[i] / a0[i]);
+        // c->a2[i] = (a2[i] / a0[i]);
+        // c->b0[i] = (b0[i] / a0[i]);
+        // c->b1[i] = (b1[i] / a0[i]);
+        // c->b2[i] = (b2[i] / a0[i]);
+
         c->a1[i] = (float)(a1[i] / a0[i]);
         c->a2[i] = (float)(a2[i] / a0[i]);
         c->b0[i] = (float)(b0[i] / a0[i]);
@@ -176,10 +182,16 @@ int32_t effect_update_coeffs(
         // printf("b0[%d]: %f \n",i, c->b0[i]);
         // printf("b1[%d]: %f \n",i, c->b1[i]);
         // printf("b2[%d]: %f \n\n",i, c->b2[i]);
-
+        
         
 
     }
+        printf("a0: %f \n", a0[0]);
+        printf("a1: %f \n", c->a1[0]);
+        printf("a2: %f \n", c->a2[0]);
+        printf("b0: %f \n", c->b0[0]);
+        printf("b1: %f \n", c->b1[0]);
+        printf("b2: %f \n", c->b2[0]);
 
     return 0;
 }

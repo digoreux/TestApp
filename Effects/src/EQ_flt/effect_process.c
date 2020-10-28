@@ -87,7 +87,7 @@ int32_t effect_process(
                     acc = msubf(c->a1[j], s->y1[j].left, acc);
                     acc = msubf(c->a2[j], s->y2[j].left, acc);
 
-                    a[i].left = acc;
+                    a[i].left = acc;    
 
                     s->x2[j].left = s->x1[j].left;
                     s->x1[j].left = s->x0[j].left;
@@ -150,7 +150,6 @@ int32_t effect_process(
         case 2:  /* DIRECT FORM I TRANSPOSED */
             for (size_t i = 0; i < samples_count; i++)
             { 
-            
                 for(uint8_t j = 0; j < 10; j++)
                 {
                     s->x0[j].left  = addf(a[i].left,  s->y1[j].left);
@@ -178,7 +177,6 @@ int32_t effect_process(
                     s->y2[j].right = mulf(negf(c->a2[j]), s->x0[j].right);
 
                     a[i].right  = acc;
-
                 }  
             }  
             break;
@@ -198,7 +196,7 @@ int32_t effect_process(
                     s->x2[j].left =  mulf(c->b2[j], s->x0[j].left);
                     s->x2[j].left = msubf(c->a2[j], s->y0[j].left, s->x2[j].left);
 
-                    a[i].left = s->y0[j].left;
+                    a[i].left = (float)s->y0[j].left;
 
 
 

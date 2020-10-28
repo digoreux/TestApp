@@ -173,11 +173,11 @@ int32_t effect_update_coeffs(
             break;
         }
         c->a0[i] = double2fixed_q( a0[i], 30);
-        c->a1[i] = double2fixed_q((a1[i] / a0[i]), 30);
-        c->a2[i] = double2fixed_q((a2[i] / a0[i]), 30);
-        c->b0[i] = double2fixed_q((b0[i] / a0[i]), 30);
-        c->b1[i] = double2fixed_q((b1[i] / a0[i]), 30);
-        c->b2[i] = double2fixed_q((b2[i] / a0[i]), 30);
+        c->a1[i] = double2fixed_q((a1[i] / a0[i]), 28);
+        c->a2[i] = double2fixed_q((a2[i] / a0[i]), 28);
+        c->b0[i] = double2fixed_q((b0[i] / a0[i]), 28);
+        c->b1[i] = double2fixed_q((b1[i] / a0[i]), 28);
+        c->b2[i] = double2fixed_q((b2[i] / a0[i]), 28);
 
         // printf("a0[%d]: %lf \n", i, a0[i]);
         // printf("a1[%d]: %d \n",  i, c->a1[i]);
@@ -185,10 +185,14 @@ int32_t effect_update_coeffs(
         // printf("b0[%d]: %d \n",  i, c->b0[i]);
         // printf("b1[%d]: %d \n",  i, c->b1[i]);
         // printf("b2[%d]: %d \n\n",i, c->b2[i]);
-
-
     }
 
+        printf("a0: %lf \n", a0[0]);
+        printf("a1: %lf \n", a1[0]);
+        printf("a2: %lf \n", a2[0]);
+        printf("b0: %lf \n", b0[0]);
+        printf("b1: %lf \n", b1[0]);
+        printf("b2: %lf \n", b2[0]);
     return 0;
 }
 
