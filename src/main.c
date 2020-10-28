@@ -27,6 +27,7 @@ int main(int argc, char **argv)
     if (a->input)   read_wav(utils, a, meta);
     if (a->gen_opts) gen_wav(utils, a, meta);
 
+    printf("FORM: %d \n", utils->form);
     // test_fractional();
 
     free(a);
@@ -34,4 +35,4 @@ int main(int argc, char **argv)
     return 0;
 }
 
-
+  

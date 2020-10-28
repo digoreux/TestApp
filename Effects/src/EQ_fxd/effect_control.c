@@ -4,11 +4,12 @@
 #define M_PI  3.14159265358979323846
 
 typedef enum {
-	LP = 0,
-	HP = 1,
+	LP   = 0,
+	HP   = 1,
 	PEAK = 2,
 	LSH  = 3,
 	HSH	 = 4,
+    OFF  = 5
 } filter_types;
 
 typedef struct param_s {
@@ -18,6 +19,7 @@ typedef struct param_s {
 
 
 typedef struct params_s {
+    uint8_t form;
     double sample_rate;
     param_t  freq[10]; 
     param_t  gain[10]; 
@@ -27,6 +29,7 @@ typedef struct params_s {
 
 
 typedef struct coeffs_s {
+    q31 form;
     q31 b0[10];
     q31 b1[10];
     q31 b2[10];
@@ -56,6 +59,7 @@ int32_t effect_control_initialize(
     coeffs_t * c = (coeffs_t*)coeffs;
     params_t * p = (params_t*)params;
 
+    p->form = 0;
     p->sample_rate = sample_rate;
     for (size_t i = 0; i < 10; i++)
     {
@@ -85,6 +89,7 @@ int32_t effect_set_parameter(
     float       value)
 {   
     params_t * p = (params_t*)params;
+    if(id == 41) p->form = (int)value;
     if(id == 40) p->sample_rate = value;
     for(int i = 0; i < 10; i++) 
     {
@@ -106,9 +111,10 @@ int32_t effect_update_coeffs(
 
     coeffs_t * c = (coeffs_t*)coeffs;
     params_t * p = (params_t*)params;
+    c->form = p->form;
 
     for (size_t i = 0; i < 10; i++) 
-    {
+    {   
         A[i] = pow(10, p->gain[i].value / 40);
         omega[i] = 2 * M_PI * p->freq[i].value / p->sample_rate;
         sn[i] = sin(omega[i]);
@@ -157,19 +163,28 @@ int32_t effect_update_coeffs(
             a1[i] = ((A[i] - 1) - (A[i] + 1) * cs[i]) * 2;
             a2[i] =  (A[i] + 1) - (A[i] - 1) * cs[i] - beta[i] * sn[i];
             break;
+        case OFF:
+            b0[i] = 0;
+            b1[i] = 0;
+            b2[i] = 0;
+            a0[i] = 0;
+            a1[i] = 0;
+            a2[i] = 0;
+            break;
         }
-
+        c->a0[i] = double2fixed_q( a0[i], 30);
         c->a1[i] = double2fixed_q((a1[i] / a0[i]), 30);
         c->a2[i] = double2fixed_q((a2[i] / a0[i]), 30);
         c->b0[i] = double2fixed_q((b0[i] / a0[i]), 30);
         c->b1[i] = double2fixed_q((b1[i] / a0[i]), 30);
         c->b2[i] = double2fixed_q((b2[i] / a0[i]), 30);
 
-        printf("a1[%d]: %d \n",i, c->a1[i]);
-        printf("a2[%d]: %d \n",i, c->a2[i]);
-        printf("b0[%d]: %d \n",i, c->b0[i]);
-        printf("b1[%d]: %d \n",i, c->b1[i]);
-        printf("b2[%d]: %d \n\n",i, c->b2[i]);
+        // printf("a0[%d]: %lf \n", i, a0[i]);
+        // printf("a1[%d]: %d \n",  i, c->a1[i]);
+        // printf("a2[%d]: %d \n",  i, c->a2[i]);
+        // printf("b0[%d]: %d \n",  i, c->b0[i]);
+        // printf("b1[%d]: %d \n",  i, c->b1[i]);
+        // printf("b2[%d]: %d \n\n",i, c->b2[i]);
 
 
     }

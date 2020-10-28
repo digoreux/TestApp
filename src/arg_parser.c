@@ -23,6 +23,8 @@ void get_args(int argc, char ** argv, arg_p a) {
             a->filter_params = argv[++i];
         if (!strcmp(argv[i], "--gen"))
             a->gen_opts = argv[++i];
+        if (!strcmp(argv[i], "--form"))
+            a->form = atoi(argv[++i]);
     }
 
      if (a->gen_opts != NULL)

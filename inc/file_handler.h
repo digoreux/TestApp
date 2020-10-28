@@ -38,6 +38,7 @@ typedef struct utils_s
     uint32_t buff_size;
     uint32_t num_samples;
     uint8_t reading;
+    uint8_t form;         // 0=DF1, 1=DF1t, 2=DF2, 3=DF2t
 } utils_t;
 
 typedef struct utils_s* utils_p;

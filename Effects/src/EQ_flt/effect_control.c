@@ -18,6 +18,7 @@ typedef struct param_s {
 
 
 typedef struct params_s {
+    uint8_t form;
     double sample_rate;
     param_t  freq[10]; 
     param_t  gain[10]; 
@@ -27,6 +28,7 @@ typedef struct params_s {
 
 
 typedef struct coeffs_s {
+    uint8_t form;
     flt  b0[10];
     flt  b1[10];
     flt  b2[10];
@@ -56,6 +58,7 @@ int32_t effect_control_initialize(
     coeffs_t * c = (coeffs_t*)coeffs;
     params_t * p = (params_t*)params;
 
+    p->form = 0;
     p->sample_rate = sample_rate;
     for (size_t i = 0; i < 10; i++)
     {
@@ -84,7 +87,9 @@ int32_t effect_set_parameter(
     int32_t     id,
     float       value)
 {   
+
     params_t * p = (params_t*)params;
+    if(id == 41) p->form = (int)value;
     if(id == 40) p->sample_rate = value;
     for(int i = 0; i < 10; i++) 
     {
@@ -106,7 +111,7 @@ int32_t effect_update_coeffs(
 
     coeffs_t * c = (coeffs_t*)coeffs;
     params_t * p = (params_t*)params;
-
+    c->form = p->form;
     for (size_t i = 0; i < 10; i++) 
     {
         A[i] = pow(10, p->gain[i].value / 40);
@@ -165,7 +170,7 @@ int32_t effect_update_coeffs(
         c->b1[i] = (float)(b1[i] / a0[i]);
         c->b2[i] = (float)(b2[i] / a0[i]);
 
-        // printf("a0[%d]: %f \n",i, c->a0[i]);
+        // printf("a0[%d]: %f \n",i, a0[i]);
         // printf("a1[%d]: %f \n",i, c->a1[i]);
         // printf("a2[%d]: %f \n",i, c->a2[i]);
         // printf("b0[%d]: %f \n",i, c->b0[i]);

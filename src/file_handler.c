@@ -47,6 +47,7 @@ int apply_effect(utils_p utils)
 
     effect_control_initialize(params, coeffs, 48000);
     set_params(params);
+    effect_set_parameter(params, 41, utils->form);
     // effect_set_parameter(params, 0, 1);           
     // effect_set_parameter(params, 1, 6);              
     // effect_set_parameter(params, 2, 10);              
@@ -84,6 +85,7 @@ int read_wav(utils_p utils, arg_p a, header_p meta)
     utils->buff_size = (utils->num_samples * meta->block_align);
     utils->buffer = malloc(utils->buff_size);
     utils->reading = 1;
+    utils->form = a->form;
     
     apply_effect(utils);
 

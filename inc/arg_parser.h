@@ -20,6 +20,7 @@ typedef struct args_s {
     char *type;
     char *gen_fmt;
     filter_params_t *filter_params;
+    uint8_t form;
 
     float gaindb;
     float gain_value;
