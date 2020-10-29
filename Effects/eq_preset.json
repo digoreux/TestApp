@@ -1,12 +1,12 @@
 {   
     "name":"EQUILIZER PARAMETERS",
-    "hint":"0=LP, 1=HP, 2=PEAK, 3=LSH, 4=HSH, 5=OFF",
+    "type":"0=LP, 1=HP, 2=PEAK, 3=LSH, 4=HSH, 5=OFF",
     "eq_params":
     [
-        { "id"  : 0, "val" : 20,    "name": "1_freq" },
-        { "id"  : 1, "val" : 3,    "name": "1_gain" }, 
-        { "id"  : 2, "val" : 3,   "name": "1_Q" },
-        { "id"  : 3, "val" : 4,     "name": "1_type" },
+        { "id"  : 0, "val" : 1000,    "name": "1_freq" },
+        { "id"  : 1, "val" : 12,     "name": "1_gain" }, 
+        { "id"  : 2, "val" : 6,   "name": "1_Q"    },
+        { "id"  : 3, "val" : 2,     "name": "1_type" },
  
         { "id"  : 4, "val" : 250,  "name": "2_freq" },
         { "id"  : 5, "val" : -6,   "name": "2_gain" }, 

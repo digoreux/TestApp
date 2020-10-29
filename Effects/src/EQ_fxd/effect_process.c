@@ -7,8 +7,8 @@
 #define OUT_SHIFT (12 + K)         // Q51 << 12 = Q63 >> 32 = Q31 (output)
 #define SCALE 3                    // Q51 <<  1 = Q52 >> 32 = Q20 (states from acc)
 
-#define T_K 10
-#define T_IN_SHIFT  (9 + T_K)            // Q31 >> 11 = Q20 (input to acc)
+#define T_K K
+#define T_IN_SHIFT  (9 + T_K)             // Q31 >> 11 = Q20 (input to acc)
 #define T_OUT_SHIFT (12 + T_K)            // Q51 << 12 = Q63 >> 32 = Q31 (output)
 #define T_SHIFT      29                   // Q20 << 31 = Q51 (states to acc)
 
@@ -161,7 +161,7 @@ int32_t effect_process(
 
                     /* Output */
                     acc = left_shift_q63(acc, OUT_SHIFT);                     
-                    s->error[j].left = getlow(acc);
+                    s->error[j].left = getlow(acc); 
                     a[i].left = gethigh(acc);                          
 
                     /*  RIGHT CHANNEL */

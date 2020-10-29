@@ -9,8 +9,10 @@ add_executable(TestApp
     ../../src/arg_parser.c
     ../../src/cjson.c)
 
+set(EXECUTABLE_OUTPUT_PATH C:/Users/Intern/Desktop/TestApp)
+
 target_link_libraries(TestApp PRIVATE
-	 EQ_fxd
+	 EQ_flt
 	 Fractional)
 
 target_include_directories(TestApp PRIVATE ../../inc

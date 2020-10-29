@@ -171,7 +171,7 @@ int create_header(header_p meta, float sampleRate, size_t length)
     uint32_t sample_rate = (uint32_t)sampleRate;
     uint16_t block_align = 8;
     uint32_t byte_rate = sample_rate * block_align;
-    uint16_t bits_per_sample = 32;
+    uint16_t bits_per_sample = block_align * 4;
 
     size_t num_samples = sample_rate / 1000;  // samples per second
     uint32_t subchunk2_size = num_samples * length * block_align;

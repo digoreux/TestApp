@@ -1,8 +1,6 @@
 TestApp
 
-IIR implemented in all forms, both fixed and float.
-
-effect initialization in filehandler.c 
+Effect initialization in filehandler.c 
 EQ parameters are set in Effect/eq_preset.json
 Generators only support floating point
 to change effect - configure CMakeLists in build and build/TestApp.
@@ -13,6 +11,9 @@ to change effect - configure CMakeLists in build and build/TestApp.
 
 --generator sample_rate,time(sec),type:parameters
 
+--form (0-3)
+
+form: DFI = 0, DFII = 1, DFIt = 2, DFIIt = 3
 generator type:
 
 delta      
