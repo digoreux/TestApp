@@ -12,7 +12,7 @@ add_executable(TestApp
 set(EXECUTABLE_OUTPUT_PATH C:/Users/Intern/Desktop/TestApp)
 
 target_link_libraries(TestApp PRIVATE
-	 EQ_flt
+	 EQ_fxd
 	 Fractional)
 
 target_include_directories(TestApp PRIVATE ../../inc

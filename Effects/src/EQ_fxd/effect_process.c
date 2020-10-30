@@ -2,7 +2,7 @@
 #include "effect_control.h"
 #include "fractional.h"
 
-#define K 10
+#define K 0
 #define IN_SHIFT  (20 - K)         // Q31 << 20 = Q51 (input to acc)
 #define OUT_SHIFT (12 + K)         // Q51 << 12 = Q63 >> 32 = Q31 (output)
 #define SCALE 3                    // Q51 <<  1 = Q52 >> 32 = Q20 (states from acc)
@@ -201,7 +201,7 @@ int32_t effect_process(
                     s->x0[j].right = add_q31(right_shift_q31(a[i].right, T_IN_SHIFT), s->y1[j].right);    
 
                     /* Output */
-                    acc = s->error[j].left;
+                    // acc = s->error[j].left;
                     acc = left_shift_q63(s->x1[j].left, T_SHIFT);                        
                     acc = mac_q31(c->b0[j], s->x0[j].left, acc);                       
 
@@ -269,6 +269,7 @@ int32_t effect_process(
                     acc = add_q63(s->error[j].left, acc);
                     acc = mac_q31(c->b0[j], s->x0[j].left, acc);                 
 
+                    // s->error[j].left = getlow(left_shift_q63(acc, SCALE));
                     s->error[j].left = getlow(acc);
                     s->y0[j].left = gethigh(left_shift_q63(acc, SCALE));
                     a[i].left = s->y0[j].left;
@@ -291,7 +292,7 @@ int32_t effect_process(
                     acc = add_q63(s->error[j].right, acc);
                     acc = mac_q31(c->b0[j], s->x0[j].right, acc);
 
-                    s->error[j].right = getlow(left_shift_q63(acc, SCALE));
+                    s->error[j].right = getlow(acc);
                     s->y0[j].right = gethigh(left_shift_q63(acc, SCALE));
                     a[i].right = s->y0[j].right;
 
