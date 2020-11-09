@@ -1,25 +1,38 @@
 TestApp
 
-IIR implemented in all forms, both fixed and float.
-
-effect initialization in filehandler.c 
 EQ parameters are set in Effect/eq_preset.json
-Generators only support floating point
-to change effect - configure CMakeLists in build and build/TestApp.
 
---in <path-to-file>
+--in  <path-to-file>
 
 --out <path-to-file>
 
---generator sample_rate,time(sec),type:parameters
+--gen <sample_rate>,<time(msec)>,<type>:[parameters] - Generate specific signal <type>
+                                                       in IEEE 754 format
+                                                       with coresponding [parameters]
 
-generator type:
+-f  generate in PCM format.
+-e  apply effect to generated signal.
 
-delta      
-step
-square:period(ms),amp
-noise:amp
-sine:frequency,amp
-chirp_log:start_frequency,end_frequency,amp
-chirp_lin:start_frequency,end_frequency,amp
-sweep:frequency, start_db, end_db
+Generator type and coresponding parameters:
+
+<delta> - Dirak delta function
+
+<step>  - Step function 
+
+<noise>:[amp] - White noise, amplitude in dB.
+
+<square>:[period(ms),amp] - Square signal, period in ms, amplitude in dB. 
+
+<sine>:[frequency,amp] - Sine signal, frequency in Hz, amplitude in dB.
+
+<chirp_log>:[start_frequency,end_frequency,amp] - Sine logarithmic frequency sweep, 
+                                                  frequency start/end in Hz, 
+                                                  amplitude in dB.
+
+<chirp_lin>:[start_frequency,end_frequency,amp] - Sine linear frequency sweep, 
+                                                  frequency start/end in Hz, 
+                                                  amplitude in dB.
+
+<sweep>:[frequency, start_db, end_db] - Sine linear level sweep, 
+                                        frequency in Hz, 
+                                        amplitude start/end in dB.

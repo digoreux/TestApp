@@ -3,7 +3,8 @@
 int set_params(void * params)
 {   
     
-    FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
+    FILE * js = fopen("../Effects/eq_preset.json", "r");
+    // FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
     
     fseek(js, 0, SEEK_END);
     size_t size = ftell(js);
@@ -47,10 +48,6 @@ int apply_effect(utils_p utils)
 
     effect_control_initialize(params, coeffs, 48000);
     set_params(params);
-    // effect_set_parameter(params, 0, 1);           
-    // effect_set_parameter(params, 1, 6);              
-    // effect_set_parameter(params, 2, 10);              
-    // effect_set_parameter(params, 3, 48000);
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);
 
@@ -79,7 +76,6 @@ int read_wav(utils_p utils, arg_p a, header_p meta)
     read_header(utils->in, meta);
     // print_header(meta);
     write_header(utils->out, meta);
-
     utils->num_samples = 512;  
     utils->buff_size = (utils->num_samples * meta->block_align);
     utils->buffer = malloc(utils->buff_size);
@@ -98,8 +94,8 @@ int read_wav(utils_p utils, arg_p a, header_p meta)
 int gen_wav(utils_p utils, arg_p a, header_p meta)
 {
     utils->out = fopen(a->output, "wb");
-    create_header(meta, a->sample_rate, a->time);
-    print_header(meta);
+    create_header(meta, a);
+    // print_header(meta);
     write_header(utils->out, meta);
 
     utils->num_samples = (meta->sample_rate / 1000) * a->time;
@@ -107,7 +103,8 @@ int gen_wav(utils_p utils, arg_p a, header_p meta)
     utils->buffer = malloc(utils->buff_size);
 
     generator(utils->buffer, utils->num_samples, a->type, a);
-    apply_effect(utils);
+    if(a->effect_on) apply_effect(utils);
+    else fwrite(utils->buffer, utils->buff_size, 1, utils->out);
 
     fclose(utils->out);
     free(utils->buffer);
@@ -161,18 +158,19 @@ int write_header(FILE * out, header_p meta)
     return 0;
 }
 
-int create_header(header_p meta, float sampleRate, size_t length)
+int create_header(header_p meta, arg_p a)
 {   
     uint32_t subchunk1_size = 16;
     uint16_t audio_format = 3;
+    if(!strcmp(a->gen_fmt, "fxd")) audio_format = 1;
     uint16_t num_channels = 2;
-    uint32_t sample_rate = (uint32_t)sampleRate;
+    uint32_t sample_rate = (uint32_t)a->sample_rate;
     uint16_t block_align = 8;
     uint32_t byte_rate = sample_rate * block_align;
     uint16_t bits_per_sample = 32;
 
     size_t num_samples = sample_rate / 1000;  // samples per second
-    uint32_t subchunk2_size = num_samples * length * block_align;
+    uint32_t subchunk2_size = num_samples * a->time * block_align;
     uint32_t chunk_size = 36 + subchunk2_size;
 
     meta->chunk_id[0] = 'R';
@@ -224,11 +222,5 @@ void print_header(header_p meta)
     printf("==============================================\n");
     printf("Subchunk2 id: %c%c%c%c\n", meta->subchunk2_id[0], meta->subchunk2_id[1], meta->subchunk2_id[2], meta->subchunk2_id[3]);
     printf("Subchunk2 size: %d\n", meta->subchunk2_size);
-}
-
-int get_fmt(header_p meta)
-{
-    if (meta->audio_format == 1) return 1;
-    else return 0;
 }
 

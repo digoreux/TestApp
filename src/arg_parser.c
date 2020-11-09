@@ -5,10 +5,8 @@ void get_args(int argc, char ** argv, arg_p a) {
     a->input = NULL;
     a->output = NULL;
     a->gen_opts = NULL;
-    a->filter_params = NULL;
-
-       filter_params_t * p = malloc(sizeof(filter_params_t));
-
+    a->gen_fmt = "flt";
+    a->effect_on = 0;
     for (int i = 1; i < argc; i++)
     {   
         if (!strcmp(argv[i], "--in"))
@@ -17,10 +15,10 @@ void get_args(int argc, char ** argv, arg_p a) {
             a->output = argv[++i];
         if (!strcmp(argv[i], "--gain"))
             a->gain_value = (float)atof(argv[++i]);
-        if (!strcmp(argv[i], "--fxd"));
-            a->gen_fmt = "fxd";            
-        if (!strcmp(argv[i], "--iir"))
-            a->filter_params = argv[++i];
+        if (!strcmp(argv[i], "-f"))
+             a->gen_fmt = "fxd";    
+        if (!strcmp(argv[i], "-e"))
+            a->effect_on = 1;
         if (!strcmp(argv[i], "--gen"))
             a->gen_opts = argv[++i];
     }
@@ -29,14 +27,14 @@ void get_args(int argc, char ** argv, arg_p a) {
     { 
         char * token = strtok(a->gen_opts, ",:");
 
-        a->sample_rate = (float)atof(token);
+        a->sample_rate = (float)atof(token);  
         token = strtok(NULL, ",:");
         a->time = atoi(token);
         token = strtok(NULL, ",:");
         a->type = token;
         token = strtok(NULL, ",:");
 
-        if (!strcmp(a->type, "white_noise")) {
+        if (!strcmp(a->type, "noise")) {
             a->dbamp = (float)atof(token);
         }
         if (!strcmp(a->type, "sine")) {
@@ -65,5 +63,4 @@ void get_args(int argc, char ** argv, arg_p a) {
             a->end_amp = (float)atof(token);
         }
     }
-    // a->filter_params = p;
 }

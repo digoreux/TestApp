@@ -47,11 +47,9 @@ int read_header(FILE * in, header_p meta);
 
 int write_header(FILE * out, header_p meta);
 
-int create_header(header_p meta, float sampleRate, size_t length);
+int create_header(header_p meta, arg_p a);
 
 void print_header(header_p meta);
-
-int get_fmt(header_p meta);
 
 int apply_effect(utils_p utils);
 

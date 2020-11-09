@@ -13,6 +13,8 @@ target_link_libraries(TestApp PRIVATE
 	 EQ_fxd
 	 Fractional)
 
+set(EXECUTABLE_OUTPUT_PATH ../../../)
+
 target_include_directories(TestApp PRIVATE ../../inc
 	 ../../Effects/inc
 	 ../../Fractional/inc)

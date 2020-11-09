@@ -1,9 +1,5 @@
 #include "generator.h"
 
-typedef struct stereo_s {
-    float left;
-    float right;
-} stereo_t;
 
 int gen_white_noise(void * buffer, size_t sample_count, float dbamp)
 {   
@@ -167,5 +163,18 @@ void generator(void * buffer, size_t sample_count, char * type, arg_p a)
     }
     if (!strcmp(type, "sweep")) {
         gen_level_sweep(buffer, sample_count, a->freq, a->st_amp, a->end_amp, a->sample_rate);
+    }
+    if(!strcmp(a->gen_fmt, "fxd")) {
+        printf("\nCreating PCM file.");
+        gen_fxd(buffer, sample_count);
+    }
+    printf("\nDone! %s has been created!\n\n", type);
+}
+
+void gen_fxd(void * buffer, size_t sample_count)
+{        
+    for(size_t i = 0; i < sample_count * 2; i++)
+    {
+        ((q31*)buffer)[i] = float2fixed_q31(((float*)buffer)[i]);
     }
 }

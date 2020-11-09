@@ -4,11 +4,12 @@
 #define M_PI  3.14159265358979323846
 
 typedef enum {
-	LP = 0,
-	HP = 1,
+	LP   = 0,
+	HP   = 1,
 	PEAK = 2,
 	LSH  = 3,
 	HSH	 = 4,
+    OFF  = 5
 } filter_types;
 
 typedef struct param_s {
@@ -67,7 +68,7 @@ int32_t effect_control_initialize(
         p->freq[i].value = 0;
         p->gain[i].value = 0;
         p->Q[i].value    = 0;
-        p->type[i].value = 0;
+        p->type[i].value = 5;
 
         c->b0[i] = 0;
         c->b1[i] = 0;
@@ -157,20 +158,34 @@ int32_t effect_update_coeffs(
             a1[i] = ((A[i] - 1) - (A[i] + 1) * cs[i]) * 2;
             a2[i] =  (A[i] + 1) - (A[i] - 1) * cs[i] - beta[i] * sn[i];
             break;
+        case OFF:
+            b0[i] = 0;
+            b1[i] = 0;
+            b2[i] = 0;
+            a0[i] = 0;
+            a1[i] = 0;
+            a2[i] = 0;
+            break;
         }
 
-        c->a1[i] = double2fixed_q((a1[i] / a0[i]), 30);
-        c->a2[i] = double2fixed_q((a2[i] / a0[i]), 30);
-        c->b0[i] = double2fixed_q((b0[i] / a0[i]), 30);
-        c->b1[i] = double2fixed_q((b1[i] / a0[i]), 30);
-        c->b2[i] = double2fixed_q((b2[i] / a0[i]), 30);
+        a1[i] /= a0[i];
+        a2[i] /= a0[i];
+        b0[i] /= a0[i];
+        b1[i] /= a0[i];
+        b2[i] /= a0[i];
 
-        printf("a1[%d]: %d \n",i, c->a1[i]);
-        printf("a2[%d]: %d \n",i, c->a2[i]);
-        printf("b0[%d]: %d \n",i, c->b0[i]);
-        printf("b1[%d]: %d \n",i, c->b1[i]);
-        printf("b2[%d]: %d \n\n",i, c->b2[i]);
+        c->a0[i] = double2fixed_q((a0[i] / 8), 31);
+        c->a1[i] = double2fixed_q((a1[i] / 8), 31);
+        c->a2[i] = double2fixed_q((a2[i] / 8), 31);
+        c->b0[i] = double2fixed_q((b0[i] / 8), 31);
+        c->b1[i] = double2fixed_q((b1[i] / 8), 31);
+        c->b2[i] = double2fixed_q((b2[i] / 8), 31);
 
+        // printf("a1[%d]: %d \n",i, c->a1[i]);
+        // printf("a2[%d]: %d \n",i, c->a2[i]);
+        // printf("b0[%d]: %d \n",i, c->b0[i]);
+        // printf("b1[%d]: %d \n",i, c->b1[i]);
+        // printf("b2[%d]: %d \n\n",i, c->b2[i]);
 
     }
 

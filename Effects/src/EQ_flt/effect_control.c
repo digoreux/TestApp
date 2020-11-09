@@ -4,11 +4,12 @@
 #define M_PI  3.14159265358979323846
 
 typedef enum {
-	LP = 0,
-	HP = 1,
+	LP   = 0,
+	HP   = 1,
 	PEAK = 2,
 	LSH  = 3,
 	HSH	 = 4,
+    OFF  = 5
 } filter_types;
 
 typedef struct param_s {
@@ -157,22 +158,29 @@ int32_t effect_update_coeffs(
             a1[i] = ((A[i] - 1) - (A[i] + 1) * cs[i]) * 2;
             a2[i] =  (A[i] + 1) - (A[i] - 1) * cs[i] - beta[i] * sn[i];
             break;
+        case OFF:
+            b0[i] = 0;
+            b1[i] = 0;
+            b2[i] = 0;
+            a0[i] = 0;
+            a1[i] = 0;
+            a2[i] = 0;
+            break;
         }
 
+        c->a0[i] = (float)a0[i];
         c->a1[i] = (float)(a1[i] / a0[i]);
         c->a2[i] = (float)(a2[i] / a0[i]);
         c->b0[i] = (float)(b0[i] / a0[i]);
         c->b1[i] = (float)(b1[i] / a0[i]);
         c->b2[i] = (float)(b2[i] / a0[i]);
 
-        // printf("a0[%d]: %f \n",i, c->a0[i]);
-        // printf("a1[%d]: %f \n",i, c->a1[i]);
-        // printf("a2[%d]: %f \n",i, c->a2[i]);
-        // printf("b0[%d]: %f \n",i, c->b0[i]);
-        // printf("b1[%d]: %f \n",i, c->b1[i]);
-        // printf("b2[%d]: %f \n\n",i, c->b2[i]);
-
-        
+        printf("a0[%d]: %f \n",i, c->a0[i]);
+        printf("a1[%d]: %f \n",i, c->a1[i]);
+        printf("a2[%d]: %f \n",i, c->a2[i]);
+        printf("b0[%d]: %f \n",i, c->b0[i]);
+        printf("b1[%d]: %f \n",i, c->b1[i]);
+        printf("b2[%d]: %f \n\n",i, c->b2[i]);
 
     }
 

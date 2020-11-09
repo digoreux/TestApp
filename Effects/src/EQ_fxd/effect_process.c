@@ -2,15 +2,6 @@
 #include "effect_control.h"
 #include "fractional.h"
 
-#define K 10
-#define IN_SHIFT  (20 - K)         // Q31 << 20 = Q51 (input to acc)
-#define OUT_SHIFT (12 + K)         // Q51 << 12 = Q63 >> 32 = Q31 (output)
-#define SCALE 1                    // Q51 <<  1 = Q52 >> 32 = Q20 (states from acc)
-
-#define T_K 10
-#define T_IN_SHIFT  (11 + T_K)            // Q31 >> 11 = Q20 (input to acc)
-#define T_OUT_SHIFT (12 + T_K)            // Q51 << 12 = Q63 >> 32 = Q31 (output)
-#define T_SHIFT      31                   // Q20 << 31 = Q51 (states to acc)
 
 typedef struct stereo {
     q31 left;
@@ -70,7 +61,7 @@ int32_t effect_reset(
     return 0;
 }
 
-int32_t effect_process(
+int32_t effect_process( 
     void const* coeffs,
     void*       states,
     void*       audio,
@@ -83,223 +74,48 @@ int32_t effect_process(
 
     for (size_t i = 0; i < samples_count; i++)
     {   
+        for(size_t j = 0; j < 10; j++)  
+        {   
+            if(c->a0[j] != 0)
+            {
+                s->x0[j].left  = a[i].left;
+                s->x0[j].right = a[i].right;
 
-        /* 
-             DIRECT FORM I
-        */
+                acc =  0;
+                acc =  add_q63(acc, s->error[j].left);
+                acc =  mac_q31(c->b0[j], s->x0[j].left, acc);
+                acc =  mac_q31(c->b1[j], s->x1[j].left, acc);
+                acc =  mac_q31(c->b2[j], s->x2[j].left, acc);
+                acc = msub_q31(c->a1[j], s->y1[j].left, acc);
+                acc = msub_q31(c->a2[j], s->y2[j].left, acc);
 
-        // for(size_t j = 0; j < 10; j++)
-        // {
-        //     s->x0[j].left  = a[i].left;
-        //     s->x0[j].right = a[i].right;
+                s->error[j].left = getlow(acc);
+                acc = left_shift_q63(acc, 3);              
+                a[i].left = gethigh(acc);
 
-        //     acc =  0;
-        //     acc =  add_q63(acc, s->error[j].left);
-        //     acc =  mac_q31(c->b0[j], s->x0[j].left, acc);
-        //     acc =  mac_q31(c->b1[j], s->x1[j].left, acc);
-        //     acc =  mac_q31(c->b2[j], s->x2[j].left, acc);
-        //     acc = msub_q31(c->a1[j], s->y1[j].left, acc);
-        //     acc = msub_q31(c->a2[j], s->y2[j].left, acc);
+                s->x2[j].left = s->x1[j].left;
+                s->x1[j].left = s->x0[j].left;
+                s->y2[j].left = s->y1[j].left;
+                s->y1[j].left = gethigh(acc); 
 
-        //     s->error[j].left = getlow(acc);
-        //     acc = left_shift_q63(acc, 1);               // compensate Q30 coeffs
-        //     a[i].left = gethigh(acc);
+                acc = 0;
+                acc =  add_q63(acc, s->error[j].right);
+                acc =  mac_q31(c->b0[j], s->x0[j].right, acc);
+                acc =  mac_q31(c->b1[j], s->x1[j].right, acc);
+                acc =  mac_q31(c->b2[j], s->x2[j].right, acc);
+                acc = msub_q31(c->a1[j], s->y1[j].right, acc);
+                acc = msub_q31(c->a2[j], s->y2[j].right, acc);
 
-        //     s->x2[j].left = s->x1[j].left;
-        //     s->x1[j].left = s->x0[j].left;
-        //     s->y2[j].left = s->y1[j].left;
-        //     s->y1[j].left = gethigh(acc); 
+                s->error[j].right = getlow(acc);
+                acc = left_shift_q63(acc, 3);               
+                a[i].right = gethigh(acc);
 
-        //     acc = 0;
-        //     acc =  add_q63(acc, s->error[j].right);
-        //     acc =  mac_q31(c->b0[j], s->x0[j].right, acc);
-        //     acc =  mac_q31(c->b1[j], s->x1[j].right, acc);
-        //     acc =  mac_q31(c->b2[j], s->x2[j].right, acc);
-        //     acc = msub_q31(c->a1[j], s->y1[j].right, acc);
-        //     acc = msub_q31(c->a2[j], s->y2[j].right, acc);
-
-        //     s->error[j].right = getlow(acc);
-        //     acc = left_shift_q63(acc, 1);               // compensate Q30 coeffs
-        //     a[i].right = gethigh(acc);
-
-        //     s->x2[j].right = s->x1[j].right;
-        //     s->x1[j].right = s->x0[j].right;
-        //     s->y2[j].right = s->y1[j].right;
-        //     s->y1[j].right = gethigh(acc); 
-        // }
-
-        /* 
-             DIRECT FORM II
-        */
-
-        for(uint8_t j = 0; j < 10; j++)
-        {
-
-            s->x0[j].left  = a[i].left;
-            s->x0[j].right = a[i].right;
-
-            /* Feedback state */
-            acc = left_shift_q63((q63)s->x0[j].left, IN_SHIFT);         
-            acc = msub_q31(c->a1[j], s->x1[j].left, acc);            
-            acc = msub_q31(c->a2[j], s->x2[j].left, acc);            
-
-            s->x0[j].left = gethigh(left_shift_q63(acc, SCALE));      
-
-            /* Feedforward state */
-            acc = s->error[j].left;
-            acc = mul_q63(c->b0[j], s->x0[j].left);                  
-            acc = mac_q31(c->b1[j], s->x1[j].left,  acc);            
-            acc = mac_q31(c->b2[j], s->x2[j].left,  acc);            
-    
-            s->x2[j].left = s->x1[j].left;                          
-            s->x1[j].left = s->x0[j].left;                          
-
-            /* Output */
-            acc = left_shift_q63(acc, OUT_SHIFT);                     
-            s->error[j].left = getlow(acc);
-            a[i].left = gethigh(acc);                          
-
-            /*  RIGHT CHANNEL */
-
-            /* Feedback state */
-            acc = left_shift_q63((q63)s->x0[j].right, IN_SHIFT);         
-            acc = msub_q31(c->a1[j], s->x1[j].right, acc);            
-            acc = msub_q31(c->a2[j], s->x2[j].right, acc);            
-
-            s->x0[j].right = gethigh(left_shift_q63(acc, SCALE));      
-
-            /* Feedforward state */
-            acc = s->error[j].right;
-            acc = mul_q63(c->b0[j], s->x0[j].right);                  
-            acc = mac_q31(c->b1[j], s->x1[j].right,  acc);            
-            acc = mac_q31(c->b2[j], s->x2[j].right,  acc);            
-    
-            s->x2[j].right = s->x1[j].right;                          
-            s->x1[j].right = s->x0[j].right;                          
-
-            /* Output */
-            acc = left_shift_q63(acc, OUT_SHIFT);                     
-            s->error[j].right = getlow(acc);
-            a[i].right = gethigh(acc);                          
-
-        }       
-
-        /* 
-             DIRECT FORM I TRANSPOSED
-        */
-
-        // for(uint8_t j = 0; j < 10; j++)
-        // {
-        //     s->x0[j].left  = add_q31(right_shift_q31(a[i].left,  T_IN_SHIFT), s->y1[j].left);      
-        //     s->x0[j].right = add_q31(right_shift_q31(a[i].right, T_IN_SHIFT), s->y1[j].right);    
-
-        //     /* Output */
-        //     acc = s->error[j].left;
-        //     acc = left_shift_q63(s->x1[j].left, T_SHIFT);                        
-        //     acc = mac_q31(c->b0[j], s->x0[j].left, acc);                       
-            
-        //     s->error[j].left = getlow(acc);
-        //     acc = left_shift_q63(acc, T_OUT_SHIFT);                               
-        //     a[i].left = gethigh(acc);                                    
-
-        //     /* Feedforward state */
-        //     acc = left_shift_q63(s->x2[j].left, T_SHIFT);                        
-        //     acc = mac_q31(c->b1[j], s->x0[j].left, acc);                       
-        //     s->x1[j].left = gethigh(left_shift_q63(acc, SCALE));                
-
-        //     acc = mul_q63(c->b2[j], s->x0[j].left);                            
-        //     s->x2[j].left = gethigh(left_shift_q63(acc, SCALE));                
-    
-        //     /* Feedback state */
-        //     acc = left_shift_q63(s->y2[j].left, T_SHIFT);
-        //     acc = mac_q31(neg_q31(c->a1[j]), s->x0[j].left, acc);
-        //     s->y1[j].left = gethigh(left_shift_q63(acc, SCALE)); 
-
-        //     acc = mul_q63(neg_q31(c->a2[j]), s->x0[j].left);
-        //     s->y2[j].left = gethigh(left_shift_q63(acc, SCALE));
-
-
-        //     /* Output */
-        //     // acc = s->error[j].right;
-        //     acc = left_shift_q63(s->x1[j].right, T_SHIFT);                        
-        //     acc = mac_q31(c->b0[j], s->x0[j].right, acc);                       
-            
-        //     s->error[j].right= getlow(acc);
-        //     acc = left_shift_q63(acc, T_OUT_SHIFT);                               
-        //     a[i].right= gethigh(acc);                                    
-
-        //     /* Feedforward state */
-        //     acc = left_shift_q63(s->x2[j].right, T_SHIFT);                        
-        //     acc = mac_q31(c->b1[j], s->x0[j].right, acc);                       
-        //     s->x1[j].right= gethigh(left_shift_q63(acc, SCALE));                
-
-        //     acc = mul_q63(c->b2[j], s->x0[j].right);                            
-        //     s->x2[j].right= gethigh(left_shift_q63(acc, SCALE));                
-    
-        //     /* Feedback state */
-        //     acc = left_shift_q63(s->y2[j].right, T_SHIFT);
-        //     acc = mac_q31(neg_q31(c->a1[j]), s->x0[j].right, acc);
-        //     s->y1[j].right= gethigh(left_shift_q63(acc, SCALE)); 
-
-        //     acc = mul_q63(neg_q31(c->a2[j]), s->x0[j].right);
-        //     s->y2[j].right= gethigh(left_shift_q63(acc, SCALE));
-
-        // }
-
-        /* 
-             DIRECT FORM II TRANSPOSED
-        */
-
-        // for (uint8_t j = 0; j < 10; j++)
-        // {
-
-        //     s->x0[j].left  = a[i].left;
-        //     s->x0[j].right = a[i].right;
-
-        //     /* Output */
-        //     acc = left_shift_q63(s->x1[j].left, 31);                 
-        //     acc = add_q63(s->error[j].left, acc);
-        //     acc = mac_q31(c->b0[j], s->x0[j].left, acc);                 
-
-        //     s->error[j].left = getlow(left_shift_q63(acc, 1));
-        //     s->y0[j].left = gethigh(left_shift_q63(acc, 1));
-        //     a[i].left = s->y0[j].left;
-
-        //     /* State 1 */
-        //     acc = left_shift_q63(s->x2[j].left, 31);
-        //     acc =  mac_q31(c->b1[j], s->x0[j].left, acc);
-        //     acc = msub_q31(c->a1[j], s->y0[j].left, acc);
-        //     s->x1[j].left = gethigh(left_shift_q63(acc, 1));
-
-        //     /* State 2 */
-        //     acc =  mul_q63(c->b2[j], s->x0[j].left);
-        //     acc = msub_q31(c->a2[j], s->y0[j].left, acc);
-        //     s->x2[j].left = gethigh(left_shift_q63(acc, 1));
-
-
-
-        //     /* Output */
-        //     acc = left_shift_q63(s->x1[j].right, 31);
-        //     acc = add_q63(s->error[j].right, acc);
-        //     acc = mac_q31(c->b0[j], s->x0[j].right, acc);
-
-        //     s->error[j].right = getlow(left_shift_q63(acc, 1));
-        //     s->y0[j].right = gethigh(left_shift_q63(acc, 1));
-        //     a[i].right = s->y0[j].right;
-
-        //     /* State 1 */
-        //     acc = left_shift_q63(s->x2[j].right, 31);
-        //     acc =  mac_q31(c->b1[j], s->x0[j].right, acc);
-        //     acc = msub_q31(c->a1[j], s->y0[j].right, acc);
-        //     s->x1[j].right = gethigh(left_shift_q63(acc, 1));
-
-        //     /* State 2 */
-        //     acc =  mul_q63(c->b2[j], s->x0[j].right);
-        //     acc = msub_q31(c->a2[j], s->y0[j].right, acc);
-        //     s->x2[j].right = gethigh(left_shift_q63(acc, 1));
-
-        // }        
-
+                s->x2[j].right = s->x1[j].right;
+                s->x1[j].right = s->x0[j].right;
+                s->y2[j].right = s->y1[j].right;
+                s->y1[j].right = gethigh(acc); 
+            }
+        }
     }
     return 0;
 }
