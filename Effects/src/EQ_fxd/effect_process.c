@@ -2,6 +2,8 @@
 #include "effect_control.h"
 #include "fractional.h"
 
+#define  NORM 3
+#define SCALE 1
 
 typedef struct stereo {
     q31 left;
@@ -12,7 +14,6 @@ typedef struct states_s {
    stereo_t x0[10];
    stereo_t x1[10];
    stereo_t x2[10];
-   stereo_t y0[10];
    stereo_t y1[10];
    stereo_t y2[10];
    stereo_t error[10];
@@ -45,14 +46,12 @@ int32_t effect_reset(
         s->x0[i].left = 0;
         s->x1[i].left = 0;
         s->x2[i].left = 0;
-        s->y0[i].left = 0;
         s->y1[i].left = 0;
         s->y2[i].left = 0;
 
         s->x0[i].right = 0;
         s->x1[i].right = 0;
         s->x2[i].right = 0;
-        s->y0[i].right = 0;
         s->y1[i].right = 0;
         s->y2[i].right = 0;
 
@@ -78,8 +77,8 @@ int32_t effect_process(
         {   
             if(c->a0[j] != 0)
             {
-                s->x0[j].left  = a[i].left;
-                s->x0[j].right = a[i].right;
+                s->x0[j].left  = right_shift_q31(a[i].left, SCALE);
+                s->x0[j].right = right_shift_q31(a[i].right, SCALE);
 
                 acc =  0;
                 acc =  add_q63(acc, s->error[j].left);
@@ -90,8 +89,8 @@ int32_t effect_process(
                 acc = msub_q31(c->a2[j], s->y2[j].left, acc);
 
                 s->error[j].left = getlow(acc);
-                acc = left_shift_q63(acc, 3);              
-                a[i].left = gethigh(acc);
+                acc = left_shift_q63(acc, NORM);              
+                a[i].left = left_shift_q31(gethigh(acc), SCALE);
 
                 s->x2[j].left = s->x1[j].left;
                 s->x1[j].left = s->x0[j].left;
@@ -107,8 +106,8 @@ int32_t effect_process(
                 acc = msub_q31(c->a2[j], s->y2[j].right, acc);
 
                 s->error[j].right = getlow(acc);
-                acc = left_shift_q63(acc, 3);               
-                a[i].right = gethigh(acc);
+                acc = left_shift_q63(acc, NORM);               
+                a[i].right = left_shift_q31(gethigh(acc), SCALE);;
 
                 s->x2[j].right = s->x1[j].right;
                 s->x1[j].right = s->x0[j].right;

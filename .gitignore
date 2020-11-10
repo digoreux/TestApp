@@ -3,7 +3,9 @@ audio/
 build/tmp
 .vs/
 .vscode/
+Debug/
 
 *.sfk
 *.DS_Store
 *.wav
+*.code-workspace

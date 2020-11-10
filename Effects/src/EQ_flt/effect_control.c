@@ -168,21 +168,46 @@ int32_t effect_update_coeffs(
             break;
         }
 
-        c->a0[i] = (float)a0[i];
-        c->a1[i] = (float)(a1[i] / a0[i]);
-        c->a2[i] = (float)(a2[i] / a0[i]);
-        c->b0[i] = (float)(b0[i] / a0[i]);
-        c->b1[i] = (float)(b1[i] / a0[i]);
-        c->b2[i] = (float)(b2[i] / a0[i]);
+        // a0[i] /= a0[i];
+        b0[i] /= a0[i];
+        b1[i] /= a0[i];
+        b2[i] /= a0[i];
+        a1[i] /= a0[i];
+        a2[i] /= a0[i];
 
-        printf("a0[%d]: %f \n",i, c->a0[i]);
-        printf("a1[%d]: %f \n",i, c->a1[i]);
-        printf("a2[%d]: %f \n",i, c->a2[i]);
-        printf("b0[%d]: %f \n",i, c->b0[i]);
-        printf("b1[%d]: %f \n",i, c->b1[i]);
-        printf("b2[%d]: %f \n\n",i, c->b2[i]);
+
+
+         c->a0[i] = (float)(a0[i] / 8);
+         c->a1[i] = (float)(a1[i] / 8);
+         c->a2[i] = (float)(a2[i] / 8);
+         c->b0[i] = (float)(b0[i] / 8);
+         c->b1[i] = (float)(b1[i] / 8);
+         c->b2[i] = (float)(b2[i] / 8);
+
+        //c->a0[i] = (float)(a0[i]);
+        //c->a1[i] = (float)(a1[i]);
+        //c->a2[i] = (float)(a2[i]);
+        //c->b0[i] = (float)(b0[i]);
+        //c->b1[i] = (float)(b1[i]);
+        //c->b2[i] = (float)(b2[i]);
+
+        // printf("a0: %f \n", c->a0[i]);
+        // printf("a1: %f \n", c->a1[i]);
+        // printf("a2: %f \n", c->a2[i]);
+        // printf("b0: %f \n", c->b0[i]);
+        // printf("b1: %f \n", c->b1[i]);
+        // printf("b2: %f \n", c->b2[i]);
+        // printf("\n");
+
 
     }
+
+    printf("a0: %f \n", c->a0[0]);
+    printf("a1: %f \n", c->a1[0]);
+    printf("a2: %f \n", c->a2[0]);
+    printf("b0: %f \n", c->b0[0]);
+    printf("b1: %f \n", c->b1[0]);
+    printf("b2: %f \n", c->b2[0]);
 
     return 0;
 }

@@ -81,7 +81,11 @@ int32_t effect_process(
                 s->x0[j].left  = a[i].left;
                 s->x0[j].right = a[i].right;
 
-                s->y0[j].left =  macf(c->b0[j], s->x0[j].left, s->x1[j].left);
+                // printf("INPUT:  %0.30f  * %0.30f \n", s->x0[j].left, c->b0[j]);
+                // printf("OUTPUT: %0.30f\n", s->y0[j].left);
+                // printf("STATE:  %10.30f\n\n", s->x1[j].left);
+
+                s->y0[j].left =  macf(c->b0[j], s->x0[j].left, s->x1[j].left) * 8;
 
                 s->x1[j].left =  macf(c->b1[j], s->x0[j].left, s->x2[j].left);
                 s->x1[j].left = msubf(c->a1[j], s->y0[j].left, s->x1[j].left);
@@ -92,7 +96,7 @@ int32_t effect_process(
                 a[i].left = s->y0[j].left;
 
 
-                s->y0[j].right =  macf(c->b0[j], s->x0[j].right, s->x1[j].right);
+                s->y0[j].right =  macf(c->b0[j], s->x0[j].right, s->x1[j].right) * 8;
 
                 s->x1[j].right =  macf(c->b1[j], s->x0[j].right, s->x2[j].right);
                 s->x1[j].right = msubf(c->a1[j], s->y0[j].right, s->x1[j].right);

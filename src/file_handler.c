@@ -3,7 +3,7 @@
 int set_params(void * params)
 {   
     
-    FILE * js = fopen("../Effects/eq_preset.json", "r");
+    FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
     // FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
     
     fseek(js, 0, SEEK_END);
