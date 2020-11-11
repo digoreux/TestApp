@@ -2,7 +2,7 @@
 #include "effect_control.h"
 #include "fractional.h"
 
-typedef struct stereo {
+typedef struct stereo_s {
     flt left;
     flt right;
 } stereo_t;

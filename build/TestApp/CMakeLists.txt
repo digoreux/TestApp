@@ -10,7 +10,7 @@ add_executable(TestApp
     ../../src/cjson.c)
 
 target_link_libraries(TestApp PRIVATE
-	 EQ_flt
+	 Comp_flt
 	 Fractional)
 
 set(EXECUTABLE_OUTPUT_PATH ../../../)
