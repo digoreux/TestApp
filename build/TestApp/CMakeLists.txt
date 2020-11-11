@@ -7,16 +7,16 @@ add_executable(TestApp
     ../../src/file_handler.c
     ../../src/generator.c
     ../../src/arg_parser.c
-    ../../src/cjson.c)
+    ../../src/cJSON.c)
 
 target_link_libraries(TestApp PRIVATE
-	 Comp_flt
+	 Chain_flt
 	 Fractional)
 
 set(EXECUTABLE_OUTPUT_PATH ../../../)
 
 target_include_directories(TestApp PRIVATE ../../inc
-	 ../../Effects/inc
+	 ../../Effects/Float/Chain_flt/inc
 	 ../../Fractional/inc)
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)

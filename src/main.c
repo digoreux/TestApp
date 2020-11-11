@@ -5,7 +5,6 @@
 #include <math.h>
 #include <fenv.h>
 
-#include "effect_process.h"
 #include "file_handler.h"
 #include "arg_parser.h"
 #include "generator.h"
@@ -23,6 +22,7 @@ int main(int argc, char **argv)
     utils_p utils = (utils_p)malloc(sizeof(utils_t));
 
     get_args(argc, argv, a);
+
 
     if (a->input)   read_wav(utils, a, meta);
     if (a->gen_opts) gen_wav(utils, a, meta);

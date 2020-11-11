@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include "arg_parser.h"
 #include "generator.h"
-#include "effect_process.h"
-#include "effect_control.h"
-#include "cjson.h"
+#include "chain_flt_process.h"
+#include "chain_flt_control.h"
+// #include "cjson.h"
 
 typedef struct header_file 
 {
