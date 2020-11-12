@@ -8,6 +8,8 @@ int32_t comp_effect_control_get_sizes(
 {
     *params_bytes = sizeof(comp_params_t);
     *coeffs_bytes = sizeof(comp_coeffs_t);
+
+    return 0;
 }
 
 
@@ -19,19 +21,20 @@ int32_t comp_effect_control_initialize(
     comp_params_t* p = (comp_params_t*)params;
     comp_coeffs_t* c = (comp_coeffs_t*)coeffs;
 
-    p->threshold = 0.0;
+    p->thrsh = 0.0;
     p->ratio = 0.0;
-    p->tauAttack = 0.0;
-    p->tauRelease = 0.0;
+    p->tAttack = 0.0;
+    p->tRelease = 0.0;
     p->makeUpGain = 0.0;
     p->samplerate = 0.0;
 
-    c->threshold = 0.0;
+    c->thrsh = 0.0;
     c->ratio = 0.0;
-    c->alphaAttack = 0.0;
-    c->alphaRelease = 0.0;
-    c->makeUpGain = 0.0;
-    c->samplerate = 0.0;
+    c->gainA = 0.0;
+    c->gainR = 0.0;
+    c->gainM = 0.0;
+
+    return 0;
 }
 
 int32_t comp_effect_set_parameter(
@@ -45,7 +48,7 @@ int32_t comp_effect_set_parameter(
     {
         case 0:
         {
-            p->threshold = value;
+            p->thrsh = value;
             break;
         }
 
@@ -57,13 +60,13 @@ int32_t comp_effect_set_parameter(
 
         case 2:
         {
-            p->tauAttack = value;
+            p->tAttack = value;
             break;
         }
 
         case 3:
         {
-            p->tauRelease = value;
+            p->tRelease = value;
             break;
         }
 
@@ -81,19 +84,21 @@ int32_t comp_effect_set_parameter(
 
         case 6:
         {
-            p->tauEnvAtt = value;
+            p->tEnvAttack = value;
             break;
         }
 
         case 7:
         {
-            p->tauEnvRel = value;
+            p->tEnvRelease = value;
             break;
         }
 
         default:
             break;
     }
+
+    return 0;
 }
 
 
@@ -105,22 +110,18 @@ int32_t comp_effect_update_coeffs(
     comp_params_t* p = (comp_params_t*)params;
     comp_coeffs_t* c = (comp_coeffs_t*)coeffs;
 
-    //c->threshold = p->threshold;
-    c->threshold =  powf(10.0, (p->threshold/20.0));  //in linear
     c->ratio = p->ratio;
+    c->thrsh = powf(10.0, (p->thrsh/20.0));  
+    c->gainM = powf(10.0, (p->makeUpGain/20.0));
 
-    c->alphaAttack  = powf(M_e, (-(log(9)) / (0.001 * p->tauAttack  * p->samplerate)));
-    c->alphaRelease = powf(M_e, (-(log(9)) / (0.001 * p->tauRelease * p->samplerate)));
+    c->gainA  = powf(M_e, (-(log(9)) / (0.001 * p->tAttack  * p->samplerate)));
+    c->gainR  = powf(M_e, (-(log(9)) / (0.001 * p->tRelease * p->samplerate)));
 
-    c->attackEnv  = powf(M_e, (-(log(9)) / (0.001 * p->tauEnvAtt * p->samplerate)));
-    c->releaseEnv = powf(M_e, (-(log(9)) / (0.001 * p->tauEnvRel * p->samplerate)));
+    c->envA   = powf(M_e, (-(log(9)) / (0.001 * p->tEnvAttack  * p->samplerate)));
+    c->envR   = powf(M_e, (-(log(9)) / (0.001 * p->tEnvRelease * p->samplerate)));
 
-    /*c->alphaAttack = 1 - powf(M_e, ((-2.2) / (0.001*p->tauAttack*p->samplerate)));
-    c->alphaRelease = 1 - powf(M_e, ((-2.2) / (0.001*p->tauRelease*p->samplerate)));*/
 
-    //c->makeUpGain = p->makeUpGain;
-    c->makeUpGain = powf(10.0, (p->makeUpGain/20.0));
-    c->samplerate = p->samplerate;
+    return 0;
 }
 
 

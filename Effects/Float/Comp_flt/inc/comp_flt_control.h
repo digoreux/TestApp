@@ -16,46 +16,39 @@ typedef struct comp_stereo_s {
 } comp_stereo_t;
 
 typedef struct comp_params_s {
-    flt threshold;
+    flt thrsh;
     flt ratio;
-
-    flt tauAttack;      // gain
-    flt tauRelease;
-
+    flt tAttack;      // gain
+    flt tRelease;
+    flt tEnvAttack;      //env
+    flt tEnvRelease;
     flt makeUpGain;
     flt samplerate;
 
-    flt tauEnvAtt;      //env
-    flt tauEnvRel;
 } comp_params_t;
 
 typedef struct comp_coeffs_s {
-    flt threshold;
+    flt thrsh;
     flt ratio;
-
-    flt alphaAttack;    
-    flt alphaRelease;
-
-    flt attackEnv;
-    flt releaseEnv;
-
-    flt makeUpGain;
-    flt samplerate;
+    flt envA;
+    flt envR;
+    flt gainA;    
+    flt gainR;
+    flt gainM;  // Make Up Gain
 } comp_coeffs_t;
 
 typedef struct comp_states_s{
 
-    comp_stereo_t x_sc;       // static characteristic
 
-    comp_stereo_t g_c;
+    comp_stereo_t g_c;      // gain computer
 
-    comp_stereo_t g_s0;
-    comp_stereo_t g_s1;
+    comp_stereo_t g_s0;     // gain smoothing current
+    comp_stereo_t g_s1;     // gain smoothing previous
 
-    comp_stereo_t g_m;      //make-up
+    comp_stereo_t g_m;      // gain make-up
 
-    comp_stereo_t env0;
-    comp_stereo_t env1;
+    comp_stereo_t env0;     // envelope current
+    comp_stereo_t env1;     // envelope previous
 
 } comp_states_t;
 

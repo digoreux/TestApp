@@ -1,34 +1,34 @@
 ﻿#include "file_handler.h"
 
-// int set_params(void * params)
-// {   
+int set_params(void * params)
+{   
     
-//     FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
-//     // FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
+    FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
+    // FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
     
-//     fseek(js, 0, SEEK_END);
-//     size_t size = ftell(js);
-//     fseek(js, 0, SEEK_SET);
+    fseek(js, 0, SEEK_END);
+    size_t size = ftell(js);
+    fseek(js, 0, SEEK_SET);
 
-//     char * buffer = malloc(size);
-//     memset(buffer, 0, size);
-//     fread(buffer, size, 1, js);
+    char * buffer = malloc(size);
+    memset(buffer, 0, size);
+    fread(buffer, size, 1, js);
 
-//     const cJSON *band = NULL;
-//     const cJSON *bands = NULL;
+    const cJSON *band = NULL;
+    const cJSON *bands = NULL;
 
-//     cJSON *json = cJSON_Parse(buffer);
+    cJSON *json = cJSON_Parse(buffer);
 
-//     bands = cJSON_GetObjectItemCaseSensitive(json, "eq_params");
-//     cJSON_ArrayForEach(band, bands)
-//     {
-//         cJSON *id    = cJSON_GetObjectItemCaseSensitive(band, "id");
-//         cJSON *value = cJSON_GetObjectItemCaseSensitive(band, "val");
+    bands = cJSON_GetObjectItemCaseSensitive(json, "eq_params");
+    cJSON_ArrayForEach(band, bands)
+    {
+        cJSON *id    = cJSON_GetObjectItemCaseSensitive(band, "id");
+        cJSON *value = cJSON_GetObjectItemCaseSensitive(band, "val");
 
-//         eq_effect_set_parameter(params, id->valueint, (float)value->valuedouble);
-//     }
-//     return 0;
-// }
+        eq_effect_set_parameter(params, id->valueint, (float)value->valuedouble);
+    }
+    return 0;
+}
 
 int apply_effect(utils_p utils) 
 {
@@ -47,7 +47,7 @@ int apply_effect(utils_p utils)
     void *states = malloc(ssize);
 
     effect_control_initialize(params, coeffs, 48000);
-    // set_params(params);
+    effect_set_parameter(params);
     effect_set_parameter(params);
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);
