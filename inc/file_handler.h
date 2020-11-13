@@ -8,7 +8,7 @@
 #include "generator.h"
 #include "chain_flt_process.h"
 #include "chain_flt_control.h"
-#include "cjson.h"
+#include "cJSON.h"
 
 typedef struct header_file 
 {

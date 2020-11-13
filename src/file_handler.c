@@ -3,7 +3,7 @@
 int set_params(void * params)
 {   
     
-    FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
+    FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/chain_preset.json", "r");
     // FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
     
     fseek(js, 0, SEEK_END);
@@ -24,8 +24,7 @@ int set_params(void * params)
     {
         cJSON *id    = cJSON_GetObjectItemCaseSensitive(band, "id");
         cJSON *value = cJSON_GetObjectItemCaseSensitive(band, "val");
-
-        eq_effect_set_parameter(params, id->valueint, (float)value->valuedouble);
+        effect_set_parameter(params, id->valueint, (float)value->valuedouble);
     }
     return 0;
 }
@@ -47,8 +46,7 @@ int apply_effect(utils_p utils)
     void *states = malloc(ssize);
 
     effect_control_initialize(params, coeffs, 48000);
-    effect_set_parameter(params);
-    effect_set_parameter(params);
+    set_params(params);
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);
 

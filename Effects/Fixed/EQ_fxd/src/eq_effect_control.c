@@ -1,4 +1,4 @@
-#include "eq_effect_control.h" 
+#include "eq_flt_control.h" 
 #include "fractional.h"
 
 #define M_PI  3.14159265358979323846
@@ -38,7 +38,7 @@ typedef struct coeffs_s {
 
 
 
-int32_t eq_effect_control_get_sizes(
+int32_t eq_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes)
 
@@ -48,7 +48,7 @@ int32_t eq_effect_control_get_sizes(
     return 0;
 }
 
-int32_t eq_effect_control_initialize(
+int32_t eq_control_initialize(
     void*       params,
     void*       coeffs,
     uint32_t    sample_rate)
@@ -80,7 +80,7 @@ int32_t eq_effect_control_initialize(
     return 0;
 } 
 
-int32_t eq_effect_set_parameter(
+int32_t eq_set_parameter(
     void*       params,
     int32_t     id,
     float       value)
@@ -98,7 +98,7 @@ int32_t eq_effect_set_parameter(
     return 0;
 }
 
-int32_t eq_effect_update_coeffs(
+int32_t eq_update_coeffs(
     void const* params,
     void*       coeffs)
 {   

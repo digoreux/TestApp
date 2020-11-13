@@ -28,14 +28,14 @@ typedef struct coeffs_s {
     q31 a2[10];
 } coeffs_t;
 
-int32_t eq_effect_process_get_sizes(
+int32_t eq_process_get_sizes(
     size_t*     states_bytes)
 {   
     *states_bytes = sizeof(states_t);
     return 0;
 }
 
-int32_t eq_effect_reset(
+int32_t eq_reset(
     void const* coeffs,
     void*       states)
 {   
@@ -60,7 +60,7 @@ int32_t eq_effect_reset(
     return 0;
 }
 
-int32_t eq_effect_process( 
+int32_t eq_process( 
     void const* coeffs,
     void*       states,
     void*       audio,

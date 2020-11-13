@@ -15,11 +15,13 @@ target_include_directories(${LIB_NAME} PRIVATE
      ${EFFECTS_PATH}/${LIB_NAME}/inc
      ${EFFECTS_PATH}/EQ_flt/inc
      ${EFFECTS_PATH}/Comp_flt/inc
+     ${EFFECTS_PATH}/Cross_flt/inc
      ${HOME_PATH}/Fractional/inc
      ${HOME_PATH}/inc)
 
 
 target_link_libraries(${LIB_NAME} PRIVATE 
     Fractional
+    EQ_flt
     Comp_flt
-    EQ_flt)
+    Cross_flt)

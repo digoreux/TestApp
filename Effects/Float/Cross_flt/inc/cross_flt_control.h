@@ -1,5 +1,7 @@
-#ifndef __EFFECT_CONTROL_H__
-#define __EFFECT_CONTROL_H__
+#ifndef __CROSS_FLT_CONTROL_H__
+#define __CROSS_FLT_CONTROL_H__
+
+#define M_PI 3.14159265358979323846
 
 #include <stdint.h>
 #include <stddef.h>
@@ -7,7 +9,37 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include "fractional.h"
 
+typedef struct cross_stereo_s {
+    flt left;
+    flt right;
+} cross_stereo_t;
+
+typedef struct cross_params_s {
+    flt freq[3];
+    flt samplerate;
+} cross_params_t;
+
+typedef struct cross_coeffs_s {
+    flt k0;     // 1st order
+    flt k1;     // 2nd order
+    flt k2;     // 2nd order
+} cross_coeffs_t;
+    
+typedef struct cross_states_s {
+    cross_stereo_t xn;
+    cross_stereo_t y0[3];   // 1st order
+    cross_stereo_t x0[3];   // 1st order
+    cross_stereo_t x1[3];   // 1st order
+    cross_stereo_t y1[2];   // 2nd order
+    cross_stereo_t x2[2];   // 2nd order
+    cross_stereo_t x3[2];   // 2nd order
+    cross_stereo_t * band1;
+    cross_stereo_t * band2;
+    cross_stereo_t * band3;
+    cross_stereo_t * band4;
+} cross_states_t;
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.
@@ -18,7 +50,7 @@
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t effect_control_get_sizes(
+int32_t cross_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes);
 
@@ -32,7 +64,7 @@ int32_t effect_control_get_sizes(
  * 
  * @return 0 if gain is initialized, non-zero error code otherwise
  ******************************************************************************/
-int32_t effect_control_initialize(
+int32_t cross_control_initialize(
     void*       params,
     void*       coeffs,
     uint32_t    sample_rate);
@@ -47,7 +79,7 @@ int32_t effect_control_initialize(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t effect_set_parameter(
+int32_t cross_set_parameter(
     void*       params,
     int32_t     id,
     float       value);
@@ -61,7 +93,7 @@ int32_t effect_set_parameter(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t effect_update_coeffs(
+int32_t cross_update_coeffs(
     void const* params,
     void*       coeffs);
 

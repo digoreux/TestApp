@@ -19,7 +19,7 @@
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t eq_effect_control_get_sizes(
+int32_t eq_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes);
 
@@ -33,7 +33,7 @@ int32_t eq_effect_control_get_sizes(
  * 
  * @return 0 if gain is initialized, non-zero error code otherwise
  ******************************************************************************/
-int32_t eq_effect_control_initialize(
+int32_t eq_control_initialize(
     void*       params,
     void*       coeffs,
     uint32_t    sample_rate);
@@ -48,7 +48,7 @@ int32_t eq_effect_control_initialize(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t eq_effect_set_parameter(
+int32_t eq_set_parameter(
     void*       params,
     int32_t     id,
     float       value);
@@ -62,7 +62,7 @@ int32_t eq_effect_set_parameter(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t eq_effect_update_coeffs(
+int32_t eq_update_coeffs(
     void const* params,
     void*       coeffs);
 

@@ -1,7 +1,7 @@
 #include "comp_flt_process.h"
 
 
-int32_t comp_effect_process_get_sizes(
+int32_t comp_process_get_sizes(
     size_t*     states_bytes)
 {
     *states_bytes = sizeof(comp_states_t);
@@ -9,23 +9,23 @@ int32_t comp_effect_process_get_sizes(
     return 0;
 }
 
-int32_t comp_effect_reset(
+int32_t comp_reset(
     void const* coeffs,
     void*       states)
 {
     comp_states_t* s = (comp_states_t*)states;
 
-    s->g_c.left = 0.0;
+    s->g_c.left  = 0.0;
+    s->g_m.left  = 0.0;
     s->g_s0.left = 0.0;
     s->g_s1.left = 1.0;
-    s->g_m.left = 0.0;
     s->env0.left = 0.0;
     s->env1.left = 0.0;
 
-    s->g_c.right = 0.0;
+    s->g_c.right  = 0.0;
+    s->g_m.right  = 0.0;
     s->g_s0.right = 0.0;
     s->g_s1.right = 1.0;
-    s->g_m.right = 0.0;
     s->env0.right = 0.0;
     s->env1.right = 0.0;
 
@@ -33,14 +33,12 @@ int32_t comp_effect_reset(
 }
 
 
-int32_t comp_effect_process(
+int32_t comp_process(
     void const* coeffs,
     void*       states,
     void*       audio,
     size_t      samples_count)
 {
-
-
     comp_coeffs_t* c = (comp_coeffs_t*)coeffs;
     comp_states_t* s = (comp_states_t*)states;
     comp_stereo_t* a = (comp_stereo_t*)audio;
@@ -69,7 +67,7 @@ int32_t comp_effect_process(
         /* Gain computer */
 
         if (s->env0.left < c->thrsh)
-        {
+        {   
             s->g_c.left = 1;
         }
         else
@@ -78,7 +76,7 @@ int32_t comp_effect_process(
             s->g_c.left = mulf(s->g_c.left, c->thrsh);
             s->g_c.left = divf(s->g_c.left, s->env0.left);
         }
-
+        // printf("Gain: %f\n", s->g_c.left);
         /* Gain smoothing */
 
         if (s->g_c.left <= s->g_s1.left)
@@ -147,9 +145,10 @@ int32_t comp_effect_process(
         s->g_s1.right = s->g_s0.right;
         s->g_m.right  = s->g_c.right * c->gainM;
 
-        
+        a[i].left  *= s->g_m.left;
+        a[i].right *= s->g_m.right;
+
     }
-    
     return 0;
 }
 

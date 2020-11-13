@@ -2,7 +2,7 @@
 
 # define M_e    ((flt)2.71828182846)
 
-int32_t comp_effect_control_get_sizes(
+int32_t comp_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes)
 {
@@ -13,7 +13,7 @@ int32_t comp_effect_control_get_sizes(
 }
 
 
-int32_t comp_effect_control_initialize(
+int32_t comp_control_initialize(
     void*       params,
     void*       coeffs,
     uint32_t    sample_rate)
@@ -37,7 +37,7 @@ int32_t comp_effect_control_initialize(
     return 0;
 }
 
-int32_t comp_effect_set_parameter(
+int32_t comp_set_parameter(
     void*       params,
     int32_t     id,
     float       value)
@@ -46,50 +46,50 @@ int32_t comp_effect_set_parameter(
 
     switch (id)
     {
-        case 0:
-        {
+        case 41:
+        {   
             p->thrsh = value;
             break;
         }
 
-        case 1:
-        {
+        case 42:
+        {   
             p->ratio = value;
             break;
         }
 
-        case 2:
-        {
+        case 43:
+        {   
             p->tAttack = value;
             break;
         }
 
-        case 3:
-        {
+        case 44:
+        {   
             p->tRelease = value;
             break;
         }
 
-        case 4:
-        {
+        case 45:
+        {   
             p->makeUpGain = value;
             break;
         }
 
-        case 5:
-        {
+        case 46:
+        {   
             p->samplerate = value;
             break;
         }
 
-        case 6:
-        {
+        case 47:
+        {   
             p->tEnvAttack = value;
             break;
         }
 
-        case 7:
-        {
+        case 48:
+        {   
             p->tEnvRelease = value;
             break;
         }
@@ -101,9 +101,7 @@ int32_t comp_effect_set_parameter(
     return 0;
 }
 
-
-
-int32_t comp_effect_update_coeffs(
+int32_t comp_update_coeffs(
     void const* params,
     void*       coeffs)
 {
@@ -111,15 +109,22 @@ int32_t comp_effect_update_coeffs(
     comp_coeffs_t* c = (comp_coeffs_t*)coeffs;
 
     c->ratio = p->ratio;
-    c->thrsh = powf(10.0, (p->thrsh/20.0));  
-    c->gainM = powf(10.0, (p->makeUpGain/20.0));
+    c->thrsh = powf(10.0f, (p->thrsh/20.0f));  
+    c->gainM = powf(10.0f, (p->makeUpGain/20.0f));
 
-    c->gainA  = powf(M_e, (-(log(9)) / (0.001 * p->tAttack  * p->samplerate)));
-    c->gainR  = powf(M_e, (-(log(9)) / (0.001 * p->tRelease * p->samplerate)));
+    c->gainA  = powf(M_e, (-(logf(9)) / (0.001f * p->tAttack  * p->samplerate)));
+    c->gainR  = powf(M_e, (-(logf(9)) / (0.001f * p->tRelease * p->samplerate)));
 
-    c->envA   = powf(M_e, (-(log(9)) / (0.001 * p->tEnvAttack  * p->samplerate)));
-    c->envR   = powf(M_e, (-(log(9)) / (0.001 * p->tEnvRelease * p->samplerate)));
+    c->envA   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvAttack  * p->samplerate)));
+    c->envR   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvRelease * p->samplerate)));
 
+    // printf("Threshold: %f \n",      c->thrsh);
+    // printf("Ratio: %f \n",          c->ratio);
+    // printf("Attack: %f \n",         c->gainA);
+    // printf("Release: %f \n",        c->gainR);
+    // printf("MakeUpGain: %f \n",     c->gainM);
+    // printf("envAttack: %f \n",      c->envA);
+    // printf("envRelease: %f \n\n",   c->envR);
 
     return 0;
 }

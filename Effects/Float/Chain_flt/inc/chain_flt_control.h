@@ -7,7 +7,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include "cJSON.h"
 
 
 /*******************************************************************************
@@ -49,8 +48,9 @@ int32_t effect_control_initialize(
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
 int32_t effect_set_parameter(
-    void*       params
- );
+    void*       params,
+    int32_t     id,
+    float       value);
 
 
 /*******************************************************************************

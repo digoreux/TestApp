@@ -1,21 +1,25 @@
 #include "chain_flt_control.h"
 
+#include "cross_flt_control.h"
 #include "comp_flt_control.h"
 #include "eq_flt_control.h"
 
 typedef struct params_t {
     eq_params_t   eq_p;
     comp_params_t comp_p;
+    cross_params_t cross_p;
 } params_t;
 
 typedef struct coeffs_t {
     eq_coeffs_t   eq_c;
     comp_coeffs_t comp_c;
+    cross_coeffs_t cross_c;
 } coeffs_t;
 
 typedef struct states_t {
     eq_states_t   eq_s;
     comp_states_t comp_s;
+    cross_states_t cross_s;
 } states_t;
 
 
@@ -37,26 +41,24 @@ int32_t effect_control_initialize(
     params_t *p = (params_t*)params;
     coeffs_t *c = (coeffs_t*)coeffs;
 
-    eq_effect_control_initialize(&p->eq_p, &c->eq_c, p->eq_p.sample_rate);
-    comp_effect_control_initialize(&p->comp_p, &c->comp_c, p->comp_p.samplerate);
+    eq_control_initialize(&p->eq_p, &c->eq_c, p->eq_p.sample_rate);
+    comp_control_initialize(&p->comp_p, &c->comp_c, p->comp_p.samplerate);
+    cross_control_initialize(&p->cross_p, &c->cross_c, p->cross_p.samplerate);
+
 
     return 0;
 }
 
 int32_t effect_set_parameter(
-    void*       params                    
-)
+    void*       params,
+    int32_t     id,
+    float       value)                    
 {   
     params_t *p = (params_t*)params; 
-    eq_set_parameter(&p->eq_p);
-    comp_effect_set_parameter(&p->comp_p, 0, -12);
-    comp_effect_set_parameter(&p->comp_p, 1, 4);
-    comp_effect_set_parameter(&p->comp_p, 2, 30);
-    comp_effect_set_parameter(&p->comp_p, 3, 100);
-    comp_effect_set_parameter(&p->comp_p, 4, 3);
-    comp_effect_set_parameter(&p->comp_p, 5, 48000);
-    comp_effect_set_parameter(&p->comp_p, 6, 0);
-    comp_effect_set_parameter(&p->comp_p, 7, 50);
+    
+    eq_set_parameter(&p->eq_p, id, value);
+    comp_set_parameter(&p->comp_p, id, value);
+    cross_set_parameter(&p->cross_p, id, value);
 
     return 0;
 }
@@ -68,39 +70,11 @@ int32_t effect_update_coeffs(
     params_t *p = (params_t*)params;
     coeffs_t *c = (coeffs_t*)coeffs;
 
-    // eq_effect_update_coeffs(&p->eq_p, &c->eq_c);   
-    comp_effect_update_coeffs(&p->comp_p, &c->comp_c);   
+    eq_update_coeffs(&p->eq_p, &c->eq_c);   
+    comp_update_coeffs(&p->comp_p, &c->comp_c);   
+    cross_update_coeffs(&p->cross_p, &c->cross_c);
 
     return 0;
 }
 
 
-// int set_params(void * params)
-// {   
-    
-//     FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
-//     // FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
-    
-//     fseek(js, 0, SEEK_END);
-//     size_t size = ftell(js);
-//     fseek(js, 0, SEEK_SET);
-
-//     char * buffer = malloc(size);
-//     memset(buffer, 0, size);
-//     fread(buffer, size, 1, js);
-
-//     const cJSON *band = NULL;
-//     const cJSON *bands = NULL;
-
-//     cJSON *json = cJSON_Parse(buffer);
-
-//     bands = cJSON_GetObjectItemCaseSensitive(json, "eq_params");
-//     cJSON_ArrayForEach(band, bands)
-//     {
-//         cJSON *id    = cJSON_GetObjectItemCaseSensitive(band, "id");
-//         cJSON *value = cJSON_GetObjectItemCaseSensitive(band, "val");
-
-//         eq_effect_set_parameter(params, id->valueint, (float)value->valuedouble);
-//     }
-//     return 0;
-// }
