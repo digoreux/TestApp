@@ -1,19 +1,19 @@
-#include "comp_flt_process.h"
+#include "expand_flt_process.h"
 
 
-int32_t comp_process_get_sizes(
+int32_t expand_process_get_sizes(
     size_t*     states_bytes)
 {
-    *states_bytes = sizeof(comp_states_t);
+    *states_bytes = sizeof(expand_states_t);
 
     return 0;
 }
 
-int32_t comp_reset(
+int32_t expand_reset(
     void const* coeffs,
     void*       states)
 {
-    comp_states_t* s = (comp_states_t*)states;
+    expand_states_t* s = (expand_states_t*)states;
 
     s->g_c.left  = 0.0;
     s->g_m.left  = 0.0;
@@ -33,20 +33,20 @@ int32_t comp_reset(
 }
 
 
-int32_t comp_process(
+int32_t expand_process(
     void const* coeffs,
     void*       states,
     void*       audio,
     size_t      samples_count)
 {
-    comp_coeffs_t* c = (comp_coeffs_t*)coeffs;
-    comp_states_t* s = (comp_states_t*)states;
-    comp_stereo_t* a = (comp_stereo_t*)audio;
+    expand_coeffs_t* c = (expand_coeffs_t*)coeffs;
+    expand_states_t* s = (expand_states_t*)states;
+    expand_stereo_t* a = (expand_stereo_t*)audio;
 
     float x_abs;
     if(!c->bypass)
     {
-    for (uint32_t i = 0; i < samples_count; i++)
+        for (uint32_t i = 0; i < samples_count; i++)
         {
             x_abs = fabsf(a[i].left);
 
@@ -65,17 +65,16 @@ int32_t comp_process(
 
             s->env1.left = s->env0.left;
 
-            /* Gain computer */
+            /* Gain expanduter */
 
             if (s->env0.left < c->thrsh)
             {   
-                s->g_c.left = 1;
+                s->g_c.left = powf(divf(s->env0.left, c->thrsh), subf(c->ratio, 1));
             }
             else
             {   
-                s->g_c.left = powf(divf(s->env0.left, c->thrsh), divf(1.0f,  c->ratio));
-                s->g_c.left = mulf(s->g_c.left, c->thrsh);
-                s->g_c.left = divf(s->g_c.left, s->env0.left);
+                s->g_c.left = 1;
+
             }
             // printf("Gain: %f\n", s->g_c.left);
             /* Gain smoothing */
@@ -117,7 +116,7 @@ int32_t comp_process(
 
             s->env1.right = s->env0.right;
 
-            /* Gain computer */
+            /* Gain expanduter */
 
             if (s->env0.right < c->thrsh)
             {
@@ -148,7 +147,7 @@ int32_t comp_process(
 
             a[i].left  *= s->g_m.left;
             // a[i].left  = s->env0.left;
-            a[i].right *= s->g_m.right;
+            // a[i].right *= s->g_m.right;
 
         }
     }

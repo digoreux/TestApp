@@ -1,60 +1,54 @@
-#ifndef __COMP_FLT_CONTROL_H__
-#define __COMP_FLT_CONTROL_H__
+#ifndef __CROSS4_FLT_CONTROL_H__
+#define __CROSS4_FLT_CONTROL_H__
+
+#define M_PI 3.14159265358979323846
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
-#include "fractional.h"
+#include "cross_flt_control.h"
 
+typedef struct cross4_coeffs_s {
+    cross_coeffs_t cross1_c;
+    cross_coeffs_t cross2_c;
+    cross_coeffs_t cross3_c;
+    bool bypass;
+} cross4_coeffs_t;
 
-typedef struct comp_stereo_s {
-    flt left;
-    flt right;
-} comp_stereo_t;
-
-typedef struct comp_params_s {
-    flt thrsh;
-    flt ratio;
-    flt tAttack;      // gain
-    flt tRelease;
-    flt tEnvAttack;      //env
-    flt tEnvRelease;
-    flt makeUpGain;
+typedef struct cross4_params_s {
     uint32_t sample_rate;
-    bool downward;
+    cross_params_t cross1_p;
+    cross_params_t cross2_p;
+    cross_params_t cross3_p;
     bool bypass;
+} cross4_params_t;
 
-} comp_params_t;
+typedef struct bands_s {
+    cross_stereo_t * band1;
+    cross_stereo_t * band2;
+    cross_stereo_t * band3;
+    cross_stereo_t * band4;
+} bands_t;
 
-typedef struct comp_coeffs_s {
-    flt thrsh;
-    flt ratio;
-    flt envA;
-    flt envR;
-    flt gainA;    
-    flt gainR;
-    flt gainM;  // Make Up Gain
-    bool bypass;
-} comp_coeffs_t;
+typedef struct cross4_states_s {
+    cross_states_t cross1_s;
+    cross_states_t cross2_s;
+    cross_states_t cross3_s;
+    bands_t bands;
+    cross_stereo_t xn;
+    cross_stereo_t y0[2];   // 1st order phase correction 
+    cross_stereo_t x0[2];   // 1st order phase correction
+    cross_stereo_t x1[2];   // 1st order phase correction
+    cross_stereo_t y1[2];   // 2nd order phase correction
+    cross_stereo_t x2[2];   // 2nd order phase correction
+    cross_stereo_t x3[2];   // 2nd order phase correction
+} cross4_states_t;
 
-typedef struct comp_states_s{
 
-
-    comp_stereo_t g_c;      // gain computer
-
-    comp_stereo_t g_s0;     // gain smoothing current
-    comp_stereo_t g_s1;     // gain smoothing previous
-
-    comp_stereo_t g_m;      // gain make-up
-
-    comp_stereo_t env0;     // envelope current
-    comp_stereo_t env1;     // envelope previous
-
-} comp_states_t;
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.
@@ -65,7 +59,7 @@ typedef struct comp_states_s{
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp_control_get_sizes(
+int32_t cross4_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes);
 
@@ -79,7 +73,7 @@ int32_t comp_control_get_sizes(
  * 
  * @return 0 if gain is initialized, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp_control_initialize(
+int32_t cross4_control_initialize(
     void*       params,
     void*       coeffs,
     uint32_t    sample_rate);
@@ -94,7 +88,7 @@ int32_t comp_control_initialize(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp_set_parameter(
+int32_t cross4_set_parameter(
     void*       params,
     int32_t     id,
     float       value);
@@ -108,7 +102,7 @@ int32_t comp_set_parameter(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp_update_coeffs(
+int32_t cross4_update_coeffs(
     void const* params,
     void*       coeffs);
 

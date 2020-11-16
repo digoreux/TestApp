@@ -1,10 +1,7 @@
 #include "eq_flt_control.h" 
 #include "fractional.h"
 
-
 #define M_PI  3.14159265358979323846
-
-
 
 int32_t eq_control_get_sizes(
     size_t*     params_bytes,
@@ -24,7 +21,7 @@ int32_t eq_control_initialize(
 {   
     eq_coeffs_t * c = (eq_coeffs_t*)coeffs;
     eq_params_t * p = (eq_params_t*)params;
-
+    c->bypass = p->bypass;
     p->sample_rate = sample_rate;
     for (size_t i = 0; i < 10; i++)
     {
@@ -54,7 +51,8 @@ int32_t eq_set_parameter(
     float       value)
 {   
     eq_params_t * p = (eq_params_t*)params;
-    if(id == 40) p->sample_rate = value;
+    if(id == 40) p->sample_rate = (uint32_t)value;
+    if(id == 300) p->bypass = value;
     for(int i = 0; i < 10; i++) 
     {
         if(p->freq[i].id == id) p->freq[i].value = value;
@@ -75,7 +73,7 @@ int32_t eq_update_coeffs(
 
     eq_coeffs_t * c = (eq_coeffs_t*)coeffs;
     eq_params_t * p = (eq_params_t*)params;
-
+    c->bypass = p->bypass;
     for (size_t i = 0; i < 10; i++) 
     {
         A[i] = pow(10, p->gain[i].value / 40);
@@ -136,37 +134,18 @@ int32_t eq_update_coeffs(
             break;
         }
 
-        // a0[i] /= a0[i];
         b0[i] /= a0[i];
         b1[i] /= a0[i];
         b2[i] /= a0[i];
         a1[i] /= a0[i];
         a2[i] /= a0[i];
 
-
-
-         c->a0[i] = (float)(a0[i] / 8);
-         c->a1[i] = (float)(a1[i] / 8);
-         c->a2[i] = (float)(a2[i] / 8);
-         c->b0[i] = (float)(b0[i] / 8);
-         c->b1[i] = (float)(b1[i] / 8);
-         c->b2[i] = (float)(b2[i] / 8);
-
-        //c->a0[i] = (float)(a0[i]);
-        //c->a1[i] = (float)(a1[i]);
-        //c->a2[i] = (float)(a2[i]);
-        //c->b0[i] = (float)(b0[i]);
-        //c->b1[i] = (float)(b1[i]);
-        //c->b2[i] = (float)(b2[i]);
-
-        // printf("a0: %f \n", c->a0[i]);
-        // printf("a1: %f \n", c->a1[i]);
-        // printf("a2: %f \n", c->a2[i]);
-        // printf("b0: %f \n", c->b0[i]);
-        // printf("b1: %f \n", c->b1[i]);
-        // printf("b2: %f \n", c->b2[i]);
-        // printf("\n");
-
+        c->a0[i] = (float)(a0[i] / 8);
+        c->a1[i] = (float)(a1[i] / 8);
+        c->a2[i] = (float)(a2[i] / 8);
+        c->b0[i] = (float)(b0[i] / 8);
+        c->b1[i] = (float)(b1[i] / 8);
+        c->b2[i] = (float)(b2[i] / 8);
 
     }
 

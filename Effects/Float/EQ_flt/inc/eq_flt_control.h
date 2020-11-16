@@ -1,6 +1,7 @@
 #ifndef __EQ_FLT_CONTROL_H__
 #define __EQ_FLT_CONTROL_H__
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -38,11 +39,12 @@ typedef struct eq_states_s {
 } eq_states_t;
 
 typedef struct eq_params_s {
-    double sample_rate;
+    uint32_t sample_rate;
     param_t  freq[10]; 
     param_t  gain[10]; 
     param_t     Q[10];   
     param_t  type[10];
+    bool bypass;
 } eq_params_t;
 
 
@@ -53,6 +55,7 @@ typedef struct eq_coeffs_s {
     flt  a0[10];
     flt  a1[10];
     flt  a2[10];
+    bool bypass;
 } eq_coeffs_t;
 
 

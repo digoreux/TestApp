@@ -48,7 +48,9 @@ int32_t cross_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count)
+    cross_stereo_t* band1,
+    cross_stereo_t* band2,
+    size_t samples_count)
 {   
     cross_coeffs_t* c = (cross_coeffs_t*)coeffs;
     cross_states_t* s = (cross_states_t*)states;
@@ -56,7 +58,6 @@ int32_t cross_process(
     flt b1 = 0, b2 = 0;
     for(uint32_t i = 0; i < samples_count; i++)
     {   
-
         /* 1st Order */
         s->xn.left = a[i].left;
         s->x0[0].left = msubf(c->k0, s->x1[0].left, s->xn.left); 
@@ -90,9 +91,8 @@ int32_t cross_process(
         b1 = (s->y0[1].left + s->y1[1].left) / 2;
         b2 =  s->y0[2].left - b1;
 
-        s->band1[i].left = b1;
-        s->band2[i].left = b2;
-
+        band1[i].left = b1;
+        band2[i].left = b2;
 
         /* 1st Order */
         s->xn.right = a[i].right;
@@ -127,8 +127,8 @@ int32_t cross_process(
         b1 = (s->y0[1].right + s->y1[1].right) / 2;
         b2 =  s->y0[2].right - b1;
 
-        s->band1[i].right = b1;
-        s->band2[i].right = b2;
+        band1[i].right = b1;
+        band2[i].right = b2;
  
     }   
     return 0;

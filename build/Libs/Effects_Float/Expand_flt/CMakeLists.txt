@@ -1,16 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(LIB_NAME "Cross_flt")
+set(LIB_NAME "Expand_flt")
 set(HOME_PATH "../../../..")
 set(EFFECT_PATH "../../../../Effects/Float/${LIB_NAME}")
 
 project(${LIB_NAME})
 
 add_library(${LIB_NAME}
-    ${EFFECT_PATH}/src/cross_flt_control.c 
-    ${EFFECT_PATH}/src/cross_flt_process.c 
-    ${EFFECT_PATH}/src/cross4_flt_control.c 
-    ${EFFECT_PATH}/src/cross4_flt_process.c)
+    ${EFFECT_PATH}/src/expand_flt_control.c 
+    ${EFFECT_PATH}/src/expand_flt_process.c)
 
 
 target_include_directories(${LIB_NAME} PRIVATE 

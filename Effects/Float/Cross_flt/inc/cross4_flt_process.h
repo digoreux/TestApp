@@ -1,8 +1,8 @@
-#ifndef __CROSS_FLT_PROCESS_H__
-#define __CROSS_FLT_PROCESS_H__
+#ifndef __CROSS4_FLT_PROCESS_H__
+#define __CROSS4_FLT_PROCESS_H__
 
-#include "cross_flt_control.h"
-
+#include "cross4_flt_control.h"
+#include "cross_flt_process.h"
 
 /*******************************************************************************
  * Provides with the required data sizes for states. It is caller responsibility
@@ -12,7 +12,7 @@
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t cross_process_get_sizes(
+int32_t cross4_process_get_sizes(
     size_t*     states_bytes);
  
 
@@ -24,7 +24,7 @@ int32_t cross_process_get_sizes(
  * 
  * @return 0 on success, otherwise fail
  ******************************************************************************/
-int32_t cross_reset(
+int32_t cross4_reset(
     void const* coeffs,
     void*       states);
 
@@ -40,13 +40,14 @@ int32_t cross_reset(
  * 
  * @return 0 on success, otherwise fail
  ******************************************************************************/
-int32_t cross_process(
+int32_t cross4_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    cross_stereo_t* band1,
-    cross_stereo_t* band2,
-    size_t samples_count);
+    size_t      samples_count);
 
+int32_t mix2(void * audio, size_t samples_count, void * band1, void * band2);
+int32_t mix(void * audio, size_t samples_count, void * band1, void * band2, void * band3, void * band4);
+int32_t phase_correction(void * coeffs, void * states, void * band1, void * band2, size_t samples_count);
 
 #endif

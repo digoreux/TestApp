@@ -1,22 +1,22 @@
-#ifndef __COMP_FLT_CONTROL_H__
-#define __COMP_FLT_CONTROL_H__
+#ifndef __EXPAND_FLT_CONTROL_H__
+#define __EXPAND_FLT_CONTROL_H__
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
 #include "fractional.h"
 
 
-typedef struct comp_stereo_s {
+typedef struct expand_stereo_s {
     flt left;
     flt right;
-} comp_stereo_t;
+} expand_stereo_t;
 
-typedef struct comp_params_s {
+typedef struct expand_params_s {
     flt thrsh;
     flt ratio;
     flt tAttack;      // gain
@@ -25,12 +25,12 @@ typedef struct comp_params_s {
     flt tEnvRelease;
     flt makeUpGain;
     uint32_t sample_rate;
-    bool downward;
-    bool bypass;
+    bool downward;          // true: Downward false: Upward
+    bool bypass;            
 
-} comp_params_t;
+} expand_params_t;
 
-typedef struct comp_coeffs_s {
+typedef struct expand_coeffs_s {
     flt thrsh;
     flt ratio;
     flt envA;
@@ -38,23 +38,23 @@ typedef struct comp_coeffs_s {
     flt gainA;    
     flt gainR;
     flt gainM;  // Make Up Gain
-    bool bypass;
-} comp_coeffs_t;
+    bool bypass;  
+} expand_coeffs_t;
 
-typedef struct comp_states_s{
+typedef struct expand_states_s{
 
 
-    comp_stereo_t g_c;      // gain computer
+    expand_stereo_t g_c;      // gain expanduter
 
-    comp_stereo_t g_s0;     // gain smoothing current
-    comp_stereo_t g_s1;     // gain smoothing previous
+    expand_stereo_t g_s0;     // gain smoothing current
+    expand_stereo_t g_s1;     // gain smoothing previous
 
-    comp_stereo_t g_m;      // gain make-up
+    expand_stereo_t g_m;      // gain make-up
 
-    comp_stereo_t env0;     // envelope current
-    comp_stereo_t env1;     // envelope previous
+    expand_stereo_t env0;     // envelope current
+    expand_stereo_t env1;     // envelope previous
 
-} comp_states_t;
+} expand_states_t;
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.
@@ -65,7 +65,7 @@ typedef struct comp_states_s{
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp_control_get_sizes(
+int32_t expand_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes);
 
@@ -79,7 +79,7 @@ int32_t comp_control_get_sizes(
  * 
  * @return 0 if gain is initialized, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp_control_initialize(
+int32_t expand_control_initialize(
     void*       params,
     void*       coeffs,
     uint32_t    sample_rate);
@@ -94,7 +94,7 @@ int32_t comp_control_initialize(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp_set_parameter(
+int32_t expand_set_parameter(
     void*       params,
     int32_t     id,
     float       value);
@@ -108,7 +108,7 @@ int32_t comp_set_parameter(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp_update_coeffs(
+int32_t expand_update_coeffs(
     void const* params,
     void*       coeffs);
 

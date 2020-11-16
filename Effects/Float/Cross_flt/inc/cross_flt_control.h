@@ -3,6 +3,7 @@
 
 #define M_PI 3.14159265358979323846
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -17,16 +18,18 @@ typedef struct cross_stereo_s {
 } cross_stereo_t;
 
 typedef struct cross_params_s {
-    flt freq[3];
-    flt samplerate;
+    flt freq;
+    uint32_t sample_rate;
+    bool bypass;
 } cross_params_t;
 
 typedef struct cross_coeffs_s {
     flt k0;     // 1st order
     flt k1;     // 2nd order
     flt k2;     // 2nd order
+    bool bypass;
 } cross_coeffs_t;
-    
+
 typedef struct cross_states_s {
     cross_stereo_t xn;
     cross_stereo_t y0[3];   // 1st order
@@ -37,8 +40,6 @@ typedef struct cross_states_s {
     cross_stereo_t x3[2];   // 2nd order
     cross_stereo_t * band1;
     cross_stereo_t * band2;
-    cross_stereo_t * band3;
-    cross_stereo_t * band4;
 } cross_states_t;
 
 /*******************************************************************************

@@ -45,43 +45,42 @@ int32_t eq_process(
     eq_coeffs_t *c = (eq_coeffs_t*)coeffs;
     eq_states_t *s = (eq_states_t*)states;
     eq_stereo_t *a = (eq_stereo_t*)audio;
-
-    for (size_t i = 0; i < samples_count; i++)
-    {   
-        for(size_t j = 0; j < 10; j++)
+    if(!c->bypass)
+    {
+        for (size_t i = 0; i < samples_count; i++)
         {   
-            if(c->a0[j] != 0)
-            {
+            for(size_t j = 0; j < 10; j++)
+            {   
+                if(c->a0[j] != 0)
+                {
 
-                s->x0[j].left  = a[i].left;
-                s->x0[j].right = a[i].right;
+                    s->x0[j].left  = a[i].left;
+                    s->x0[j].right = a[i].right;
 
-                // printf("INPUT:  %0.30f  * %0.30f \n", s->x0[j].left, c->b0[j]);
-                // printf("OUTPUT: %0.30f\n", s->y0[j].left);
-                // printf("STATE:  %10.30f\n\n", s->x1[j].left);
+                    s->y0[j].left =  macf(c->b0[j], s->x0[j].left, s->x1[j].left) * 8;
 
-                s->y0[j].left =  macf(c->b0[j], s->x0[j].left, s->x1[j].left) * 8;
+                    s->x1[j].left =  macf(c->b1[j], s->x0[j].left, s->x2[j].left);
+                    s->x1[j].left = msubf(c->a1[j], s->y0[j].left, s->x1[j].left);
 
-                s->x1[j].left =  macf(c->b1[j], s->x0[j].left, s->x2[j].left);
-                s->x1[j].left = msubf(c->a1[j], s->y0[j].left, s->x1[j].left);
+                    s->x2[j].left =  mulf(c->b2[j], s->x0[j].left);
+                    s->x2[j].left = msubf(c->a2[j], s->y0[j].left, s->x2[j].left);
 
-                s->x2[j].left =  mulf(c->b2[j], s->x0[j].left);
-                s->x2[j].left = msubf(c->a2[j], s->y0[j].left, s->x2[j].left);
-
-                a[i].left = s->y0[j].left;
+                    a[i].left = s->y0[j].left;
 
 
-                s->y0[j].right =  macf(c->b0[j], s->x0[j].right, s->x1[j].right) * 8;
+                    s->y0[j].right =  macf(c->b0[j], s->x0[j].right, s->x1[j].right) * 8;
 
-                s->x1[j].right =  macf(c->b1[j], s->x0[j].right, s->x2[j].right);
-                s->x1[j].right = msubf(c->a1[j], s->y0[j].right, s->x1[j].right);
+                    s->x1[j].right =  macf(c->b1[j], s->x0[j].right, s->x2[j].right);
+                    s->x1[j].right = msubf(c->a1[j], s->y0[j].right, s->x1[j].right);
 
-                s->x2[j].right =  mulf(c->b2[j], s->x0[j].right);
-                s->x2[j].right = msubf(c->a2[j], s->y0[j].right, s->x2[j].right);
+                    s->x2[j].right =  mulf(c->b2[j], s->x0[j].right);
+                    s->x2[j].right = msubf(c->a2[j], s->y0[j].right, s->x2[j].right);
 
-                a[i].right = s->y0[j].right;
+                    a[i].right = s->y0[j].right;
+                }
             }
         }
+
     }
     return 0;
 }
