@@ -1,50 +1,12 @@
-#include "eq_flt_control.h" 
-#include "fractional.h"
-
-#define M_PI  3.14159265358979323846
-
-typedef enum {
-	LP   = 0,
-	HP   = 1,
-	PEAK = 2,
-	LSH  = 3,
-	HSH	 = 4,
-    OFF  = 5
-} filter_types;
-
-typedef struct param_s {
-    int32_t id;
-    double  value;
-} param_t;
-
-
-typedef struct params_s {
-    double sample_rate;
-    param_t  freq[10]; 
-    param_t  gain[10]; 
-    param_t     Q[10];   
-    param_t  type[10];
-} params_t;
-
-
-typedef struct coeffs_s {
-    q31 b0[10];
-    q31 b1[10];
-    q31 b2[10];
-    q31 a0[10];
-    q31 a1[10];
-    q31 a2[10];
-} coeffs_t;
-
-
+#include "eq_fxd_control.h" 
 
 int32_t eq_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes)
 
 {   
-    *params_bytes = sizeof(params_t);
-    *coeffs_bytes = sizeof(coeffs_t);
+    *params_bytes = sizeof(eq_params_t);
+    *coeffs_bytes = sizeof(eq_coeffs_t);
     return 0;
 }
 
@@ -54,10 +16,11 @@ int32_t eq_control_initialize(
     uint32_t    sample_rate)
 
 {   
-    coeffs_t * c = (coeffs_t*)coeffs;
-    params_t * p = (params_t*)params;
+    eq_coeffs_t * c = (eq_coeffs_t*)coeffs;
+    eq_params_t * p = (eq_params_t*)params;
 
     p->sample_rate = sample_rate;
+    p->bypass = false;
     for (size_t i = 0; i < 10; i++)
     {
         p->freq[i].id = 0 + i*4;
@@ -85,8 +48,9 @@ int32_t eq_set_parameter(
     int32_t     id,
     float       value)
 {   
-    params_t * p = (params_t*)params;
-    if(id == 40) p->sample_rate = value;
+    eq_params_t * p = (eq_params_t*)params;
+    if(id == 40) p->sample_rate = (uint32_t)value;
+    if(id == 300) p->bypass = value;
     for(int i = 0; i < 10; i++) 
     {
         if(p->freq[i].id == id) p->freq[i].value = value;
@@ -105,9 +69,9 @@ int32_t eq_update_coeffs(
     double  A[10], sn[10], cs[10], alpha[10], beta[10], omega[10];
     double b0[10], b1[10], b2[10], a0[10], a1[10], a2[10];
 
-    coeffs_t * c = (coeffs_t*)coeffs;
-    params_t * p = (params_t*)params;
-
+    eq_coeffs_t * c = (eq_coeffs_t*)coeffs;
+    eq_params_t * p = (eq_params_t*)params;
+    c->bypass = p->bypass;
     for (size_t i = 0; i < 10; i++) 
     {
         A[i] = pow(10, p->gain[i].value / 40);
@@ -181,11 +145,18 @@ int32_t eq_update_coeffs(
         c->b1[i] = double2fixed_q((b1[i] / 8), 31);
         c->b2[i] = double2fixed_q((b2[i] / 8), 31);
 
+
         // printf("a1[%d]: %d \n",i, c->a1[i]);
         // printf("a2[%d]: %d \n",i, c->a2[i]);
         // printf("b0[%d]: %d \n",i, c->b0[i]);
         // printf("b1[%d]: %d \n",i, c->b1[i]);
-        // printf("b2[%d]: %d \n\n",i, c->b2[i]);
+        // printf("b2[%d]: %d \n",i, c->b2[i]);
+
+        // printf("a1[%d]: %f \n",i, a1[i]);
+        // printf("a2[%d]: %f \n",i, a2[i]);
+        // printf("b0[%d]: %f \n",i, b0[i]);
+        // printf("b1[%d]: %f \n",i, b1[i]);
+        // printf("b2[%d]: %f \n",i, b2[i]);
 
     }
 

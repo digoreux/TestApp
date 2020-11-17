@@ -1,7 +1,7 @@
-#ifndef __EQ_EFFECT_PROCESS_H__
-#define __EQ_EFFECT_PROCESS_H__
+#ifndef __COMP_FLT_PROCESS_H__
+#define __COMP_FLT_PROCESS_H__
 
-#include "effect_control.h"
+#include "comp_fxd_control.h"
 
 
 /*******************************************************************************
@@ -12,7 +12,7 @@
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t eq_process_get_sizes(
+int32_t comp_process_get_sizes(
     size_t*     states_bytes);
  
 
@@ -24,7 +24,7 @@ int32_t eq_process_get_sizes(
  * 
  * @return 0 on success, otherwise fail
  ******************************************************************************/
-int32_t eq_reset(
+int32_t comp_reset(
     void const* coeffs,
     void*       states);
 
@@ -40,7 +40,7 @@ int32_t eq_reset(
  * 
  * @return 0 on success, otherwise fail
  ******************************************************************************/
-int32_t eq_process(
+int32_t comp_process(
     void const* coeffs,
     void*       states,
     void*       audio,

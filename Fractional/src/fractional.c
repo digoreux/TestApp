@@ -263,15 +263,29 @@ q63 mul_q63(q31 x, q31 y)
 }
 
 
-q63 mac_q31(q31 x, q31 y, q63 z)
+q63 mac_q63(q31 x, q31 y, q63 z)
 {   
     z = add_q63(mul_q63(x, y), z);
     return z;
 }
 
-q63 msub_q31(q31 x, q31 y, q63 z)
+q63 msub_q63(q31 x, q31 y, q63 z)
 {   
     z = sub_q63(z, mul_q63(x, y));
+    return z;
+} 
+
+q31 mac_q31(q31 x, q31 y, q31 z)
+{   
+    q63 acc = mul_q63(x, y);
+    z = add_q31(gethigh(acc), z);
+    return z;
+}
+
+q31 msub_q31(q31 x, q31 y, q31 z)
+{   
+    q63 acc = mul_q63(x, y);
+    z = sub_q31(z, gethigh(acc));
     return z;
 } 
 

@@ -1,7 +1,7 @@
-#ifndef __EFFECT_PROCESS_H__
-#define __EFFECT_PROCESS_H__
+#ifndef __CHAIN_FLT_PROCESS_H__
+#define __CHAIN_FLT_PROCESS_H__
 
-#include "effect_control.h"
+#include "chain_fxd_control.h"
 
 
 /*******************************************************************************

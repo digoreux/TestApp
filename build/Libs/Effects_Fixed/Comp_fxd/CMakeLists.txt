@@ -7,8 +7,8 @@ set(EFFECT_PATH "../../../../Effects/Fixed/${LIB_NAME}")
 project(${LIB_NAME})
 
 add_library(${LIB_NAME}
-    ${EFFECT_PATH}/src/comp_effect_control.c 
-    ${EFFECT_PATH}/src/comp_effect_process.c)
+    ${EFFECT_PATH}/src/comp_fxd_control.c 
+    ${EFFECT_PATH}/src/comp_fxd_process.c)
 
 
 target_include_directories(${LIB_NAME} PRIVATE 

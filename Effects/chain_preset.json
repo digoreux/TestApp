@@ -31,7 +31,7 @@
         { "id"  : 20, "val" : 4000, "name": "6_freq" },
         { "id"  : 21, "val" : 6,    "name": "6_gain" }, 
         { "id"  : 22, "val" : 4,    "name": "6_Q" },
-        { "id"  : 23, "val" : 5,    "name": "6_type" },
+        { "id"  : 23, "val" : 5,    "name": "6_type" },  
  
         { "id"  : 24, "val" : 8000, "name": "7_freq" },
         { "id"  : 25, "val" : -6,   "name": "7_gain" }, 

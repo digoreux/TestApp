@@ -1,5 +1,5 @@
-#ifndef __EFFECT_CONTROL_H__
-#define __EFFECT_CONTROL_H__
+#ifndef __CHAIN_FLT_CONTROL_H__
+#define __CHAIN_FLT_CONTROL_H__
 
 #include <stdint.h>
 #include <stddef.h>
@@ -65,6 +65,9 @@ int32_t effect_update_coeffs(
     void const* params,
     void*       coeffs);
 
+
+
+int set_params(void * params);
 
 
 #endif

@@ -48,9 +48,26 @@ q31 getlow(q63 x);
 
 q31 mul_q31(q31 x, q31 y);
 q63 mul_q63(q31 x, q31 y);
-
-q63 mac_q31(q31 x, q31 y, q63 z);
-q63 msub_q31(q31 x, q31 y, q63 z);
+/*
+  input:  Q31
+  output: Q63
+*/
+q63 mac_q63(q31 x, q31 y, q63 z);
+/*
+  input:  Q31
+  output: Q31
+*/
+q31 mac_q31(q31 x, q31 y, q31 z);
+/*
+  input:  Q31
+  output: Q63
+*/
+q63 msub_q63(q31 x, q31 y, q63 z);
+/*
+  input:  Q31
+  output: Q31
+*/
+q31 msub_q31(q31 x, q31 y, q31 z);
 
 /*
   input:  Q31

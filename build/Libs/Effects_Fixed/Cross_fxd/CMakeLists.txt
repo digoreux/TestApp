@@ -7,8 +7,10 @@ set(EFFECT_PATH "../../../../Effects/Fixed/${LIB_NAME}")
 project(${LIB_NAME})
 
 add_library(${LIB_NAME}
-    ${EFFECT_PATH}/src/cross_effect_control.c 
-    ${EFFECT_PATH}/src/cross_effect_process.c)
+    ${EFFECT_PATH}/src/cross_fxd_control.c 
+    ${EFFECT_PATH}/src/cross_fxd_process.c 
+    ${EFFECT_PATH}/src/cross4_fxd_control.c 
+    ${EFFECT_PATH}/src/cross4_fxd_process.c)
 
 
 target_include_directories(${LIB_NAME} PRIVATE 
