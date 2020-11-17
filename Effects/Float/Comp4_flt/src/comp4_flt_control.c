@@ -20,10 +20,12 @@ int32_t comp4_control_initialize(
     comp4_params_t* p = (comp4_params_t*)params;
     comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
 
-    comp_control_initialize(&p->comp1_p, &c->comp1_c, p->sample_rate);
-    comp_control_initialize(&p->comp2_p, &c->comp2_c, p->sample_rate);
-    comp_control_initialize(&p->comp3_p, &c->comp3_c, p->sample_rate);
-    comp_control_initialize(&p->comp4_p, &c->comp4_c, p->sample_rate);
+    // comp_control_initialize(&p->comp1_p, &c->comp1_c, sample_rate);
+    // comp_control_initialize(&p->comp2_p, &c->comp2_c, sample_rate);
+    // comp_control_initialize(&p->comp3_p, &c->comp3_c, sample_rate);
+    // comp_control_initialize(&p->comp4_p, &c->comp4_c, sample_rate);
+    p->bypass = 0;
+    c->bypass = 0;
 
     return 0;
 }

@@ -53,9 +53,9 @@ int32_t cross_update_coeffs(
     c->k1 = (float)k1;
     c->k2 = (float)-k2;
 
-    printf("k0: %f\n", c->k0);
-    printf("k1: %f\n", c->k1);
-    printf("k2:  %f\n\n", c->k2);
+    // printf("k0: %f\n", c->k0);
+    // printf("k1: %f\n", c->k1);
+    // printf("k2:  %f\n\n", c->k2);
 
     return 0;
 }

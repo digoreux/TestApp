@@ -14,12 +14,12 @@ int32_t comp4_reset(
     void*       states)
 {
     comp4_states_t* s = (comp4_states_t*)states;
-    comp4_states_t* c = (comp4_states_t*)coeffs;
+    comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
 
-    comp_reset(&c->comp1_s, &s->comp1_s);
-    comp_reset(&c->comp2_s, &s->comp2_s);
-    comp_reset(&c->comp3_s, &s->comp3_s);
-    comp_reset(&c->comp4_s, &s->comp4_s);
+    comp_reset(&c->comp1_c, &s->comp1_s);
+    comp_reset(&c->comp2_c, &s->comp2_s);
+    comp_reset(&c->comp3_c, &s->comp3_s);
+    comp_reset(&c->comp4_c, &s->comp4_s);
 
     return 0;
 }

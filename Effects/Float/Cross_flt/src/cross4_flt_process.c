@@ -61,21 +61,38 @@ int32_t cross4_process(
     return 0;
 }
 
-int32_t mix(void * audio, size_t samples_count, void * band1, void * band2, void * band3, void * band4) 
+int32_t mix(void * audio, void * bands, size_t samples_count) 
 {
-    cross_stereo_t * a  = (cross_stereo_t *)audio;
-    cross_stereo_t * b1 = (cross_stereo_t *)band1;
-    cross_stereo_t * b2 = (cross_stereo_t *)band2;
-    cross_stereo_t * b3 = (cross_stereo_t *)band3;
-    cross_stereo_t * b4 = (cross_stereo_t *)band4;
 
+    cross_stereo_t * a  = (cross_stereo_t *)audio;
+    bands_t * b = (bands_t*)bands;
     for(size_t i = 0; i < samples_count; i++) 
-    {
-        a[i].left  = b1[i].left + b2[i].left + b3[i].left + b4[i].left;
-        a[i].right = b1[i].right + b2[i].right + b3[i].right + b4[i].right;
+    {   
+        
+        a[i].left  = b->band1[i].left + b->band2[i].left + b->band3[i].left + b->band4[i].left;
+        a[i].right = b->band1[i].right + b->band2[i].right + b->band3[i].right + b->band4[i].right;
+        // a[i].left  = b->band1[i].left + b->band3[i].left;
+        // a[i].right = b->band2[i].left + b->band4[i].left;
     }
     return 0;
 }
+// int32_t mix(void * audio, size_t samples_count, void * band1, void * band2, void * band3, void * band4) 
+// {
+//     cross_stereo_t * a  = (cross_stereo_t *)audio;
+//     cross_stereo_t * b1 = (cross_stereo_t *)band1;
+//     cross_stereo_t * b2 = (cross_stereo_t *)band2;
+//     cross_stereo_t * b3 = (cross_stereo_t *)band3;
+//     cross_stereo_t * b4 = (cross_stereo_t *)band4;
+
+//     for(size_t i = 0; i < samples_count; i++) 
+//     {
+//         // a[i].left  = b1[i].left + b2[i].left + b3[i].left + b4[i].left;
+//         // a[i].right = b1[i].right + b2[i].right + b3[i].right + b4[i].right;
+//         a[i].left = b1[i].left + b3[i].left;
+//         a[i].right = b2[i].left + b4[i].left;
+//     }
+//     return 0;
+// }
 
 int32_t mix2(void * audio, size_t samples_count, void * band1, void * band2) 
 {

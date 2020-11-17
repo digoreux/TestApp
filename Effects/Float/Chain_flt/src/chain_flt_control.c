@@ -48,7 +48,11 @@ int32_t effect_control_initialize(
 {   
     params_t *p = (params_t*)params;
     coeffs_t *c = (coeffs_t*)coeffs;
-
+    p->eq_p.sample_rate = sample_rate;
+    p->comp_p.sample_rate = sample_rate;
+    p->comp4_p.sample_rate = sample_rate;
+    p->expand_p.sample_rate = sample_rate;
+    p->cross4_p.sample_rate = sample_rate;
     eq_control_initialize(&p->eq_p, &c->eq_c, p->eq_p.sample_rate);
     comp_control_initialize(&p->comp_p, &c->comp_c, p->comp_p.sample_rate);
     comp4_control_initialize(&p->comp4_p, &c->cross4_c, p->comp4_p.sample_rate);

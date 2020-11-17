@@ -27,12 +27,17 @@ int32_t comp_control_initialize(
     p->tRelease = 0.0;
     p->makeUpGain = 0.0;
     p->sample_rate = 0;
+    p->bypass = 0;
+    p->downward = 0;
 
     c->thrsh = 0.0;
     c->ratio = 0.0;
     c->gainA = 0.0;
     c->gainR = 0.0;
     c->gainM = 0.0;
+    c->envA = 0.0;
+    c->envR = 0.0;
+    c->bypass = 0;
 
     return 0;
 }

@@ -69,7 +69,7 @@ int apply_effect(utils_p utils)
 
 int read_wav(utils_p utils, arg_p a, header_p meta)
 {   
-    utils->in = fopen(a->input, "rb");
+    utils->in  = fopen(a->input, "rb");
     utils->out = fopen(a->output, "wb");
 
     read_header(utils->in, meta);
