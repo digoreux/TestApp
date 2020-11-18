@@ -49,9 +49,9 @@ int32_t cross_update_coeffs(
     k1  = -cos(2 * M_PI  * p->freq / p->sample_rate);
     k1 *= (1.0 - k2);
 
-    // c->k0 = (float)k0;
-    // c->k1 = (float)k1;
-    // c->k2 = (float)-k2;
+    c->k0 = (float)k0;
+    c->k1 = (float)k1;
+    c->k2 = (float)-k2;
 
     c->mk0.v = _mm_set_ps((float)k0, (float)k0, 0.0f, 0.0f);
     c->mk1.v = _mm_set_ps((float)k1, (float)k1, 0.0f, 0.0f);

@@ -36,8 +36,8 @@ typedef struct cross4_states_s {
     stereo_t y0[2];   // 1st order phase correction 
     stereo_t x0[2];   // 1st order phase correction
     stereo_t x1[2];   // 1st order phase correction
-    stereo_t y1[2];   // 2nd order phase correction
     stereo_t x2[2];   // 2nd order phase correction
+    stereo_t y1[2];   // 2nd order phase correction
     stereo_t x3[2];   // 2nd order phase correction
 } cross4_states_t;
 

@@ -1,4 +1,5 @@
 #include "cross4_flt_process.h"
+
 // #include "cross_flt_process.h"
 
 int32_t cross4_process_get_sizes(
@@ -69,7 +70,6 @@ int32_t mix(void * audio, void * bands, size_t samples_count)
     bands_t * b = (bands_t*)bands;
     for(size_t i = 0; i < samples_count; i++) 
     {   
-        
         a[i].left  = b->band1[i].left + b->band2[i].left + b->band3[i].left + b->band4[i].left;
         a[i].right = b->band1[i].right + b->band2[i].right + b->band3[i].right + b->band4[i].right;
         // a[i].left  = b->band1[i].left + b->band3[i].left;

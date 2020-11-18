@@ -12,16 +12,6 @@ typedef enum {
     OFF  = 5
 } filter_types;
 
-// typedef struct eq_stereo_s {
-//     flt left;
-//     flt right;
-// } eq_stereo_t;
-
-// typedef union {
-//     __m128 v;
-//     flt f[4];
-// } xmm;
-
 typedef flt stereo[2];
 
 typedef struct param_s {
@@ -43,13 +33,11 @@ typedef struct eq_params_s {
     bool bypass;
 } eq_params_t;
 
-
 typedef struct eq_coeffs_s {
     flt  k[6][10]; //a0,a1,a2,b0,b1,b2
     xmm mk[6][10];
     bool bypass;
 } eq_coeffs_t;
-
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.

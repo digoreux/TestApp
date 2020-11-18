@@ -1,5 +1,4 @@
 #include "eq_flt_control.h" 
-#include "fractional.h"
 
 #define M_PI  3.14159265358979323846
 
@@ -34,7 +33,8 @@ int32_t eq_control_initialize(
         p->gain[i].value = 0;
         p->Q[i].value    = 0;
         p->type[i].value = 5;
-        for(uint32_t j = 0; j < 6; j++)
+
+        for (uint32_t j = 0; j < 6; j++)
             c->k[j][i] = 0;
     }
     return 0;
@@ -135,19 +135,26 @@ int32_t eq_update_coeffs(
         a1[i] /= -a0[i];
         a2[i] /= -a0[i];
 
-        c->mk[0][i].v = _mm_set_ps((float)a0[i], (float)a0[i], 0.0f, 0.0f);
-        c->mk[1][i].v = _mm_set_ps((float)a1[i], (float)a1[i], 0.0f, 0.0f);
-        c->mk[2][i].v = _mm_set_ps((float)a2[i], (float)a2[i], 0.0f, 0.0f);
-        c->mk[3][i].v = _mm_set_ps((float)b0[i], (float)b0[i], 0.0f, 0.0f);
-        c->mk[4][i].v = _mm_set_ps((float)b1[i], (float)b1[i], 0.0f, 0.0f);
-        c->mk[5][i].v = _mm_set_ps((float)b2[i], (float)b2[i], 0.0f, 0.0f);
-        
-        // printf("a0: %f \n", c->k[0][i]);
-        // printf("a1: %f \n", c->k[1][i]);
-        // printf("a2: %f \n", c->k[2][i]);
-        // printf("b0: %f \n", c->k[3][i]);
-        // printf("b1: %f \n", c->k[4][i]);
-        // printf("b2: %f \n", c->k[5][i])  ;
+         c->mk[0][i].v = _mm_set_ps((float)a0[i], (float)a0[i], 0.0f, 0.0f);
+         c->mk[1][i].v = _mm_set_ps((float)a1[i], (float)a1[i], 0.0f, 0.0f);
+         c->mk[2][i].v = _mm_set_ps((float)a2[i], (float)a2[i], 0.0f, 0.0f);
+         c->mk[3][i].v = _mm_set_ps((float)b0[i], (float)b0[i], 0.0f, 0.0f);
+         c->mk[4][i].v = _mm_set_ps((float)b1[i], (float)b1[i], 0.0f, 0.0f);
+         c->mk[5][i].v = _mm_set_ps((float)b2[i], (float)b2[i], 0.0f, 0.0f);
+
+        c->k[0][i] = (float)a0[i];
+        c->k[1][i] = (float)a1[i];
+        c->k[2][i] = (float)a2[i];
+        c->k[3][i] = (float)b0[i];
+        c->k[4][i] = (float)b1[i];
+        c->k[5][i] = (float)b2[i];
+ /*       printf("k0: %f \n", c->k[0][i]);
+        printf("k1: %f \n", c->k[1][i]);
+        printf("k2: %f \n", c->k[2][i]);
+        printf("k3: %f \n", c->k[3][i]);
+        printf("k4: %f \n", c->k[4][i]);
+        printf("k5: %f \n", c->k[5][i]);
+        printf("\n");*/
         // printf("a0: %f \n",  c->mk[0][i].f[3]);
         // printf("a1: %f \n",  c->mk[1][i].f[3]);
         // printf("a2: %f \n",  c->mk[2][i].f[3]);
