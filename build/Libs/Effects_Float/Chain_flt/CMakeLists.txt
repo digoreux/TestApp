@@ -13,6 +13,7 @@ add_library(${LIB_NAME}
 
 target_include_directories(${LIB_NAME} PRIVATE 
      ${EFFECTS_PATH}/${LIB_NAME}/inc
+     ${EFFECTS_PATH}/inc
      ${EFFECTS_PATH}/EQ_flt/inc
      ${EFFECTS_PATH}/Comp_flt/inc
      ${EFFECTS_PATH}/Comp4_flt/inc

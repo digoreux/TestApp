@@ -3,13 +3,6 @@
 
 #define M_PI 3.14159265358979323846
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
 #include "cross_flt_control.h"
 
 typedef struct cross4_coeffs_s {
@@ -28,10 +21,10 @@ typedef struct cross4_params_s {
 } cross4_params_t;
 
 typedef struct bands_s {
-    cross_stereo_t * band1;
-    cross_stereo_t * band2;
-    cross_stereo_t * band3;
-    cross_stereo_t * band4;
+    stereo_t * band1;
+    stereo_t * band2;
+    stereo_t * band3;
+    stereo_t * band4;
 } bands_t;
 
 typedef struct cross4_states_s {
@@ -39,13 +32,13 @@ typedef struct cross4_states_s {
     cross_states_t cross2_s;
     cross_states_t cross3_s;
     bands_t bands;
-    cross_stereo_t xn;
-    cross_stereo_t y0[2];   // 1st order phase correction 
-    cross_stereo_t x0[2];   // 1st order phase correction
-    cross_stereo_t x1[2];   // 1st order phase correction
-    cross_stereo_t y1[2];   // 2nd order phase correction
-    cross_stereo_t x2[2];   // 2nd order phase correction
-    cross_stereo_t x3[2];   // 2nd order phase correction
+    stereo_t xn;
+    stereo_t y0[2];   // 1st order phase correction 
+    stereo_t x0[2];   // 1st order phase correction
+    stereo_t x1[2];   // 1st order phase correction
+    stereo_t y1[2];   // 2nd order phase correction
+    stereo_t x2[2];   // 2nd order phase correction
+    stereo_t x3[2];   // 2nd order phase correction
 } cross4_states_t;
 
 

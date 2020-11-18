@@ -1,16 +1,15 @@
 #include "chain_flt_process.h"
 #include "cross4_flt_process.h"
-#include "cross_flt_process.h"
 #include "comp_flt_process.h"
 #include "comp4_flt_process.h"
 #include "expand_flt_process.h"
 #include "eq_flt_process.h"
 #include <time.h>
 
-typedef struct stereo_s {
-    flt left;
-    flt right;
-} stereo_t;
+// typedef struct stereo_s {
+//     flt left;
+//     flt right;
+// } stereo_t;
 
 typedef struct params_t {
     eq_params_t   eq_p;
@@ -74,11 +73,11 @@ int32_t effect_process(
     stereo_t *a = (stereo_t*)audio;
 
     
-    eq_process(&c->eq_c, &s->eq_s, audio, samples_count);
+    // eq_process(&c->eq_c, &s->eq_s, audio, samples_count);
     // comp_process(&c->comp_c, &s->comp_s, audio, samples_count);
     cross4_process(&c->cross4_c, &s->cross4_s, audio, samples_count);
-    comp4_process(&c->comp4_c, &s->comp4_s, &s->cross4_s.bands, samples_count);    
-    mix(audio, &s->cross4_s.bands, samples_count);
+    // comp4_process(&c->comp4_c, &s->comp4_s, &s->cross4_s.bands, samples_count);    
+    // mix(audio, &s->cross4_s.bands, samples_count);
     // expand_process(&c->expand_c, &s->expand_s, audio, samples_count);
 
     return 0;

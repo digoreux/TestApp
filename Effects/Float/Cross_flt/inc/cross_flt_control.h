@@ -3,27 +3,7 @@
 
 #define M_PI 3.14159265358979323846
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include "fractional.h"
-
-#include "nmmintrin.h" // for SSE4.2
-#include "immintrin.h" // for AVX 
-
-typedef union {
-    __m128 v;
-    flt f[4];
-} xmm;
-
-typedef struct cross_stereo_s {
-    flt left;
-    flt right;
-} cross_stereo_t;
+#include "abstract_effect.h"
 
 typedef struct cross_params_s {
     flt freq;
@@ -32,6 +12,10 @@ typedef struct cross_params_s {
 } cross_params_t;
 
 typedef struct cross_coeffs_s {
+    xmm mk0;
+    xmm mk1;
+    xmm mk2;
+    xmm m2;
     flt k0;     // 1st order
     flt k1;     // 2nd order
     flt k2;     // 2nd order
@@ -39,15 +23,22 @@ typedef struct cross_coeffs_s {
 } cross_coeffs_t;
 
 typedef struct cross_states_s {
-    cross_stereo_t xn;
-    cross_stereo_t y0[3];   // 1st order
-    cross_stereo_t x0[3];   // 1st order
-    cross_stereo_t x1[3];   // 1st order
-    cross_stereo_t y1[2];   // 2nd order
-    cross_stereo_t x2[2];   // 2nd order
-    cross_stereo_t x3[2];   // 2nd order
-    cross_stereo_t * band1;
-    cross_stereo_t * band2;
+    xmm mxn;
+    xmm mx0[3];
+    xmm my0[3];
+    xmm mx1[3];
+    xmm my1[2];
+    xmm mx2[2];
+    xmm mx3[2];
+    stereo_t xn;
+    stereo_t y0[3];   // 1st order
+    stereo_t x0[3];   // 1st order
+    stereo_t x1[3];   // 1st order
+    stereo_t y1[2];   // 2nd order
+    stereo_t x2[2];   // 2nd order
+    stereo_t x3[2];   // 2nd order
+    stereo_t * band1;
+    stereo_t * band2;
 } cross_states_t;
 
 /*******************************************************************************

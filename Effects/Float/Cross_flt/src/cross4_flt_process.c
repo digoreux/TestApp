@@ -48,13 +48,14 @@ int32_t cross4_process(
 {   
     cross4_coeffs_t* c = (cross4_coeffs_t*)coeffs;
     cross4_states_t* s = (cross4_states_t*)states;
-    cross_stereo_t*  a = (cross_stereo_t*)audio;
+    stereo_t*  a = (stereo_t*)audio;
     if(!c->bypass)
     {   
-        cross_process(&c->cross1_c, &s->cross1_s, audio,    s->bands.band1, s->bands.band3, samples_count);
-        phase_correction(c, s, s->bands.band1, s->bands.band3, samples_count);
-        cross_process(&c->cross2_c, &s->cross2_s, s->bands.band1, s->bands.band1, s->bands.band2, samples_count);
-        cross_process(&c->cross3_c, &s->cross3_s, s->bands.band3, s->bands.band3, s->bands.band4, samples_count);
+        cross_process(&c->cross1_c, &s->cross1_s, audio, s->bands.band1, s->bands.band2, samples_count);
+        mix2(audio, samples_count, s->bands.band1, s->bands.band2);
+        // phase_correction(c, s, s->bands.band1, s->bands.band3, samples_count);
+        // cross_process(&c->cross2_c, &s->cross2_s, s->bands.band1, s->bands.band1, s->bands.band2, samples_count);
+        // cross_process(&c->cross3_c, &s->cross3_s, s->bands.band3, s->bands.band3, s->bands.band4, samples_count);
         // mix(audio, samples_count, s->band1, s->band2, s->band3, s->band4);
     }
 
@@ -64,7 +65,7 @@ int32_t cross4_process(
 int32_t mix(void * audio, void * bands, size_t samples_count) 
 {
 
-    cross_stereo_t * a  = (cross_stereo_t *)audio;
+    stereo_t * a  = (stereo_t *)audio;
     bands_t * b = (bands_t*)bands;
     for(size_t i = 0; i < samples_count; i++) 
     {   
@@ -78,11 +79,11 @@ int32_t mix(void * audio, void * bands, size_t samples_count)
 }
 // int32_t mix(void * audio, size_t samples_count, void * band1, void * band2, void * band3, void * band4) 
 // {
-//     cross_stereo_t * a  = (cross_stereo_t *)audio;
-//     cross_stereo_t * b1 = (cross_stereo_t *)band1;
-//     cross_stereo_t * b2 = (cross_stereo_t *)band2;
-//     cross_stereo_t * b3 = (cross_stereo_t *)band3;
-//     cross_stereo_t * b4 = (cross_stereo_t *)band4;
+//     stereo_t * a  = (stereo_t *)audio;
+//     stereo_t * b1 = (stereo_t *)band1;
+//     stereo_t * b2 = (stereo_t *)band2;
+//     stereo_t * b3 = (stereo_t *)band3;
+//     stereo_t * b4 = (stereo_t *)band4;
 
 //     for(size_t i = 0; i < samples_count; i++) 
 //     {
@@ -96,15 +97,17 @@ int32_t mix(void * audio, void * bands, size_t samples_count)
 
 int32_t mix2(void * audio, size_t samples_count, void * band1, void * band2) 
 {
-    cross_stereo_t * a  = (cross_stereo_t *)audio;
-    cross_stereo_t * b1 = (cross_stereo_t *)band1;
-    cross_stereo_t * b2 = (cross_stereo_t *)band2;
+    stereo_t * a  = (stereo_t *)audio;
+    stereo_t * b1 = (stereo_t *)band1;
+    stereo_t * b2 = (stereo_t *)band2;
 
 
     for(size_t i = 0; i < samples_count; i++) 
     {
-        a[i].left  = b1[i].left + b2[i].left;
-        a[i].right = b1[i].right + b2[i].right;
+        // a[i].left  = b1[i].left + b2[i].left;
+        // a[i].right = b1[i].right + b2[i].right;
+        a[i].left  = b1[i].left;
+        a[i].right = b2[i].left;
     }
     return 0;
 }
@@ -113,8 +116,8 @@ int32_t phase_correction(void * coeffs, void * states, void * band1, void * band
 {
     cross4_coeffs_t* c = (cross4_coeffs_t*)coeffs;
     cross4_states_t* s = (cross4_states_t*)states;
-    cross_stereo_t * b1 = (cross_stereo_t *)band1;
-    cross_stereo_t * b2 = (cross_stereo_t *)band2;
+    stereo_t * b1 = (stereo_t *)band1;
+    stereo_t * b2 = (stereo_t *)band2;
 
 
     for(size_t i = 0; i < samples_count; i++) 

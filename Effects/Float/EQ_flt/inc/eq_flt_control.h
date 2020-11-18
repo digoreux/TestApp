@@ -1,16 +1,7 @@
 #ifndef __EQ_FLT_CONTROL_H__
 #define __EQ_FLT_CONTROL_H__
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include "fractional.h"
-#include "nmmintrin.h" // for SSE4.2
-#include "immintrin.h" // for AVX 
+#include "abstract_effect.h"
 
 typedef enum {
 	LP   = 0,
@@ -21,15 +12,15 @@ typedef enum {
     OFF  = 5
 } filter_types;
 
-typedef struct eq_stereo_s {
-    flt left;
-    flt right;
-} eq_stereo_t;
+// typedef struct eq_stereo_s {
+//     flt left;
+//     flt right;
+// } eq_stereo_t;
 
-typedef union {
-    __m128 v;
-    flt f[4];
-} xmm;
+// typedef union {
+//     __m128 v;
+//     flt f[4];
+// } xmm;
 
 typedef flt stereo[2];
 

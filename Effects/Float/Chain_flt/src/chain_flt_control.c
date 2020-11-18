@@ -4,6 +4,7 @@
 #include "comp4_flt_control.h"
 #include "expand_flt_control.h"
 #include "eq_flt_control.h"
+#include "abstract_effect.h"
 
 typedef struct params_t {
     eq_params_t   eq_p;
