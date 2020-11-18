@@ -19,33 +19,32 @@ int32_t cross_reset(
     /* 2nd Order */
     for(int i = 0; i < 2; i++)
     {
-
-        s->my1[i].v = _mm_set_ps(s->y1[i].left, s->y1[i].left, 0.0f, 0.0f);
-        s->mx2[i].v = _mm_set_ps(s->x2[i].left, s->x2[i].left, 0.0f, 0.0f);
-        s->mx3[i].v = _mm_set_ps(s->x3[i].left, s->x3[i].left, 0.0f, 0.0f);
-
         s->y1[i].left = 0;
         s->x2[i].left = 0;
         s->x3[i].left = 0;
         s->y1[i].right = 0;
         s->x2[i].right = 0;
         s->x3[i].right = 0;
+
+        s->my1[i].v = _mm_set_ps(s->y1[i].left, s->y1[i].left, 0.0f, 0.0f);
+        s->mx2[i].v = _mm_set_ps(s->x2[i].left, s->x2[i].left, 0.0f, 0.0f);
+        s->mx3[i].v = _mm_set_ps(s->x3[i].left, s->x3[i].left, 0.0f, 0.0f);
     }
 
     /* 1st Order */
 
     for(int i = 0; i < 3; i++)
     {   
-        s->my0[i].v = _mm_set_ps(s->y0[i].left, s->y0[i].left, 0.0f, 0.0f);
-        s->mx0[i].v = _mm_set_ps(s->x0[i].left, s->x0[i].left, 0.0f, 0.0f);
-        s->mx1[i].v = _mm_set_ps(s->x1[i].left, s->x1[i].left, 0.0f, 0.0f);
-
         s->y0[i].left = 0;
         s->x0[i].left = 0;
         s->x1[i].left = 0;
         s->y0[i].right = 0;
         s->x0[i].right = 0;
         s->x1[i].right = 0;
+
+        s->my0[i].v = _mm_set_ps(s->y0[i].left, s->y0[i].left, 0.0f, 0.0f);
+        s->mx0[i].v = _mm_set_ps(s->x0[i].left, s->x0[i].left, 0.0f, 0.0f);
+        s->mx1[i].v = _mm_set_ps(s->x1[i].left, s->x1[i].left, 0.0f, 0.0f);
     }
     return 0;
 }
@@ -108,78 +107,78 @@ int32_t cross_process(
         band2[i].left  = s->mxn.f[3];
         band2[i].right = s->mxn.f[2];
 
-        // s->xn.left = a[i].left;
-        // s->x0[0].left = msubf(c->k0, s->x1[0].left, s->xn.left); 
-        // s->y0[0].left =  macf(c->k0, s->x0[0].left, s->x1[0].left);
-        // s->x1[0].left = s->x0[0].left;
+         //s->xn.left = a[i].left;
+         //s->x0[0].left = msubf(c->k0, s->x1[0].left, s->xn.left); 
+         //s->y0[0].left =  macf(c->k0, s->x0[0].left, s->x1[0].left);
+         //s->x1[0].left = s->x0[0].left;
 
-        // /* 2nd Order */
-        // s->y1[0].left =  macf(c->k2, s->xn.left,    s->x2[0].left);
-        // s->x2[0].left =  macf(c->k1, s->xn.left,    s->x3[0].left);
-        // s->x2[0].left = msubf(c->k1, s->y1[0].left, s->x2[0].left);
-        // s->x3[0].left = msubf(c->k2, s->y1[0].left, s->xn.left);
+         ///* 2nd Order */
+         //s->y1[0].left =  macf(c->k2, s->xn.left,    s->x2[0].left);
+         //s->x2[0].left =  macf(c->k1, s->xn.left,    s->x3[0].left);
+         //s->x2[0].left = msubf(c->k1, s->y1[0].left, s->x2[0].left);
+         //s->x3[0].left = msubf(c->k2, s->y1[0].left, s->xn.left);
 
-        // s->xn.left = (s->y0[0].left + s->y1[0].left) / 2;
+         //s->xn.left = (s->y0[0].left + s->y1[0].left) / 2;
 
-        // /* 1st Order */
-        // s->x0[1].left = msubf(c->k0, s->x1[1].left, s->xn.left); 
-        // s->y0[1].left =  macf(c->k0, s->x0[1].left, s->x1[1].left);
-        // s->x1[1].left = s->x0[1].left;
+         ///* 1st Order */
+         //s->x0[1].left = msubf(c->k0, s->x1[1].left, s->xn.left); 
+         //s->y0[1].left =  macf(c->k0, s->x0[1].left, s->x1[1].left);
+         //s->x1[1].left = s->x0[1].left;
 
-        // /* 2nd Order */
-        // s->y1[1].left =  macf(c->k2, s->xn.left,    s->x2[1].left);
-        // s->x2[1].left =  macf(c->k1, s->xn.left,    s->x3[1].left);
-        // s->x2[1].left = msubf(c->k1, s->y1[1].left, s->x2[1].left);
-        // s->x3[1].left = msubf(c->k2, s->y1[1].left, s->xn.left);
+         ///* 2nd Order */
+         //s->y1[1].left =  macf(c->k2, s->xn.left,    s->x2[1].left);
+         //s->x2[1].left =  macf(c->k1, s->xn.left,    s->x3[1].left);
+         //s->x2[1].left = msubf(c->k1, s->y1[1].left, s->x2[1].left);
+         //s->x3[1].left = msubf(c->k2, s->y1[1].left, s->xn.left);
 
-        // /* 1st Order Phase Compensation */
-        // s->x0[2].left = msubf(c->k0, s->x1[2].left, s->y1[0].left); 
-        // s->y0[2].left =  macf(c->k0, s->x0[2].left, s->x1[2].left);
-        // s->x1[2].left = s->x0[2].left;
+         ///* 1st Order Phase Compensation */
+         //s->x0[2].left = msubf(c->k0, s->x1[2].left, s->y1[0].left); 
+         //s->y0[2].left =  macf(c->k0, s->x0[2].left, s->x1[2].left);
+         //s->x1[2].left = s->x0[2].left;
 
-        // b1 = (s->y0[1].left + s->y1[1].left) / 2;
-        // b2 =  s->y0[2].left - b1;
+         //b1 = (s->y0[1].left + s->y1[1].left) / 2;
+         //b2 =  s->y0[2].left - b1;
 
-        // band1[i].left = b1;
-        // band2[i].left = b2;
+         //band1[i].left = b1;
+         //band2[i].left = b2;
 
-        // /* 1st Order */
-        // s->xn.right = a[i].right;
-        // s->x0[0].right = msubf(c->k0, s->x1[0].right, s->xn.right); 
-        // s->y0[0].right =  macf(c->k0, s->x0[0].right, s->x1[0].right);
-        // s->x1[0].right = s->x0[0].right;
+         ///* 1st Order */
+         //s->xn.right = a[i].right;
+         //s->x0[0].right = msubf(c->k0, s->x1[0].right, s->xn.right); 
+         //s->y0[0].right =  macf(c->k0, s->x0[0].right, s->x1[0].right);
+         //s->x1[0].right = s->x0[0].right;
 
-        // /* 2nd Order */
-        // s->y1[0].right =  macf(c->k2, s->xn.right,    s->x2[0].right);
-        // s->x2[0].right =  macf(c->k1, s->xn.right,    s->x3[0].right);
-        // s->x2[0].right = msubf(c->k1, s->y1[0].right, s->x2[0].right);
-        // s->x3[0].right = msubf(c->k2, s->y1[0].right, s->xn.right);
+         ///* 2nd Order */
+         //s->y1[0].right =  macf(c->k2, s->xn.right,    s->x2[0].right);
+         //s->x2[0].right =  macf(c->k1, s->xn.right,    s->x3[0].right);
+         //s->x2[0].right = msubf(c->k1, s->y1[0].right, s->x2[0].right);
+         //s->x3[0].right = msubf(c->k2, s->y1[0].right, s->xn.right);
 
-        // s->xn.right = (s->y0[0].right + s->y1[0].right) / 2;
+         //s->xn.right = (s->y0[0].right + s->y1[0].right) / 2;
 
-        // /* 1st Order */
-        // s->x0[1].right = msubf(c->k0, s->x1[1].right, s->xn.right); 
-        // s->y0[1].right =  macf(c->k0, s->x0[1].right, s->x1[1].right);
-        // s->x1[1].right = s->x0[1].right;
+         ///* 1st Order */
+         //s->x0[1].right = msubf(c->k0, s->x1[1].right, s->xn.right); 
+         //s->y0[1].right =  macf(c->k0, s->x0[1].right, s->x1[1].right);
+         //s->x1[1].right = s->x0[1].right;
 
-        // /* 2nd Order */
-        // s->y1[1].right =  macf(c->k2, s->xn.right,    s->x2[1].right);
-        // s->x2[1].right =  macf(c->k1, s->xn.right,    s->x3[1].right);
-        // s->x2[1].right = msubf(c->k1, s->y1[1].right, s->x2[1].right);
-        // s->x3[1].right = msubf(c->k2, s->y1[1].right, s->xn.right);
+         ///* 2nd Order */
+         //s->y1[1].right =  macf(c->k2, s->xn.right,    s->x2[1].right);
+         //s->x2[1].right =  macf(c->k1, s->xn.right,    s->x3[1].right);
+         //s->x2[1].right = msubf(c->k1, s->y1[1].right, s->x2[1].right);
+         //s->x3[1].right = msubf(c->k2, s->y1[1].right, s->xn.right);
 
-        // /* 1st Order Phase Compensation */
-        // s->x0[2].right = msubf(c->k0, s->x1[2].right, s->y1[0].right); 
-        // s->y0[2].right =  macf(c->k0, s->x0[2].right, s->x1[2].right);
-        // s->x1[2].right = s->x0[2].right;
+         ///* 1st Order Phase Compensation */
+         //s->x0[2].right = msubf(c->k0, s->x1[2].right, s->y1[0].right); 
+         //s->y0[2].right =  macf(c->k0, s->x0[2].right, s->x1[2].right);
+         //s->x1[2].right = s->x0[2].right;
 
-        // b1 = addf(s->y0[1].right, s->y1[1].right);
-        // b1 = mulf(b1, 2);
+         //b1 = addf(s->y0[1].right, s->y1[1].right);
+         //b1 = mulf(b1, 2);
 
-        // b2 =  s->y0[2].right - b1;
+         //b2 =  s->y0[2].right - b1;
 
-        // band1[i].right = b1;
-        // band2[i].right = b2;
+         //band1[i].right = b1;
+         //band2[i].right = b2;
  
     }   
     return 0;

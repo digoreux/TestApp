@@ -63,6 +63,11 @@ int32_t cross4_update_coeffs(
     cross_update_coeffs(&p->cross2_p, &c->cross2_c);
     cross_update_coeffs(&p->cross3_p, &c->cross3_c);
 
+    c->mk0.v = _mm_set_ps(c->cross3_c.k0, c->cross3_c.k0, c->cross2_c.k0, c->cross2_c.k0);
+    c->mk1.v = _mm_set_ps(c->cross3_c.k1, c->cross3_c.k1, c->cross2_c.k1, c->cross2_c.k1);
+    c->mk2.v = _mm_set_ps(c->cross3_c.k2, c->cross3_c.k2, c->cross2_c.k2, c->cross2_c.k2);
+    //c->m2.v = _mm_set_ps(0.5f, 0.5f, 0.0f, 0.0f);
+
     return 0;
 }
 

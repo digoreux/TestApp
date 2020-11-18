@@ -9,6 +9,9 @@ typedef struct cross4_coeffs_s {
     cross_coeffs_t cross1_c;
     cross_coeffs_t cross2_c;
     cross_coeffs_t cross3_c;
+    xmm mk0;
+    xmm mk1;
+    xmm mk2;
     bool bypass;
 } cross4_coeffs_t;
 
@@ -32,6 +35,7 @@ typedef struct cross4_states_s {
     cross_states_t cross2_s;
     cross_states_t cross3_s;
     bands_t bands;
+
     stereo_t xn;
     stereo_t y0[2];   // 1st order phase correction 
     stereo_t x0[2];   // 1st order phase correction
@@ -39,6 +43,14 @@ typedef struct cross4_states_s {
     stereo_t x2[2];   // 2nd order phase correction
     stereo_t y1[2];   // 2nd order phase correction
     stereo_t x3[2];   // 2nd order phase correction
+
+    xmm mxn;
+    xmm my0;
+    xmm mx0;
+    xmm mx1;
+    xmm mx2;
+    xmm my1;
+    xmm mx3;
 } cross4_states_t;
 
 

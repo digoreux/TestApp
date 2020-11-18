@@ -34,7 +34,7 @@ typedef struct eq_params_s {
 } eq_params_t;
 
 typedef struct eq_coeffs_s {
-    flt  k[6][10]; //a0,a1,a2,b0,b1,b2
+    flt  k[6][10];     //a0,a1,a2,b0,b1,b2
     xmm mk[6][10];
     bool bypass;
 } eq_coeffs_t;
