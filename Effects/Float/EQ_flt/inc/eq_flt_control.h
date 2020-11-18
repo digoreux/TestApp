@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include "fractional.h"
+#include "nmmintrin.h" // for SSE4.2
+#include "immintrin.h" // for AVX 
 
 typedef enum {
 	LP   = 0,
@@ -24,18 +26,21 @@ typedef struct eq_stereo_s {
     flt right;
 } eq_stereo_t;
 
+typedef union {
+    __m128 v;
+    flt f[4];
+} xmm;
+
+typedef flt stereo[2];
+
 typedef struct param_s {
     int32_t id;
-    double  value;
+    double  value;   
 } param_t;
 
 typedef struct eq_states_s {
-   eq_stereo_t x0[10];
-   eq_stereo_t x1[10];
-   eq_stereo_t x2[10];
-   eq_stereo_t y0[10];
-   eq_stereo_t y1[10];
-   eq_stereo_t y2[10];
+    xmm   ms[4][10];
+    stereo s[4][10];    //x0,x1,x2,y0
 } eq_states_t;
 
 typedef struct eq_params_s {
@@ -49,12 +54,8 @@ typedef struct eq_params_s {
 
 
 typedef struct eq_coeffs_s {
-    flt  b0[10];
-    flt  b1[10];
-    flt  b2[10];
-    flt  a0[10];
-    flt  a1[10];
-    flt  a2[10];
+    flt  k[6][10]; //a0,a1,a2,b0,b1,b2
+    xmm mk[6][10];
     bool bypass;
 } eq_coeffs_t;
 

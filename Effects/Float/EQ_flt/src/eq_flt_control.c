@@ -23,7 +23,7 @@ int32_t eq_control_initialize(
     eq_params_t * p = (eq_params_t*)params;
     c->bypass = p->bypass;
     p->sample_rate = sample_rate;
-    for (size_t i = 0; i < 10; i++)
+    for (uint32_t i = 0; i < 10; i++)
     {
         p->freq[i].id = 0 + i*4;
         p->gain[i].id = 1 + i*4;
@@ -34,13 +34,8 @@ int32_t eq_control_initialize(
         p->gain[i].value = 0;
         p->Q[i].value    = 0;
         p->type[i].value = 5;
-
-        c->b0[i] = 0;
-        c->b1[i] = 0;
-        c->b2[i] = 0;
-        c->a0[i] = 0;
-        c->a1[i] = 0;
-        c->a2[i] = 0;
+        for(uint32_t j = 0; j < 6; j++)
+            c->k[j][i] = 0;
     }
     return 0;
 } 
@@ -137,24 +132,30 @@ int32_t eq_update_coeffs(
         b0[i] /= a0[i];
         b1[i] /= a0[i];
         b2[i] /= a0[i];
-        a1[i] /= a0[i];
-        a2[i] /= a0[i];
+        a1[i] /= -a0[i];
+        a2[i] /= -a0[i];
 
-        c->a0[i] = (float)(a0[i] / 8);
-        c->a1[i] = (float)(a1[i] / 8);
-        c->a2[i] = (float)(a2[i] / 8);
-        c->b0[i] = (float)(b0[i] / 8);
-        c->b1[i] = (float)(b1[i] / 8);
-        c->b2[i] = (float)(b2[i] / 8);
-
+        c->mk[0][i].v = _mm_set_ps((float)a0[i], (float)a0[i], 0.0f, 0.0f);
+        c->mk[1][i].v = _mm_set_ps((float)a1[i], (float)a1[i], 0.0f, 0.0f);
+        c->mk[2][i].v = _mm_set_ps((float)a2[i], (float)a2[i], 0.0f, 0.0f);
+        c->mk[3][i].v = _mm_set_ps((float)b0[i], (float)b0[i], 0.0f, 0.0f);
+        c->mk[4][i].v = _mm_set_ps((float)b1[i], (float)b1[i], 0.0f, 0.0f);
+        c->mk[5][i].v = _mm_set_ps((float)b2[i], (float)b2[i], 0.0f, 0.0f);
+        
+        // printf("a0: %f \n", c->k[0][i]);
+        // printf("a1: %f \n", c->k[1][i]);
+        // printf("a2: %f \n", c->k[2][i]);
+        // printf("b0: %f \n", c->k[3][i]);
+        // printf("b1: %f \n", c->k[4][i]);
+        // printf("b2: %f \n", c->k[5][i])  ;
+        // printf("a0: %f \n",  c->mk[0][i].f[3]);
+        // printf("a1: %f \n",  c->mk[1][i].f[3]);
+        // printf("a2: %f \n",  c->mk[2][i].f[3]);
+        // printf("b0: %f \n",  c->mk[3][i].f[3]);
+        // printf("b1: %f \n",  c->mk[4][i].f[3]);
+        // printf("b2: %f \n",  c->mk[5][i].f[3]);
     }
 
-    // printf("a0: %f \n", c->a0[0]);
-    // printf("a1: %f \n", c->a1[0]);
-    // printf("a2: %f \n", c->a2[0]);
-    // printf("b0: %f \n", c->b0[0]);
-    // printf("b1: %f \n", c->b1[0]);
-    // printf("b2: %f \n", c->b2[0]);
 
     return 0;
 }
