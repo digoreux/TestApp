@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include "arg_parser.h"
 #include "generator.h"
-#include "chain_flt_process.h"
-#include "chain_flt_control.h"
+#include "effect_process.h"
+#include "effect_control.h"
 #include "cJSON.h"
 
 typedef struct header_file 

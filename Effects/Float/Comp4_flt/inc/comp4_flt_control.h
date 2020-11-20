@@ -1,27 +1,13 @@
 #ifndef __COMP4_FLT_CONTROL_H__
 #define __COMP4_FLT_CONTROL_H__
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include "fractional.h"
-#include "comp4_flt_control.h"
 #include "comp_flt_control.h"
 
-typedef struct comp4_stereo_s {
-    flt left;
-    flt right;
-} comp4_stereo_t;
-
 typedef struct comp4_bands_s {
-    comp4_stereo_t * band1;
-    comp4_stereo_t * band2;
-    comp4_stereo_t * band3;
-    comp4_stereo_t * band4;
+    stereo_t * band1;
+    stereo_t * band2;
+    stereo_t * band3;
+    stereo_t * band4;
 } comp4_bands_t;
 
 typedef struct comp4_params_s {

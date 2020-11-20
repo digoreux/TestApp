@@ -22,6 +22,7 @@ int32_t eq_control_initialize(
     eq_params_t * p = (eq_params_t*)params;
     c->bypass = p->bypass;
     p->sample_rate = sample_rate;
+
     for (uint32_t i = 0; i < 10; i++)
     {
         p->freq[i].id = 0 + i*4;
@@ -34,6 +35,12 @@ int32_t eq_control_initialize(
         p->Q[i].value    = 0;
         p->type[i].value = 5;
 
+        p->bq[i].freq = 0;
+        p->bq[i].gain = 0;
+        p->bq[i].Q    = 0;
+        p->bq[i].type = 5;
+        p->bq[i].sample_rate = sample_rate;
+        
         for (uint32_t j = 0; j < 6; j++)
             c->k[j][i] = 0;
     }

@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.12)
 
+set(LIB_NAME "TestApp")
+set(HOME_PATH "../..")
+set(EFFECTS_PATH "../../../../Effects/Float")
+
 project(TestApp)
 
 add_executable(TestApp

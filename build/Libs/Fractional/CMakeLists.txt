@@ -4,6 +4,7 @@ project(Fractional)
 
 add_library(Fractional
     ../../../Fractional/src/fractional.c
+    ../../../Fractional/src/floatpoint.c
     ../../../Fractional/src/lookup.c)
 
 target_include_directories(Fractional PRIVATE ../../../Fractional/inc/)

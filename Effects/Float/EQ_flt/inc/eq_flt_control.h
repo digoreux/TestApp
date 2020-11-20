@@ -2,15 +2,7 @@
 #define __EQ_FLT_CONTROL_H__
 
 #include "abstract_effect.h"
-
-typedef enum {
-	LP   = 0,
-	HP   = 1,
-	PEAK = 2,
-	LSH  = 3,
-	HSH	 = 4,
-    OFF  = 5
-} filter_types;
+#include "biquad_flt_control.h"
 
 typedef flt stereo[2];
 
@@ -20,11 +12,13 @@ typedef struct param_s {
 } param_t;
 
 typedef struct eq_states_s {
+    bq_states_t bq[10];
     xmm   ms[4][10];
     stereo s[4][10];    //x0,x1,x2,y0
 } eq_states_t;
 
 typedef struct eq_params_s {
+    bq_params_t bq[10];
     uint32_t sample_rate;
     param_t  freq[10]; 
     param_t  gain[10]; 
@@ -34,6 +28,7 @@ typedef struct eq_params_s {
 } eq_params_t;
 
 typedef struct eq_coeffs_s {
+    bq_coeffs_t bq[10];
     flt  k[6][10];     //a0,a1,a2,b0,b1,b2
     xmm mk[6][10];
     bool bypass;

@@ -17,6 +17,7 @@ int32_t cross_reset(
     s->xn.right = 0;
 
     /* 2nd Order */
+    
     for(int i = 0; i < 2; i++)
     {
         s->y1[i].left = 0;

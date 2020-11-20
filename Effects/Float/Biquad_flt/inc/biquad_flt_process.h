@@ -1,8 +1,7 @@
-#ifndef __CHAIN_FLT_PROCESS_H__
-#define __CHAIN_FLT_PROCESS_H__
+#ifndef __BIQUAD_FLT_PROCESS_H__
+#define __BIQUAD_FLT_PROCESS_H__
 
-#include "chain_flt_control.h"
-
+#include "biquad_flt_control.h"
 
 /*******************************************************************************
  * Provides with the required data sizes for states. It is caller responsibility
@@ -12,7 +11,7 @@
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t effect_process_get_sizes(
+int32_t bq_process_get_sizes(
     size_t*     states_bytes);
  
 
@@ -24,7 +23,7 @@ int32_t effect_process_get_sizes(
  * 
  * @return 0 on success, otherwise fail
  ******************************************************************************/
-int32_t effect_reset(
+int32_t bq_reset(
     void const* coeffs,
     void*       states);
 
@@ -40,7 +39,7 @@ int32_t effect_reset(
  * 
  * @return 0 on success, otherwise fail
  ******************************************************************************/
-int32_t effect_process(
+int32_t bq_process(
     void const* coeffs,
     void*       states,
     void*       audio,

@@ -46,8 +46,8 @@ int32_t effect_reset(
     coeffs_t *c = (coeffs_t*)coeffs;
     states_t *s = (states_t*)states;
  
-    eq_reset(&c->eq_c, &s->eq_s);
-    comp_reset(&c->comp_c, &s->comp_s);
+    // eq_reset(&c->eq_c, &s->eq_s);
+    // comp_reset(&c->comp_c, &s->comp_s);
     // cross4_reset(&c->cross4_c, &s->cross4_s);
     // comp4_reset(&c->comp4_c, &s->cross4_s);
     // s->cross4_s.bands.band1 = malloc(sizeof(stereo_t) * 512);

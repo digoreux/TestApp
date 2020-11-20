@@ -1,6 +1,6 @@
 #include "comp_flt_control.h"
 
-# define M_e    ((flt)2.71828182846)
+# define M_e    2.71828182846f
 
 int32_t comp_control_get_sizes(
     size_t*     params_bytes,
@@ -35,8 +35,8 @@ int32_t comp_control_initialize(
     c->gainA = 0.0;
     c->gainR = 0.0;
     c->gainM = 0.0;
-    c->envA = 0.0;
-    c->envR = 0.0;
+    c->envA  = 0.0;
+    c->envR  = 0.0;
     c->bypass = 0;
 
     return 0;
@@ -94,6 +94,7 @@ int32_t comp_update_coeffs(
 
     c->ratio  = p->ratio;
     c->bypass = p->bypass;
+
     c->thrsh = powf(10.0f, (p->thrsh/20.0f));  
     c->gainM = powf(10.0f, (p->makeUpGain/20.0f));
 
@@ -102,6 +103,15 @@ int32_t comp_update_coeffs(
 
     c->envA   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvAttack  * p->sample_rate)));
     c->envR   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvRelease * p->sample_rate)));
+
+    //c->mratio.v = _mm_set_ps(c->ratio, c->ratio, 0.0f, 0.0f);
+    //c->mthrsh.v = _mm_set_ps(c->thrsh, c->thrsh, 0.0f, 0.0f);
+
+    //c->mgainA.v = _mm_set_ps(c->gainA, c->gainA, 0.0f, 0.0f);
+    //c->mgainR.v = _mm_set_ps(c->gainR, c->gainR, 0.0f, 0.0f);
+
+    //c->menvA.v = _mm_set_ps(c->envA, c->envA, 0.0f, 0.0f);
+    //c->menvR.v = _mm_set_ps(c->envR, c->envR, 0.0f, 0.0f);
 
     // printf("Threshold: %f \n",      c->thrsh);
     // printf("Ratio: %f \n",          c->ratio);

@@ -41,7 +41,7 @@ int32_t expand_process(
 {
     expand_coeffs_t* c = (expand_coeffs_t*)coeffs;
     expand_states_t* s = (expand_states_t*)states;
-    expand_stereo_t* a = (expand_stereo_t*)audio;
+    stereo_t* a = (stereo_t*)audio;
 
     float x_abs;
     if(!c->bypass)

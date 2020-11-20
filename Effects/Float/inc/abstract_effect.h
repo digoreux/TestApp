@@ -10,17 +10,17 @@
 #include <math.h>
 
 #include "fractional.h"
+#include "floatpoint.h"
 #include "nmmintrin.h" // for SSE4.2
 #include "immintrin.h" // for AVX 
 
-typedef union {
-    __m128 v;
-    flt f[4];
-} xmm;
-
-typedef struct stereo_s {
-    flt left;
-    flt right;
-} stereo_t;
+typedef enum {
+	LP   = 0,
+	HP   = 1,
+	PEAK = 2,
+	LSH  = 3,
+	HSH	 = 4,
+    OFF  = 5
+} filter_types;
 
 #endif

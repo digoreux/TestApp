@@ -1,20 +1,7 @@
 #ifndef __EXPAND_FLT_CONTROL_H__
 #define __EXPAND_FLT_CONTROL_H__
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include "fractional.h"
-
-
-typedef struct expand_stereo_s {
-    flt left;
-    flt right;
-} expand_stereo_t;
+#include "abstract_effect.h"
 
 typedef struct expand_params_s {
     flt thrsh;
@@ -44,15 +31,15 @@ typedef struct expand_coeffs_s {
 typedef struct expand_states_s{
 
 
-    expand_stereo_t g_c;      // gain expanduter
+    stereo_t g_c;      // gain expanduter
 
-    expand_stereo_t g_s0;     // gain smoothing current
-    expand_stereo_t g_s1;     // gain smoothing previous
+    stereo_t g_s0;     // gain smoothing current
+    stereo_t g_s1;     // gain smoothing previous
 
-    expand_stereo_t g_m;      // gain make-up
+    stereo_t g_m;      // gain make-up
 
-    expand_stereo_t env0;     // envelope current
-    expand_stereo_t env1;     // envelope previous
+    stereo_t env0;     // envelope current
+    stereo_t env1;     // envelope previous
 
 } expand_states_t;
 

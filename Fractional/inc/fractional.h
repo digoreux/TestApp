@@ -7,6 +7,9 @@
 #include <float.h>
 #include <assert.h>
 
+#include "nmmintrin.h" // for SSE4.2
+#include "immintrin.h" // for AVX 
+
 #ifndef max
 #define max(a,b)            (((a) > (b)) ? (a) : (b))
 #endif
@@ -20,6 +23,16 @@ typedef int32_t q32;   // various Q format
 typedef int64_t q63;   // Q1.63
 typedef int64_t q64;   // various Q format
 typedef float flt;
+
+typedef union {
+    __m128 v;
+    flt f[4];
+} xmm;
+
+typedef struct stereo_s {
+  flt left;
+  flt right;
+} stereo_t;
 
 extern const q31 pow2lookup[512];
 extern const q31 log2lookup[512];
@@ -95,18 +108,7 @@ q31 log2_q31(q31 x);
 q31 pow_q31(q31 x, q31 y);
 
 
-flt negf(flt x);
-flt absf(flt x);
-flt addf(flt x, flt y);
-flt subf(flt x, flt y);
-flt mulf(flt x, flt y);
-flt macf(flt x, flt y, flt z);
-flt msubf(flt x, flt y, flt z);
-flt divf(flt x, flt y);
-flt divnr(flt x, flt y);
-flt pow2(flt n);
-flt flog2(flt x);
-flt fpow(flt x, flt y);
+
 
 // log2 = 1;  pow2 = 2
 void gen_table(int type);   

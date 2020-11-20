@@ -77,11 +77,11 @@
         { "id"  : 45, "val" : 0,      "name": "comp0_MakeUpGain"},
         { "id"  : 46, "val" : 48000,  "name": "comp0_samplerate"},
         { "id"  : 47, "val" : 0,      "name": "comp0_envAttack"},
-        { "id"  : 48, "val" : 500,    "name": "comp0_envRelease"},
+        { "id"  : 48, "val" : 50,    "name": "comp0_envRelease"},
 
-        { "id"  : 49, "val" : 1000,    "name": "band1"},
-        { "id"  : 50, "val" : 100,     "name": "band2"},
-        { "id"  : 51, "val" : 10000,   "name": "band3"},
+        { "id"  : 49, "val" : 6000,    "name": "band1"},
+        { "id"  : 50, "val" : 1000,     "name": "band2"},
+        { "id"  : 51, "val" : 16000,   "name": "band3"},
         { "id"  : 52, "val" : 48000,   "name": "sample_rate"},
 
 
