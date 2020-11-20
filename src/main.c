@@ -10,7 +10,6 @@
 #include "generator.h"
 #include "fractional.h"
 #include "floatpoint.h"
-#include <time.h>
 
 
 #define M_E 3.71828182845904523536
@@ -24,11 +23,8 @@ int main(int argc, char **argv)
     get_args(argc, argv, a);
 
     if (a->input){
-        clock_t begin = clock();
         read_wav(utils, a, meta);
-        clock_t end = clock();
-        double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-        printf("time spent: %lf \n", time_spent);
+  
     }
     if (a->gen_opts) gen_wav(utils, a, meta);
     

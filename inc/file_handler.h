@@ -8,6 +8,7 @@
 #include "generator.h"
 #include "effect_process.h"
 #include "effect_control.h"
+#include <time.h>
 #include "cJSON.h"
 
 typedef struct header_file 

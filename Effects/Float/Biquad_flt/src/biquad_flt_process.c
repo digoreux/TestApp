@@ -21,7 +21,7 @@ int32_t bq_reset(
     return 0;
 }
 
-int32_t bq_process(
+inline int32_t bq_process(
     void const* coeffs,
     void*       states,
     void*       audio,
@@ -30,10 +30,10 @@ int32_t bq_process(
     flt acc = 0;
     bq_coeffs_t *c = (bq_coeffs_t*)coeffs;
     bq_states_t *s = (bq_states_t*)states;
-    // stereo_t   * a = (stereo_t *)audio;
     // vector_t   * a = (vector_t *)audio;
-    // flt * a = (flt*)audio;
     stereo * a = (stereo*)audio;
+    // stereo_t   * a = (stereo_t *)audio;
+    // flt * a = (flt*)audio;
 
     if(!c->bypass)
     {
@@ -47,7 +47,9 @@ int32_t bq_process(
             s->x1 = fma2(c->a1, s->y0, s->x1);
             s->x2 = mul2(c->b2, s->x0);
             s->x2 = fma2(c->a2, s->y0, s->x2);
-
+            
+            // a[i][0] = s->y0.val[3];
+            // a[i][1] = s->y0.val[2];
             get_vals2(&a[i], s->y0);
 
         }

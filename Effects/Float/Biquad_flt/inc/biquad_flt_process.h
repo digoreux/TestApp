@@ -39,7 +39,7 @@ int32_t bq_reset(
  * 
  * @return 0 on success, otherwise fail
  ******************************************************************************/
-int32_t bq_process(
+extern int32_t bq_process(
     void const* coeffs,
     void*       states,
     void*       audio,

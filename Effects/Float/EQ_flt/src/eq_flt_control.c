@@ -20,30 +20,16 @@ int32_t eq_control_initialize(
 {   
     eq_coeffs_t * c = (eq_coeffs_t*)coeffs;
     eq_params_t * p = (eq_params_t*)params;
-    c->bypass = p->bypass;
+
+    c->bypass = false;
     p->sample_rate = sample_rate;
 
-    for (uint32_t i = 0; i < 10; i++)
+    for (uint32_t i = 0; i < 10; i++) 
     {
-        p->freq[i].id = 0 + i*4;
-        p->gain[i].id = 1 + i*4;
-        p->Q[i].id    = 2 + i*4;
-        p->type[i].id = 3 + i*4;
-
-        p->freq[i].value = 0;
-        p->gain[i].value = 0;
-        p->Q[i].value    = 0;
-        p->type[i].value = 5;
-
-        p->bq[i].freq = 0;
-        p->bq[i].gain = 0;
-        p->bq[i].Q    = 0;
-        p->bq[i].type = 5;
-        p->bq[i].sample_rate = sample_rate;
-        
-        for (uint32_t j = 0; j < 6; j++)
-            c->k[j][i] = 0;
+        bq_control_initialize(&p->bq[i], &c->bq[i], sample_rate);
+        // eq_update_coeffs(&p->bq[i], &c->bq[i]);
     }
+
     return 0;
 } 
 
@@ -53,16 +39,137 @@ int32_t eq_set_parameter(
     float       value)
 {   
     eq_params_t * p = (eq_params_t*)params;
-    if(id == 40) p->sample_rate = (uint32_t)value;
-    if(id == 300) p->bypass = value;
-    for(int i = 0; i < 10; i++) 
+    switch(id)
     {
-        if(p->freq[i].id == id) p->freq[i].value = value;
-        if(p->gain[i].id == id) p->gain[i].value = value;
-        if(p->Q[i].id    == id)    p->Q[i].value = value;
-        if(p->type[i].id == id) p->type[i].value = value;
-    }           
-    
+        case 0: 
+            p->bq[0].freq = value;
+            break;
+        case 1: 
+            p->bq[0].gain = value;
+            break;
+        case 2: 
+            p->bq[0].Q = value;
+            break;
+        case 3: 
+            p->bq[0].type = value;
+            break;
+        case 4: 
+            p->bq[1].freq = value;
+            break;
+        case 5: 
+            p->bq[1].gain = value;
+            break;
+        case 6: 
+            p->bq[1].Q = value;
+            break;
+        case 7: 
+            p->bq[1].type = value;
+            break;
+        case 8: 
+            p->bq[2].freq = value;
+            break;
+        case 9: 
+            p->bq[2].gain = value;
+            break;
+        case 10: 
+            p->bq[2].Q = value;
+            break;
+        case 11: 
+            p->bq[2].type = value;
+            break;
+        case 12: 
+            p->bq[3].freq = value;
+            break;
+        case 13: 
+            p->bq[3].gain = value;
+            break;
+        case 14: 
+            p->bq[3].Q = value;
+            break;
+        case 15: 
+            p->bq[3].type = value;
+            break;
+        case 16: 
+            p->bq[4].freq = value;
+            break;
+        case 17: 
+            p->bq[4].gain = value;
+            break;
+        case 18: 
+            p->bq[4].Q = value;
+            break;
+        case 19: 
+            p->bq[4].type = value;
+            break;
+        case 20: 
+            p->bq[5].freq = value;
+            break;
+        case 21: 
+            p->bq[5].gain = value;
+            break;
+        case 22: 
+            p->bq[5].Q = value;
+            break;
+        case 23: 
+            p->bq[5].type = value;
+            break;
+        case 24: 
+            p->bq[6].freq = value;
+            break;
+        case 25: 
+            p->bq[6].gain = value;
+            break;
+        case 26: 
+            p->bq[6].Q = value;
+            break;
+        case 27: 
+            p->bq[6].type = value;
+            break;
+        case 28: 
+            p->bq[7].freq = value;
+            break;
+        case 29: 
+            p->bq[7].gain = value;
+            break;
+        case 30: 
+            p->bq[7].Q = value;
+            break;
+        case 31: 
+            p->bq[7].type = value;
+            break;
+        case 32: 
+            p->bq[8].freq = value;
+            break;
+        case 33: 
+            p->bq[8].gain = value;
+            break;
+        case 34: 
+            p->bq[8].Q = value;
+            break;
+        case 35: 
+            p->bq[8].type = value;
+            break;
+        case 36: 
+            p->bq[9].freq = value;
+            break;
+        case 37: 
+            p->bq[9].gain = value;
+            break;
+        case 38: 
+            p->bq[9].Q = value;
+            break;
+        case 39: 
+            p->bq[9].type = value;
+            break;
+        case 40: 
+            p->sample_rate = (uint32_t)value;
+            break;
+        case 300: 
+            p->bypass = value;
+            break;
+
+    }
+         
     return 0;
 }
 
@@ -70,106 +177,23 @@ int32_t eq_update_coeffs(
     void const* params,
     void*       coeffs)
 {   
-    double  A[10], sn[10], cs[10], alpha[10], beta[10], omega[10];
-    double b0[10], b1[10], b2[10], a0[10], a1[10], a2[10];
-
     eq_coeffs_t * c = (eq_coeffs_t*)coeffs;
     eq_params_t * p = (eq_params_t*)params;
+
     c->bypass = p->bypass;
+
     for (size_t i = 0; i < 10; i++) 
     {
-        A[i] = pow(10, p->gain[i].value / 40);
-        omega[i] = 2 * M_PI * p->freq[i].value / p->sample_rate;
-        sn[i] = sin(omega[i]);
-        cs[i] = cos(omega[i]);
-        alpha[i] = sn[i] / (2 * p->Q[i].value);
-        beta[i]  = sqrt(A[i] + A[i]);
-        switch ((int)p->type[i].value)
-        {
-        case LP:
-            b0[i] = (1.0 - cs[i]) / 2.0;
-            b1[i] =  1.0 - cs[i];
-            b2[i] = (1.0 - cs[i]) / 2.0;
-            a0[i] =  1.0 + alpha[i];
-            a1[i] = -2.0 * cs[i];
-            a2[i] =  1.0 - alpha[i];
-            break;
-        case HP:
-            b0[i] =  (1 + cs[i]) /2.0;
-            b1[i] = -(1 + cs[i]);
-            b2[i] =  (1 + cs[i]) /2.0;
-            a0[i] =  1 + alpha[i];
-            a1[i] = -2 * cs[i];
-            a2[i] =  1 - alpha[i];
-            break;
-        case PEAK:
-            b0[i] =  1 + (alpha[i] * A[i]);
-            b1[i] = -2 * cs[i];
-            b2[i] =  1 - (alpha[i] * A[i]);
-            a0[i] =  1 + (alpha[i] / A[i]);
-            a1[i] = -2 * cs[i];
-            a2[i] =  1 - (alpha[i] / A[i]);
-            break;
-        case LSH:
-            b0[i] = A[i] * ((A[i] + 1) - (A[i] - 1) * cs[i] + beta[i] * sn[i]);
-    	    b1[i] = A[i] * ((A[i] - 1) - (A[i] + 1) * cs[i]) * 2;
-    	    b2[i] = A[i] * ((A[i] + 1) - (A[i] - 1) * cs[i] - beta[i] * sn[i]); 
-    	    a0[i] =  (A[i] + 1) + (A[i] - 1) * cs[i] + beta[i] * sn[i];
-    	    a1[i] = ((A[i] - 1) + (A[i] + 1) * cs[i]) * (-2);
-    	    a2[i] =  (A[i] + 1) + (A[i] - 1) * cs[i] - beta[i] * sn[i];
-            break;
-        case HSH:
-            b0[i] = A[i] * ((A[i] + 1) + (A[i] - 1) * cs[i] + beta[i] * sn[i]);
-            b1[i] = A[i] * ((A[i] - 1) + (A[i] + 1) * cs[i]) * (-2);
-            b2[i] = A[i] * ((A[i] + 1) + (A[i] - 1) * cs[i] - beta[i] * sn[i]);
-            a0[i] =  (A[i] + 1) - (A[i] - 1) * cs[i] + beta[i] * sn[i];
-            a1[i] = ((A[i] - 1) - (A[i] + 1) * cs[i]) * 2;
-            a2[i] =  (A[i] + 1) - (A[i] - 1) * cs[i] - beta[i] * sn[i];
-            break;
-        case OFF:
-            b0[i] = 0;
-            b1[i] = 0;
-            b2[i] = 0;
-            a0[i] = 0;
-            a1[i] = 0;
-            a2[i] = 0;
-            break;
-        }
+        bq_update_coeffs(&p->bq[i], &c->bq[i]);
 
-        b0[i] /= a0[i];
-        b1[i] /= a0[i];
-        b2[i] /= a0[i];
-        a1[i] /= -a0[i];
-        a2[i] /= -a0[i];
-
-         c->mk[0][i].v = _mm_set_ps((float)a0[i], (float)a0[i], 0.0f, 0.0f);
-         c->mk[1][i].v = _mm_set_ps((float)a1[i], (float)a1[i], 0.0f, 0.0f);
-         c->mk[2][i].v = _mm_set_ps((float)a2[i], (float)a2[i], 0.0f, 0.0f);
-         c->mk[3][i].v = _mm_set_ps((float)b0[i], (float)b0[i], 0.0f, 0.0f);
-         c->mk[4][i].v = _mm_set_ps((float)b1[i], (float)b1[i], 0.0f, 0.0f);
-         c->mk[5][i].v = _mm_set_ps((float)b2[i], (float)b2[i], 0.0f, 0.0f);
-
-        c->k[0][i] = (float)a0[i];
-        c->k[1][i] = (float)a1[i];
-        c->k[2][i] = (float)a2[i];
-        c->k[3][i] = (float)b0[i];
-        c->k[4][i] = (float)b1[i];
-        c->k[5][i] = (float)b2[i];
- /*       printf("k0: %f \n", c->k[0][i]);
-        printf("k1: %f \n", c->k[1][i]);
-        printf("k2: %f \n", c->k[2][i]);
-        printf("k3: %f \n", c->k[3][i]);
-        printf("k4: %f \n", c->k[4][i]);
-        printf("k5: %f \n", c->k[5][i]);
-        printf("\n");*/
-        // printf("a0: %f \n",  c->mk[0][i].f[3]);
-        // printf("a1: %f \n",  c->mk[1][i].f[3]);
-        // printf("a2: %f \n",  c->mk[2][i].f[3]);
-        // printf("b0: %f \n",  c->mk[3][i].f[3]);
-        // printf("b1: %f \n",  c->mk[4][i].f[3]);
-        // printf("b2: %f \n",  c->mk[5][i].f[3]);
+        // printf("a0[%d]: %f \n", i, c->bq[i].a0.val[3]);
+        // printf("a1[%d]: %f \n", i, c->bq[i].a1.val[3]);
+        // printf("a2[%d]: %f \n", i, c->bq[i].a2.val[3]);
+        // printf("b0[%d]: %f \n", i, c->bq[i].b0.val[3]);
+        // printf("b1[%d]: %f \n", i, c->bq[i].b1.val[3]);
+        // printf("b2[%d]: %f \n", i, c->bq[i].b2.val[3]);
+        // printf("\n");
     }
-
 
     return 0;
 }

@@ -6,7 +6,7 @@
 #define KF1 2.823529
 #define KF2 1.882353
 #define K0  0.0759776172978545212494579946726
-#define INTR 1
+#define INTR 0
 
 typedef struct vector_s {
   #if INTR

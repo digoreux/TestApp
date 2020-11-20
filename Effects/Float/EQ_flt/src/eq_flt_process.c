@@ -1,4 +1,5 @@
 ﻿#include "eq_flt_process.h"
+#include "eq_flt_control.h"
 
 int32_t eq_process_get_sizes(
     size_t*     states_bytes)
@@ -12,16 +13,10 @@ int32_t eq_reset(
     void*       states)
 {   
     eq_states_t * s = (eq_states_t*)states;
-
+    eq_coeffs_t * c = (eq_coeffs_t*)coeffs;
+    
     for(uint32_t i = 0; i < 10; i++)
-    {   
-        for(uint32_t j = 0; j < 4; j++)
-        {
-            s->s[j][i][0]  = 0;
-            s->s[j][i][1]  = 0;
-            s->ms[j][i].v = _mm_set_ps(s->s[j][i][0], s->s[j][i][1], 0.0f, 0.0f);
-        }
-    }
+        bq_reset(&c->bq[i], &s->bq[i]);
     return 0;
 }
 
@@ -34,26 +29,20 @@ int32_t eq_process(
     flt acc = 0;
     eq_coeffs_t *c = (eq_coeffs_t*)coeffs;
     eq_states_t *s = (eq_states_t*)states;
-    stereo      *a = (stereo*)audio;
+    // stereo      *a = (stereo*)audio;
+    // printf("%d \n", c->bypass);
     if(!c->bypass)
     {
         for (size_t i = 0; i < samples_count; i++)
         {   
-            for(size_t j = 0; j < 10; j++)
-            {   
-                if(c->mk[0][j].f[3] != 0 && c->k[0][j] != 0)
-                {   
-                     s->ms[0][j].v = _mm_set_ps(a[i][0], a[i][1], 0.0f, 0.0f);
-                     s->ms[3][j].v = _mm_fmadd_ps(c->mk[3][j].v, s->ms[0][j].v, s->ms[1][j].v);
-                     s->ms[1][j].v = _mm_fmadd_ps(c->mk[4][j].v, s->ms[0][j].v, s->ms[2][j].v);
-                     s->ms[1][j].v = _mm_fmadd_ps(c->mk[1][j].v, s->ms[3][j].v, s->ms[1][j].v);
-                     s->ms[2][j].v = _mm_mul_ps  (c->mk[5][j].v, s->ms[0][j].v);
-                     s->ms[2][j].v = _mm_fmadd_ps(c->mk[2][j].v, s->ms[3][j].v, s->ms[2][j].v);
-
-                     a[i][0] = s->ms[3][j].f[3];
-                     a[i][1] = s->ms[3][j].f[2];
-                }
-            }
+            // for(size_t j = 0; j < 10; j++)
+            // {   
+            //     if(1 != 0)
+            //     {   
+            //         bq_process(&c->bq[j], &s->bq[j], audio, samples_count);
+            //     }
+            // }
+            bq_process(&c->bq[3], &s->bq[3], audio, samples_count);
         }
     }
     return 0;

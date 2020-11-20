@@ -50,6 +50,7 @@ int apply_effect(utils_p utils)
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);
 
+    clock_t begin = clock();
     if(utils->reading == 1) 
     {   
 
@@ -63,6 +64,9 @@ int apply_effect(utils_p utils)
         effect_process(coeffs, states, utils->buffer, utils->num_samples);
         fwrite(utils->buffer, utils->buff_size, 1, utils->out);
     }
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("time spent: %lf \n", time_spent);
 
     return 0;
 }
