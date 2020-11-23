@@ -42,8 +42,8 @@ int apply_effect(utils_p utils)
     printf("states: %d\n", ssize);
 
     void *params = malloc(psize);
-    void *coeffs = malloc(csize);
-    void *states = malloc(ssize);
+    void *coeffs = _aligned_malloc(csize, 16);
+    void *states = _aligned_malloc(ssize, 16);
 
     effect_control_initialize(params, coeffs, 48000);
     set_params(params);
@@ -68,6 +68,10 @@ int apply_effect(utils_p utils)
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
     printf("time spent: %lf \n", time_spent);
 
+    free(params);
+    _aligned_free(coeffs);
+    _aligned_free(states);
+
     return 0;
 }
 
@@ -81,14 +85,14 @@ int read_wav(utils_p utils, arg_p a, header_p meta)
     write_header(utils->out, meta);
     utils->num_samples = 512;  
     utils->buff_size = (utils->num_samples * meta->block_align);
-    utils->buffer = malloc(utils->buff_size);
+    utils->buffer = _aligned_malloc(utils->buff_size, 16);
     utils->reading = 1;
     
     apply_effect(utils);
 
     fclose(utils->in);
     fclose(utils->out);
-    free(utils->buffer);
+    _aligned_free(utils->buffer);
     
     return 0;
 }

@@ -27,6 +27,7 @@ typedef struct params_t {
     bq_params_t bq_p;
     eq_params_t eq_p;
     comp_params_t comp_p;
+    cross_params_t cross_p;
     comp4_params_t comp4_p;
     cross4_params_t cross4_p;
     expand_params_t expand_p;
@@ -36,6 +37,7 @@ typedef struct coeffs_t {
     bq_coeffs_t bq_c;
     eq_coeffs_t eq_c;
     comp_coeffs_t comp_c;
+    cross_coeffs_t cross_c;
     comp4_coeffs_t comp4_c;
     cross4_coeffs_t cross4_c;
     expand_coeffs_t expand_c;
@@ -45,6 +47,7 @@ typedef struct states_t {
     bq_states_t bq_s;
     eq_states_t eq_s;
     comp_states_t comp_s;
+    cross_states_t cross_s;
     comp4_states_t comp4_s;
     cross4_states_t cross4_s;
     expand_states_t expand_s;

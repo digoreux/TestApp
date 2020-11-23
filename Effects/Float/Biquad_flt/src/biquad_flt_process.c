@@ -18,6 +18,16 @@ int32_t bq_reset(
     set_val(&s->x2, 0.0f);
     set_val(&s->y0, 0.0f);
 
+    s->sx0.left = 0;
+    s->sx1.left = 0;
+    s->sx2.left = 0;
+    s->sy0.left = 0;
+
+    s->sx0.right = 0;
+    s->sx1.right = 0;
+    s->sx2.right = 0;
+    s->sy0.right = 0;
+
     return 0;
 }
 
@@ -35,22 +45,45 @@ inline int32_t bq_process(
     // stereo_t   * a = (stereo_t *)audio;
     // flt * a = (flt*)audio;
 
+    flt r[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     if(!c->bypass)
     {
         for (size_t i = 0; i < samples_count; i++)
         {    
-
             set_vals(&s->x0, a[i][0], a[i][1]);
-
             s->y0 = fma2(c->b0, s->x0, s->x1);
             s->x1 = fma2(c->b1, s->x0, s->x2);
             s->x1 = fma2(c->a1, s->y0, s->x1);
             s->x2 = mul2(c->b2, s->x0);
             s->x2 = fma2(c->a2, s->y0, s->x2);
+            a[i][0] = s->y0.val[3];
+            a[i][1] = s->y0.val[2];
+
+            // s->x0.vec = _mm_set_ps(a[i][0], a[i][1], 0.0f, 0.0f);
+            // s->y0.vec = _mm_fmadd_ps(c->b0.vec, s->x0.vec, s->x1.vec);
+            // s->x1.vec = _mm_fmadd_ps(c->b1.vec, s->x0.vec, s->x2.vec);
+            // s->x1.vec = _mm_fmadd_ps(c->a1.vec, s->y0.vec, s->x1.vec);
+            // s->x2.vec =   _mm_mul_ps(c->b2.vec, s->x0.vec);
+            // s->x2.vec = _mm_fmadd_ps(c->a2.vec, s->y0.vec, s->x2.vec);
             
             // a[i][0] = s->y0.val[3];
             // a[i][1] = s->y0.val[2];
-            get_vals2(&a[i], s->y0);
+            
+
+            // s->sx0.left  = a[i][0];
+            // s->sx0.right = a[i][1];
+            // s->sy0.left = macf(c->sb0, s->sx0.left, s->sx1.left);
+            // s->sx1.left = macf(c->sb1, s->sx0.left, s->sx2.left);
+            // s->sx1.left = macf(c->sa1, s->sy0.left, s->sx1.left);
+            // s->sx2.left = mulf(c->sb2, s->sx0.left);
+            // s->sx2.left = macf(c->sa2, s->sy0.left, s->sx2.left);
+            // s->sy0.right = macf(c->sb0, s->sx0.right, s->sx1.right);
+            // s->sx1.right = macf(c->sb1, s->sx0.right, s->sx2.right);
+            // s->sx1.right = macf(c->sa1, s->sy0.right, s->sx1.right);
+            // s->sx2.right = mulf(c->sb2, s->sx0.right);
+            // s->sx2.right = macf(c->sa2, s->sy0.right, s->sx2.right);
+            // a[i][0] = s->sy0.left;
+            // a[i][1] = s->sy0.right;
 
         }
     }

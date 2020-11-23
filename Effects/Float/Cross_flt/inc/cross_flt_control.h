@@ -1,9 +1,11 @@
 #ifndef __CROSS_FLT_CONTROL_H__
 #define __CROSS_FLT_CONTROL_H__
-
-#define M_PI 3.14159265358979323846
+#include <stdint.h>
+#include <stddef.h>
 
 #include "abstract_effect.h"
+
+#define M_PI 3.14159265358979323846
 
 typedef struct cross_params_s {
     flt freq;
@@ -12,31 +14,19 @@ typedef struct cross_params_s {
 } cross_params_t;
 
 typedef struct cross_coeffs_s {
-    xmm mk0;
-    xmm mk1;
-    xmm mk2;
-    xmm m2;
-    flt k0;     // 1st order
-    flt k1;     // 2nd order
-    flt k2;     // 2nd order
+    vector_t k0;
+    vector_t k1;
+    vector_t k2;
+    vector_t k05;
     bool bypass;
 } cross_coeffs_t;
 
 typedef struct cross_states_s {
-    xmm mxn;
-    xmm mx0[3];
-    xmm my0[3];
-    xmm mx1[3];
-    xmm my1[2];
-    xmm mx2[2];
-    xmm mx3[2];
-    stereo_t xn;
-    stereo_t y0[3];   // 1st order
-    stereo_t x0[3];   // 1st order
-    stereo_t x1[3];   // 1st order
-    stereo_t y1[2];   // 2nd order
-    stereo_t x2[2];   // 2nd order
-    stereo_t x3[2];   // 2nd order
+    vector_t xn;
+    vector_t y0[2];   // 1st order / 2nd order
+    vector_t x0[2];   // 1st order / 2nd order
+    vector_t x1[2];   // 1st order / 2nd order
+    
     stereo_t * band1;
     stereo_t * band2;
 } cross_states_t;

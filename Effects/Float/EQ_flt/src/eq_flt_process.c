@@ -29,20 +29,11 @@ int32_t eq_process(
     flt acc = 0;
     eq_coeffs_t *c = (eq_coeffs_t*)coeffs;
     eq_states_t *s = (eq_states_t*)states;
-    // stereo      *a = (stereo*)audio;
-    // printf("%d \n", c->bypass);
     if(!c->bypass)
     {
-        for (size_t i = 0; i < samples_count; i++)
+        for(size_t j = 0; j < 10; j++)
         {   
-            // for(size_t j = 0; j < 10; j++)
-            // {   
-            //     if(1 != 0)
-            //     {   
-            //         bq_process(&c->bq[j], &s->bq[j], audio, samples_count);
-            //     }
-            // }
-            bq_process(&c->bq[3], &s->bq[3], audio, samples_count);
+            bq_process(&c->bq[j], &s->bq[j], audio, samples_count);
         }
     }
     return 0;

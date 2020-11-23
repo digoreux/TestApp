@@ -6,20 +6,15 @@
 #include "cross_flt_control.h"
 
 typedef struct cross4_coeffs_s {
-    cross_coeffs_t cross1_c;
-    cross_coeffs_t cross2_c;
-    cross_coeffs_t cross3_c;
-    xmm mk0;
-    xmm mk1;
-    xmm mk2;
+    cross_coeffs_t cross[3];
+    vector_t k1;
+    vector_t k2;
     bool bypass;
 } cross4_coeffs_t;
 
 typedef struct cross4_params_s {
     uint32_t sample_rate;
-    cross_params_t cross1_p;
-    cross_params_t cross2_p;
-    cross_params_t cross3_p;
+    cross_params_t cross[3];
     bool bypass;
 } cross4_params_t;
 
@@ -31,26 +26,13 @@ typedef struct bands_s {
 } bands_t;
 
 typedef struct cross4_states_s {
-    cross_states_t cross1_s;
-    cross_states_t cross2_s;
-    cross_states_t cross3_s;
+    cross_states_t cross[3];
     bands_t bands;
 
-    stereo_t xn;
-    stereo_t y0[2];   // 1st order phase correction 
-    stereo_t x0[2];   // 1st order phase correction
-    stereo_t x1[2];   // 1st order phase correction
-    stereo_t x2[2];   // 2nd order phase correction
-    stereo_t y1[2];   // 2nd order phase correction
-    stereo_t x3[2];   // 2nd order phase correction
-
-    xmm mxn;
-    xmm my0;
-    xmm mx0;
-    xmm mx1;
-    xmm mx2;
-    xmm my1;
-    xmm mx3;
+    vector_t xn;
+    vector_t y0[2];   // 1st order phase correction 
+    vector_t x0[2];   // 1st order phase correction
+    vector_t x1[2];   // 1st order phase correction
 } cross4_states_t;
 
 

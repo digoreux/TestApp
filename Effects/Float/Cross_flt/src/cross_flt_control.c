@@ -17,6 +17,7 @@ int32_t cross_control_initialize(
 {   
     cross_params_t * p = (cross_params_t*)params;
     cross_coeffs_t * c = (cross_coeffs_t*)coeffs;
+    p->sample_rate = sample_rate;
     
     return 0;   
 }
@@ -27,6 +28,7 @@ int32_t cross_set_parameter(
     float       value)
 {   
     cross_params_t * p = (cross_params_t*)params;
+    p->freq = 1000;
     return 0;
 }
 
@@ -49,18 +51,18 @@ int32_t cross_update_coeffs(
     k1  = -cos(2 * M_PI  * p->freq / p->sample_rate);
     k1 *= (1.0 - k2);
 
-    c->k0 = (float)k0;
-    c->k1 = (float)k1;
-    c->k2 = (float)-k2;
+    // printf("k0: %f \n", (float)k0);
+    // printf("k0: %f \n", (float)k1);
+    // printf("k0: %f \n", (float)-k2);
 
-    c->mk0.v = _mm_set_ps((float)k0, (float)k0, 0.0f, 0.0f);
-    c->mk1.v = _mm_set_ps((float)k1, (float)k1, 0.0f, 0.0f);
-    c->mk2.v = _mm_set_ps(-(float)k2, -(float)k2, 0.0f, 0.0f);
-    c->m2.v =  _mm_set_ps(0.5f, 0.5f, 0.0f, 0.0f);
+    set_val(&c->k0, (float)k0);
+    set_val(&c->k1, (float)k1);
+    set_val(&c->k2, (float)-k2);
+    set_val(&c->k05, 0.5f);
 
-    // printf("k0: %f\n", c->k0);
-    // printf("k1: %f\n", c->k1);
-    // printf("k2:  %f\n\n", c->k2);
+    // printf("k0: %f \n", c->k0.val[3]);
+    // printf("k1: %f \n", c->k1.val[3]);
+    // printf("k2: %f \n", c->k2.val[3]);
 
     return 0;
 }

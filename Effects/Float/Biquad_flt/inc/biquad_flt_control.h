@@ -2,7 +2,6 @@
 #define __BIQUAD_FLT_CONTROL_H__
 
 #include "abstract_effect.h"
-
 typedef flt stereo[2];
 
 typedef struct coeffs_s {
@@ -12,6 +11,13 @@ typedef struct coeffs_s {
     vector_t  a0;
     vector_t  a1;
     vector_t  a2;
+
+    flt  sb0;
+    flt  sb1;
+    flt  sb2;
+    flt  sa0;
+    flt  sa1;
+    flt  sa2;
     bool bypass;
 } bq_coeffs_t;
 
@@ -20,6 +26,11 @@ typedef struct states_s {
    vector_t x1;
    vector_t x2;
    vector_t y0;
+
+   stereo_t sx0;
+   stereo_t sx1;
+   stereo_t sx2;
+   stereo_t sy0;
 } bq_states_t;
 
 typedef struct bq_params_s {

@@ -24,7 +24,6 @@ void bin(unsigned n)
             count = 0;
         }
     }
-
 }
 
 void test_fractional(void)

@@ -6,12 +6,15 @@ set(EFFECTS_PATH "../../../../Effects/Float")
 
 project(TestApp)
 
+#add_compile_options(-O2)
+
 add_executable(TestApp
     ../../src/main.c
     ../../src/file_handler.c
     ../../src/generator.c
     ../../src/arg_parser.c
     ../../src/cJSON.c)
+
 
 target_link_libraries(TestApp PRIVATE
 	 Chain_flt
