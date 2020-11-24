@@ -31,25 +31,60 @@ int32_t cross_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    stereo_t* band1,
-    stereo_t* band2,
-    size_t samples_count)
+    stereo_t*   band1,
+    stereo_t*   band2,
+    size_t      samples_count,
+    size_t      frames_count)
 {   
     cross_coeffs_t* c = (cross_coeffs_t*)coeffs;
     cross_states_t* s = (cross_states_t*)states;
-    stereo_t  *  a = (stereo_t*)audio;
-    stereo_t  b1;
-    stereo_t  b2;
-    for(uint32_t i = 0; i < samples_count; i++)
+    stereo_t      * a = (stereo_t*)audio;
+
+    uint32_t n = samples_count * frames_count;
+
+    stereo_t b1, b2;
+    
+    for(uint32_t i = 0 + n, j = 0; i < samples_count + n, j < samples_count; i++, j++)
     {   
         apf1(c, s, &a[i], &b1);
         apf2(c, s, &a[i], &b2);
-        band1[i].left  = (b2.left  - b1.left)  * 0.5f;
-        band1[i].right = (b2.right - b1.right) * 0.5f;
-        band2[i].left  = (b2.left  + b1.left)  * 0.5f;
-        band2[i].right = (b2.right + b1.right) * 0.5f;
+        band1[j].left  = (b2.left  + b1.left)  * 0.5f;
+        band1[j].right = (b2.right + b1.right) * 0.5f;
+        band2[j].left  = (b2.left  - b1.left)  * 0.5f;
+        band2[j].right = (b2.right - b1.right) * 0.5f;
     }   
     return 0;
+
+}
+
+int32_t cross_process_frame(
+    void const* coeffs,
+    void*       states,
+    void*       audio,
+    stereo_t*   band1,
+    stereo_t*   band2,
+    size_t      samples_count,
+    size_t      frames_count)
+{   
+    cross_coeffs_t* c = (cross_coeffs_t*)coeffs;
+    cross_states_t* s = (cross_states_t*)states;
+    stereo_t      * a = (stereo_t*)audio;
+
+    uint32_t n = samples_count * frames_count;
+
+    stereo_t b1, b2;
+    
+    for(uint32_t i = 0 + n, j = 0; i < samples_count + n, j < samples_count; i++, j++)
+    {   
+        apf1(c, s, &a[j], &b1);
+        apf2(c, s, &a[j], &b2);
+        band1[j].left  = (b2.left  + b1.left)  * 0.5f;
+        band1[j].right = (b2.right + b1.right) * 0.5f;
+        band2[j].left  = (b2.left  - b1.left)  * 0.5f;
+        band2[j].right = (b2.right - b1.right) * 0.5f;
+    }   
+    return 0;
+
 }
 
 static inline uint32_t apf1(void * coeffs, void * states, stereo_t * a, stereo_t * b)

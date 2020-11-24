@@ -43,9 +43,19 @@ int32_t cross_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    stereo_t* band1,
-    stereo_t* band2,
-    size_t samples_count);
+    stereo_t*   band1,
+    stereo_t*   band2,
+    size_t      samples_count,
+    size_t      frames_count);
+
+int32_t cross_process_frame(
+    void const* coeffs,
+    void*       states,
+    void*       audio,
+    stereo_t*   band1,
+    stereo_t*   band2,
+    size_t      samples_count,
+    size_t      frames_count);
 
 
 #endif

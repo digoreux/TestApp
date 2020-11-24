@@ -18,23 +18,18 @@ typedef struct cross4_params_s {
     bool bypass;
 } cross4_params_t;
 
-typedef struct bands_s {
-    stereo_t * band1;
-    stereo_t * band2;
-    stereo_t * band3;
-    stereo_t * band4;
-} bands_t;
-
 typedef struct cross4_states_s {
     cross_states_t cross[3];
-    bands_t bands;
+    vector_t xn;   // 2nd order phase correction 
+    vector_t y0;   // 2nd order phase correction 
+    vector_t x0;   // 2nd order phase correction
+    vector_t x1;   // 2nd order phase correction
 
-    vector_t xn;
-    vector_t y0[2];   // 1st order phase correction 
-    vector_t x0[2];   // 1st order phase correction
-    vector_t x1[2];   // 1st order phase correction
+    stereo_t b1[32];
+    stereo_t b2[32];
+    stereo_t b3[32];
+    stereo_t b4[32];
 } cross4_states_t;
-
 
 
 /*******************************************************************************

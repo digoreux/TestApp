@@ -24,33 +24,33 @@
 #include "biquad_flt_process.h"
 
 typedef struct params_t {
-    bq_params_t bq_p;
-    eq_params_t eq_p;
-    comp_params_t comp_p;
-    cross_params_t cross_p;
-    comp4_params_t comp4_p;
-    cross4_params_t cross4_p;
-    expand_params_t expand_p;
+    bq_params_t bq;
+    eq_params_t eq;
+    comp_params_t comp;
+    cross_params_t cross;
+    comp4_params_t comp4;
+    cross4_params_t cross4;
+    expand_params_t expand;
 } params_t;
 
 typedef struct coeffs_t {
-    bq_coeffs_t bq_c;
-    eq_coeffs_t eq_c;
-    comp_coeffs_t comp_c;
-    cross_coeffs_t cross_c;
-    comp4_coeffs_t comp4_c;
-    cross4_coeffs_t cross4_c;
-    expand_coeffs_t expand_c;
+    bq_coeffs_t bq;
+    eq_coeffs_t eq;
+    comp_coeffs_t comp;
+    cross_coeffs_t cross;
+    comp4_coeffs_t comp4;
+    cross4_coeffs_t cross4;
+    expand_coeffs_t expand;
 } coeffs_t;
 
 typedef struct states_t {
-    bq_states_t bq_s;
-    eq_states_t eq_s;
-    comp_states_t comp_s;
-    cross_states_t cross_s;
-    comp4_states_t comp4_s;
-    cross4_states_t cross4_s;
-    expand_states_t expand_s;
+    bq_states_t bq;
+    eq_states_t eq;
+    comp_states_t comp;
+    cross_states_t cross;
+    comp4_states_t comp4;
+    cross4_states_t cross4;
+    expand_states_t expand;
 } states_t;
 
 #endif

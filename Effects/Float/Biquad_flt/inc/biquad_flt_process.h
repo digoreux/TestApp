@@ -43,7 +43,8 @@ extern int32_t bq_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count);
+    size_t      samples_count,
+    size_t      frames_count);
 
 
 #endif

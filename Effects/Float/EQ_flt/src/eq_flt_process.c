@@ -24,16 +24,19 @@ int32_t eq_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count)
+    size_t      samples_count,
+    size_t      frames_count)
 {   
-    flt acc = 0;
     eq_coeffs_t *c = (eq_coeffs_t*)coeffs;
     eq_states_t *s = (eq_states_t*)states;
+
+    // uint32_t n = samples_count * frames_count;
+
     if(!c->bypass)
     {
         for(size_t j = 0; j < 10; j++)
         {   
-            bq_process(&c->bq[j], &s->bq[j], audio, samples_count);
+            bq_process(&c->bq[j], &s->bq[j], audio, samples_count, frames_count);
         }
     }
     return 0;

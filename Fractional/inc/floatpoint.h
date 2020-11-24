@@ -89,10 +89,23 @@ __forceinline static uint32_t set_vals(vector_t * r, flt x, flt y)
     r->vec = _mm_set_ps(x, y, x, y);
     return 0;
     #else 
-    r->val[0] = 0.0f;
-    r->val[1] = 0.0f;
-    r->val[2] = x;
-    r->val[3] = y;
+    r->val[0] = y;
+    r->val[1] = x;
+    r->val[2] = y;
+    r->val[3] = x;
+    return 0;
+    #endif
+}
+__forceinline static uint32_t set_vals2(vector_t * r, flt a, flt b, flt c, flt d)
+{   
+    #if INTR
+    r->vec = _mm_set_ps(a, b, c, d);
+    return 0;
+    #else 
+    r->val[0] = y;
+    r->val[1] = x;
+    r->val[2] = y;
+    r->val[3] = x;
     return 0;
     #endif
 }

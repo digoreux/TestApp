@@ -44,11 +44,11 @@ int32_t cross4_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count);
+    size_t      samples_count,
+    size_t      frames_count);
 
-int32_t mix2(void * audio, size_t samples_count, void * band1, void * band2);
-// int32_t mix(void * audio, size_t samples_count, void * band1, void * band2, void * band3, void * band4);
-int32_t mix(void * audio, void * bands, size_t samples_count);
-int32_t phase_correction(void * coeffs, void * states, void * band1, void * band2, size_t samples_count);
+int32_t mix2(void * audio, void * band1, void * band2, size_t samples_count, size_t frames_count);
+int32_t mix(void * audio, void * states, size_t samples_count, size_t frames_count);
+int32_t phase_correction(void * coeffs, void * states, size_t samples_count);
 
 #endif

@@ -35,29 +35,27 @@ inline int32_t bq_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count)
+    size_t      samples_count,
+    size_t      frames_count)
 {   
-    flt acc = 0;
     bq_coeffs_t *c = (bq_coeffs_t*)coeffs;
     bq_states_t *s = (bq_states_t*)states;
-    // vector_t   * a = (vector_t *)audio;
-    stereo * a = (stereo*)audio;
-    // stereo_t   * a = (stereo_t *)audio;
-    // flt * a = (flt*)audio;
+    stereo_t   * a = (stereo_t *)audio;
 
-    flt r[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    uint32_t n = samples_count * frames_count;
+
     if(!c->bypass)
     {
-        for (size_t i = 0; i < samples_count; i++)
+        for (size_t i = 0 + n; i < samples_count + n; i++)
         {    
-            set_vals(&s->x0, a[i][0], a[i][1]);
+            set_vals(&s->x0, a[i].left, a[i].right);
             s->y0 = fma2(c->b0, s->x0, s->x1);
             s->x1 = fma2(c->b1, s->x0, s->x2);
             s->x1 = fma2(c->a1, s->y0, s->x1);
             s->x2 = mul2(c->b2, s->x0);
             s->x2 = fma2(c->a2, s->y0, s->x2);
-            a[i][0] = s->y0.val[3];
-            a[i][1] = s->y0.val[2];
+            a[i].left  = s->y0.val[3];
+            a[i].right = s->y0.val[2];
 
             // s->x0.vec = _mm_set_ps(a[i][0], a[i][1], 0.0f, 0.0f);
             // s->y0.vec = _mm_fmadd_ps(c->b0.vec, s->x0.vec, s->x1.vec);

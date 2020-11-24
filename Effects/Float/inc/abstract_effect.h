@@ -14,6 +14,8 @@
 #include "nmmintrin.h" // for SSE4.2
 #include "immintrin.h" // for AVX 
 
+#define FRAME_COUNT 32
+
 typedef enum {
 	LP   = 0,
 	HP   = 1,

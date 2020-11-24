@@ -1,7 +1,6 @@
 #include "effect_process.h"
 #include "effect_structure.h"
 
-#define FRAME_COUNT 32
 
 int32_t effect_process_get_sizes(
     size_t*     states_bytes)
@@ -17,18 +16,13 @@ int32_t effect_reset(
     coeffs_t *c = (coeffs_t*)coeffs;
     states_t *s = (states_t*)states;
  
-    eq_reset(&c->eq_c, &s->eq_s);
-    bq_reset(&c->bq_c, &s->bq_s);
-    cross_reset(&c->cross_c, &s->cross_s);
-    // comp_reset(&c->comp_c, &s->comp_s);
-    // expand_reset(&c->expand_c, &s->expand_s);
-    // cross4_reset(&c->cross4_c, &s->cross4_s);
-    // comp4_reset(&c->comp4_c, &s->cross4_s);
-    s->cross4_s.bands.band1 = malloc(sizeof(stereo_t) * 512);
-    s->cross4_s.bands.band2 = malloc(sizeof(stereo_t) * 512);
-    s->cross4_s.bands.band3 = malloc(sizeof(stereo_t) * 512);
-    s->cross4_s.bands.band4 = malloc(sizeof(stereo_t) * 512);
-
+    eq_reset(&c->eq, &s->eq);
+    bq_reset(&c->bq, &s->bq);
+    cross_reset(&c->cross, &s->cross);
+    cross4_reset(&c->cross4, &s->cross4); 
+    // comp_reset(&c->comp, &s->comp);
+    // expand_reset(&c->expand, &s->expand);
+    // comp4_reset(&c->comp4, &s->cross4);
     return 0;
 }
 
@@ -41,16 +35,20 @@ int32_t effect_process(
     coeffs_t *c = (coeffs_t*)coeffs;
     states_t *s = (states_t*)states;
     stereo_t *a = (stereo_t*)audio;
-    
-    // bq_process(&c->bq_c, &s->bq_s, audio, samples_count);
-    // eq_process(&c->eq_c, &s->eq_s, audio, samples_count);
-    //  comp_process(&c->comp_c, &s->comp_s, audio, samples_count);
-    cross_process(&c->cross_c, &s->cross_s, audio, s->cross_s.band1, s->cross_s.band2, samples_count);
-    //  cross4_process(&c->cross4_c, &s->cross4_s, audio, samples_count);
-     //comp4_process(&c->comp4_c, &s->comp4_s, &s->cross4_s.bands, samples_count);    
-    //  mix(audio, &s->cross4_s.bands, samples_count);
-     mix2(audio, samples_count, &s->cross4_s.bands.band1, &s->cross4_s.bands.band2);
-    // expand_process(&c->expand_c, &s->expand_s, audio, samples_count);
+
+    for(uint32_t i = 0, n = 0; i < samples_count; i += FRAME_COUNT, n++)
+    {
+        // bq_process(&c->bq, &s->bq, audio, FRAME_COUNT, n);
+        // eq_process(&c->eq, &s->eq, audio, FRAME_COUNT, n);
+        // cross_process(&c->cross, &s->cross, audio, s->cross4.b1, s->cross4.b2, FRAME_COUNT, n);
+        cross4_process(&c->cross4, &s->cross4, audio, FRAME_COUNT, n);
+        // mix2(audio, &s->cross4.b1, &s->cross4.b3, FRAME_COUNT, n);
+        mix(audio, &s->cross4, FRAME_COUNT, n);
+    }
+
+    //  comp4_process(&c->comp4, &s->comp4, &s->cross4.bands, samples_count);    
+    //  expand_process(&c->expand, &s->expand, audio, samples_count);
+    //  comp_process(&c->comp, &s->comp, audio, samples_count);
 
     return 0;
 }
