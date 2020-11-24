@@ -3,13 +3,6 @@
 
 #include "comp_flt_control.h"
 
-typedef struct comp4_bands_s {
-    stereo_t * band1;
-    stereo_t * band2;
-    stereo_t * band3;
-    stereo_t * band4;
-} comp4_bands_t;
-
 typedef struct comp4_params_s {
     comp_params_t comp1_p;
     comp_params_t comp2_p;

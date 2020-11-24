@@ -104,23 +104,6 @@ int32_t comp_update_coeffs(
     c->envA   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvAttack  * p->sample_rate)));
     c->envR   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvRelease * p->sample_rate)));
 
-    //c->mratio.v = _mm_set_ps(c->ratio, c->ratio, 0.0f, 0.0f);
-    //c->mthrsh.v = _mm_set_ps(c->thrsh, c->thrsh, 0.0f, 0.0f);
-
-    //c->mgainA.v = _mm_set_ps(c->gainA, c->gainA, 0.0f, 0.0f);
-    //c->mgainR.v = _mm_set_ps(c->gainR, c->gainR, 0.0f, 0.0f);
-
-    //c->menvA.v = _mm_set_ps(c->envA, c->envA, 0.0f, 0.0f);
-    //c->menvR.v = _mm_set_ps(c->envR, c->envR, 0.0f, 0.0f);
-
-    // printf("Threshold: %f \n",      c->thrsh);
-    // printf("Ratio: %f \n",          c->ratio);
-    // printf("Attack: %f \n",         c->gainA);
-    // printf("Release: %f \n",        c->gainR);
-    // printf("MakeUpGain: %f \n",     c->gainM);
-    // printf("envAttack: %f \n",      c->envA);
-    // printf("envRelease: %f \n\n",   c->envR);
-
     return 0;
 }
 

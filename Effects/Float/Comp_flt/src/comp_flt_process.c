@@ -22,13 +22,6 @@ int32_t comp_reset(
     s->env0 = 0.0;
     s->env1 = 0.0;
 
-    //s->mgc.v   = _mm_set_ps(s->gc.left, s->gc.right, 0.0f, 0.0f);
-    //s->mgm.v   = _mm_set_ps(s->gm.left, s->gm.right, 0.0f, 0.0f);
-    //s->mgs0.v  = _mm_set_ps(s->gs0.left, s->gs0.right, 0.0f, 0.0f);
-    //s->mgs1.v  = _mm_set_ps(s->gs1.left, s->gs1.right, 0.0f, 0.0f);
-    //s->menv0.v = _mm_set_ps(s->env0.left, s->env0.right, 0.0f, 0.0f);
-    //s->menv1.v = _mm_set_ps(s->env1.left, s->env1.right, 0.0f, 0.0f); 
-
     return 0;
 }
 
@@ -37,16 +30,18 @@ int32_t comp_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count)
+    size_t      samples_count,
+    size_t      frames_count)
 {
     comp_coeffs_t* c = (comp_coeffs_t*)coeffs;
     comp_states_t* s = (comp_states_t*)states;
     stereo_t* a = (stereo_t*)audio;
-
+    uint32_t n = samples_count * frames_count;
     float x_abs;
     if(!c->bypass)
     {
-    for (uint32_t i = 0; i < samples_count; i++)
+    for (size_t i = 0 + n; i < samples_count + n; i++)
+    for (size_t i = 0; i < samples_count; i++)
         {
             x_abs = fmaxf(fabsf(a[i].left), fabsf(a[i].right));  
 

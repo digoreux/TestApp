@@ -14,18 +14,9 @@ typedef struct comp_params_s {
     uint32_t sample_rate;
     bool downward;
     bool bypass;
-
 } comp_params_t;
 
 typedef struct comp_coeffs_s {
-    //xmm mthrsh;
-    //xmm mratio;
-    //xmm menvA;
-    //xmm menvR;
-    //xmm mgainA;
-    //xmm mgainR;
-    //xmm mgainM;
-
     flt thrsh;
     flt ratio;
     flt envA;
@@ -37,13 +28,6 @@ typedef struct comp_coeffs_s {
 } comp_coeffs_t;
 
 typedef struct comp_states_s{
-    //xmm mgm;
-    //xmm mgc;
-    //xmm mgs0;
-    //xmm mgs1;
-    //xmm menv0;
-    //xmm menv1;
-
     flt gm;      // gain make-up
     flt gc;      // gain computer
     flt gs0;     // gain smoothing current
