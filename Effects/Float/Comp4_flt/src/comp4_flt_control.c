@@ -1,5 +1,4 @@
 #include "comp4_flt_control.h"
-#include "comp_flt_control.h"
 
 int32_t comp4_control_get_sizes(
     size_t*     params_bytes,
@@ -19,13 +18,11 @@ int32_t comp4_control_initialize(
 {
     comp4_params_t* p = (comp4_params_t*)params;
     comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
-
-    // comp_control_initialize(&p->comp1_p, &c->comp1_c, sample_rate);
-    // comp_control_initialize(&p->comp2_p, &c->comp2_c, sample_rate);
-    // comp_control_initialize(&p->comp3_p, &c->comp3_c, sample_rate);
-    // comp_control_initialize(&p->comp4_p, &c->comp4_c, sample_rate);
-    p->bypass = 0;
-    c->bypass = 0;
+    for(uint32_t i = 0; i < 4; i++)
+    {
+        p->bypass[i] = 0;
+        c->bypass[i] = 0;
+    }
 
     return 0;
 }
@@ -40,115 +37,115 @@ int32_t comp4_set_parameter(
     switch(id)
     {
         case 53:
-            p->comp1_p.thrsh = value;
+            p->thrsh[0] = value;
             break;
         case 54:
-            p->comp1_p.ratio = value;
+            p->ratio[0] = value;
             break;
         case 55:
-            p->comp1_p.tAttack = value;
+            p->tAttack[0] = value;
             break;
         case 56:
-            p->comp1_p.tRelease = value;
+            p->tRelease[0] = value;
             break;
         case 57:
-            p->comp1_p.makeUpGain = value;
+            p->makeUpGain[0] = value;
             break;
         case 58:
-            p->comp1_p.sample_rate = (uint32_t)value;
+            p->sample_rate = (uint32_t)value;
             break;
         case 59:
-            p->comp1_p.tEnvAttack = value;
+            p->tEnvAttack[0] = value;
             break;
         case 60:
-            p->comp1_p.tEnvRelease = value;
+            p->tEnvRelease[0] = value;
             break;
         case 61:
-            p->comp2_p.thrsh = value;
+            p->thrsh[1] = value;
             break;
         case 62:
-            p->comp2_p.ratio = value;
+            p->ratio[1] = value;
             break;
         case 63:
-            p->comp2_p.tAttack = value;
+            p->tAttack[1] = value;
             break;
         case 64:
-            p->comp2_p.tRelease = value;
+            p->tRelease[1] = value;
             break;
         case 65:
-            p->comp2_p.makeUpGain = value;
+            p->makeUpGain[1] = value;
             break;
         case 66:
-            p->comp2_p.sample_rate = (uint32_t)value;
+            p->sample_rate = (uint32_t)value;
             break;
         case 67:
-            p->comp2_p.tEnvAttack = value;
+            p->tEnvAttack[1] = value;
             break;
         case 68:
-            p->comp2_p.tEnvRelease = value;
+            p->tEnvRelease[1] = value;
             break;
         case 69:
-            p->comp3_p.thrsh = value;
+            p->thrsh[1] = value;
             break;
         case 70:
-            p->comp3_p.ratio = value;
+            p->ratio[2] = value;
             break;
         case 71:
-            p->comp3_p.tAttack = value;
+            p->tAttack[2] = value;
             break;
         case 72:
-            p->comp3_p.tRelease = value;
+            p->tRelease[2] = value;
             break;
         case 73:
-            p->comp3_p.makeUpGain = value;
+            p->makeUpGain[2] = value;
             break;
         case 74:
-            p->comp3_p.sample_rate = (uint32_t)value;
+            p->sample_rate = (uint32_t)value;
             break;
         case 75:
-            p->comp3_p.tEnvAttack = value;
+            p->tEnvAttack[2] = value;
             break;
         case 76:
-            p->comp3_p.tEnvRelease = value;
+            p->tEnvRelease[2] = value;
             break;
         case 77:
-            p->comp4_p.thrsh = value;
+            p->thrsh[3] = value;
             break;
         case 78:
-            p->comp4_p.ratio = value;
+            p->ratio[3] = value;
             break;
         case 79:
-            p->comp4_p.tAttack = value;
+            p->tAttack[3] = value;
             break;
         case 80:
-            p->comp4_p.tRelease = value;
+            p->tRelease[3] = value;
             break;
         case 81:
-            p->comp4_p.makeUpGain = value;
+            p->makeUpGain[3] = value;
             break;
         case 82:
-            p->comp4_p.sample_rate = (uint32_t)value;
+            p->sample_rate = (uint32_t)value;
             break;
         case 83:
-            p->comp4_p.tEnvAttack = value;
+            p->tEnvAttack[3] = value;
             break;
         case 84:
-            p->comp4_p.tEnvRelease = value;
+            p->tEnvRelease[3] = value;
             break;
         case 304:
-            p->comp1_p.bypass = value;
+            p->bypass[0] = value;
             break;
         case 305:
-            p->comp2_p.bypass = value;
+            p->bypass[1] = value;
             break;
         case 306:
-            p->comp3_p.bypass = value;
+            p->bypass[2] = value;
             break;
         case 307:
-            p->comp4_p.bypass = value;
+            p->bypass[3] = value;
             break;
         case 303:
-            p->bypass = value;
+            p->bypass[4] = value; // Multiband bypass
             break;
     }
 
@@ -161,17 +158,26 @@ int32_t comp4_update_coeffs(
 {
     comp4_params_t* p = (comp4_params_t*)params;
     comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
+    double thrsh[4], gainM[4], gainA[4], gainR[4], envA[4], envR[4];
 
-    c->bypass = p->bypass;
-    c->comp1_c.bypass = p->comp1_p.bypass;
-    c->comp2_c.bypass = p->comp2_p.bypass;
-    c->comp3_c.bypass = p->comp3_p.bypass;
-    c->comp4_c.bypass = p->comp4_p.bypass;
+    for(uint32_t i = 0; i < 4; i++)
+    {
+        c->bypass[i] = p->bypass[i];
+        thrsh[i] = pow(10.0, (p->thrsh[i]/20.0));  
+        gainM[i] = pow(10.0, (p->makeUpGain[i]/20.0));
+        gainA[i] = pow(M_e, (-(log(9)) / (0.001 * p->tAttack[i]  * p->sample_rate)));
+        gainR[i] = pow(M_e, (-(log(9)) / (0.001 * p->tRelease[i] * p->sample_rate)));
+        envA[i]  = pow(M_e, (-(log(9)) / (0.001 * p->tEnvAttack[i]  * p->sample_rate)));
+        envR[i]  = pow(M_e, (-(log(9)) / (0.001 * p->tEnvRelease[i] * p->sample_rate)));
+    }
 
-    comp_update_coeffs(&p->comp1_p, &c->comp1_c);
-    comp_update_coeffs(&p->comp2_p, &c->comp2_c);
-    comp_update_coeffs(&p->comp3_p, &c->comp3_c);
-    comp_update_coeffs(&p->comp4_p, &c->comp4_c);
+    set_vals2(&c->thrsh, thrsh[3], thrsh[2], thrsh[1], thrsh[0]); 
+    set_vals2(&c->gainM, gainM[3], gainM[2], gainM[1], gainM[0]); 
+    set_vals2(&c->gainA, gainA[3], gainA[2], gainA[1], gainA[0]); 
+    set_vals2(&c->gainR, gainR[3], gainR[2], gainR[1], gainR[0]); 
+    set_vals2(&c-> envA,  envA[3],  envA[2],  envA[1],  envA[0]); 
+    set_vals2(&c-> envR,  envR[3],  envR[2],  envR[1],  envR[0]);  
+    set_val(&c->one, 1.0f);
 
     return 0;
 }

@@ -1,6 +1,5 @@
 #include "comp_flt_control.h"
 
-# define M_e    2.71828182846f
 
 int32_t comp_control_get_sizes(
     size_t*     params_bytes,
@@ -92,17 +91,24 @@ int32_t comp_update_coeffs(
     comp_params_t* p = (comp_params_t*)params;
     comp_coeffs_t* c = (comp_coeffs_t*)coeffs;
 
+    double thrsh, gainM, gainA, gainR, envA, envR;
+    
     c->ratio  = p->ratio;
     c->bypass = p->bypass;
 
-    c->thrsh = powf(10.0f, (p->thrsh/20.0f));  
-    c->gainM = powf(10.0f, (p->makeUpGain/20.0f));
+    thrsh = pow(10.0, (p->thrsh/20.0));  
+    gainM = pow(10.0, (p->makeUpGain/20.0));
+    gainA = pow(M_e, (-(log(9)) / (0.001 * p->tAttack  * p->sample_rate)));
+    gainR = pow(M_e, (-(log(9)) / (0.001 * p->tRelease * p->sample_rate)));
+    envA  = pow(M_e, (-(log(9)) / (0.001 * p->tEnvAttack  * p->sample_rate)));
+    envR  = pow(M_e, (-(log(9)) / (0.001 * p->tEnvRelease * p->sample_rate)));
 
-    c->gainA  = powf(M_e, (-(logf(9)) / (0.001f * p->tAttack  * p->sample_rate)));
-    c->gainR  = powf(M_e, (-(logf(9)) / (0.001f * p->tRelease * p->sample_rate)));
-
-    c->envA   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvAttack  * p->sample_rate)));
-    c->envR   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvRelease * p->sample_rate)));
+    c->thrsh = (float)thrsh; 
+    c->gainM = (float)gainM; 
+    c->gainA = (float)gainA; 
+    c->gainR = (float)gainR; 
+    c->envA  = (float)envA; 
+    c->envR  = (float)envR; 
 
     return 0;
 }

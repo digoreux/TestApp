@@ -6,7 +6,7 @@
 typedef struct comp_params_s {
     flt thrsh;
     flt ratio;
-    flt tAttack;      // gain
+    flt tAttack;         // gain
     flt tRelease;
     flt tEnvAttack;      //env
     flt tEnvRelease;
@@ -28,10 +28,10 @@ typedef struct comp_coeffs_s {
 } comp_coeffs_t;
 
 typedef struct comp_states_s{
-    flt gm;      // gain make-up
-    flt gc;      // gain computer
-    flt gs0;     // gain smoothing current
-    flt gs1;     // gain smoothing previous
+    flt gm;       // gain make-up
+    flt gc;       // gain computer
+    flt gs0;      // gain smoothing current
+    flt gs1;      // gain smoothing previous
     flt env0;     // envelope current
     flt env1;     // envelope previous
 } comp_states_t;

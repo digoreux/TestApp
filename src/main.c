@@ -23,6 +23,17 @@ int main(int argc, char **argv)
     if (a->input)    read_wav(utils, a, meta);
     if (a->gen_opts) gen_wav(utils, a, meta);
     
+    vector_t r, x, y;
+    set_vals2(&x, 2.5f, 2.5f, 4.0f, 5.0f);
+    set_vals2(&y, 3.5f, );
+    // r.vec = _mm_cmple_ps(x.vec, y.vec);
+    // r = cmple(x, y);
+    r = cmpgt(x, y);
+    if(r.val[3])
+        printf("REALLY %d \n", r.val[3]);
+    // // printf("%f \n", 0xFFFFFFFF);
+
+
     free(a);
     free(meta);
     return 0;

@@ -40,8 +40,7 @@ int32_t comp_process(
     float x_abs;
     if(!c->bypass)
     {
-    for (size_t i = 0 + n; i < samples_count + n; i++)
-    for (size_t i = 0; i < samples_count; i++)
+        for (size_t i = 0 + n; i < samples_count + n; i++)
         {
             x_abs = fmaxf(fabsf(a[i].left), fabsf(a[i].right));  
 

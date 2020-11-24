@@ -13,6 +13,7 @@
 #include "floatpoint.h"
 #include "nmmintrin.h" // for SSE4.2
 #include "immintrin.h" // for AVX 
+#define M_e    2.71828182845904523536
 
 #define FRAME_COUNT 32
 

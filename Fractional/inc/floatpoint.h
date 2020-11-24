@@ -38,8 +38,71 @@ extern flt fpow(flt x, flt y);
 __forceinline static vector_t mul2(vector_t x, vector_t y)
 {   
     #if INTR
-    y.vec = _mm_mul_ps(x.vec, y.vec);
+    x.vec = _mm_mul_ps(x.vec, y.vec);
+    return x;
+    #else
+    // for(uint32_t i = 0; i < NCH; i++)
+    //     y.val[i] *= x.val[i];
+    x.val[3] *= y.val[3];
+    x.val[2] *= y.val[2];
+    x.val[1] *= y.val[1];
+    x.val[0] *= y.val[0];
+    return x;
+    #endif
+}
+
+__forceinline static vector_t sub2(vector_t x, vector_t y)
+{   
+    #if INTR
+    x.vec = _mm_sub_ps(x.vec, y.vec);
+    return x;
+    #else
+    // for(uint32_t i = 0; i < NCH; i++)
+    //     y.val[i] *= x.val[i];
+    x.val[3] -= y.val[3];
+    x.val[2] -= y.val[2];
+    x.val[1] -= y.val[1];
+    x.val[0] -= y.val[0];
+    return x;
+    #endif
+}
+
+__forceinline static vector_t div2(vector_t x, vector_t y)
+{   
+    #if INTR
+    x.vec = _mm_div_ps(x.vec, y.vec);
+    return x;
+    #else
+    // for(uint32_t i = 0; i < NCH; i++)
+    //     y.val[i] *= x.val[i];
+    x.val[3] /= y.val[3];
+    x.val[2] /= y.val[2];
+    x.val[1] /= y.val[1];
+    x.val[0] /= y.val[0];
+    return x;
+    #endif
+}
+__forceinline static vector_t cmpgt(vector_t x, vector_t y)
+{   
+    #if INTR
+    vector_t r;
+    r.vec = _mm_cmpgt_ps(x.vec, y.vec);
+    return r;
+    #else
+    // for(uint32_t i = 0; i < NCH; i++)
+    //     y.val[i] *= x.val[i];
+    y.val[3] *= x.val[3];
+    y.val[2] *= x.val[2];
     return y;
+    #endif
+}
+
+__forceinline static vector_t cmple(vector_t x, vector_t y)
+{   
+    #if INTR
+    vector_t r;
+    r.vec = _mm_cmple_ps(x.vec, y.vec);
+    return r;
     #else
     // for(uint32_t i = 0; i < NCH; i++)
     //     y.val[i] *= x.val[i];

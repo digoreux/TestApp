@@ -1,5 +1,4 @@
 #include "comp4_flt_process.h"
-#include "comp_flt_process.h"
 #include "cross4_flt_control.h"
 
 int32_t comp4_process_get_sizes(
@@ -17,10 +16,12 @@ int32_t comp4_reset(
     comp4_states_t* s = (comp4_states_t*)states;
     comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
 
-    comp_reset(&c->comp1_c, &s->comp1_s);
-    comp_reset(&c->comp2_c, &s->comp2_s);
-    comp_reset(&c->comp3_c, &s->comp3_s);
-    comp_reset(&c->comp4_c, &s->comp4_s);
+    set_val(&s->gc, 0.0f);
+    set_val(&s->gm, 0.0f);
+    set_val(&s->gs0, 0.0f);
+    set_val(&s->gs1, 0.0f);
+    set_val(&s->env0, 0.0f);
+    set_val(&s->env1, 0.0f);
 
     return 0;
 }
@@ -36,13 +37,84 @@ int32_t comp4_process(
     comp4_coeffs_t  * c = (comp4_coeffs_t*)coeffs;
     comp4_states_t  * s = (comp4_states_t*)states;
     cross4_states_t * b = (cross4_states_t *)bands;
+    flt abs1, abs2, abs3, abs4;
+    vector_t abs;
     if(!c->bypass)
     {
-        if(!c->comp1_c.bypass) comp_process(&c->comp1_c, &s->comp1_s, b->b1, samples_count, frames_count);
-        if(!c->comp2_c.bypass) comp_process(&c->comp2_c, &s->comp2_s, b->b2, samples_count, frames_count);
-        if(!c->comp3_c.bypass) comp_process(&c->comp3_c, &s->comp3_s, b->b3, samples_count, frames_count);
-        if(!c->comp4_c.bypass) comp_process(&c->comp4_c, &s->comp4_s, b->b4, samples_count, frames_count);
-    }
+        for (size_t i = 0 ; i < samples_count; i++)
+        {
+            abs1 = fmaxf(fabsf(b->b1[i].left), fabsf(b->b1[i].right));  
+            abs2 = fmaxf(fabsf(b->b2[i].left), fabsf(b->b2[i].right));  
+            abs3 = fmaxf(fabsf(b->b3[i].left), fabsf(b->b3[i].right));  
+            abs4 = fmaxf(fabsf(b->b4[i].left), fabsf(b->b4[i].right));  
+
+            set_vals2(&abs, abs4, abs3, abs2, abs1);
+
+            /* Envelope detector */
+
+            vector_t less, aux1, aux2;
+
+            less = cmpgt(abs, s->env1);
+
+            if (!less.val[3])             
+            {
+                s->env0 = mul2(c->envA, s->env1);       
+                aux1 = sub2(c->one, c->envA);   
+                s->env0 = fma2(aux1, abs, s->env0);     
+            }
+            else
+            {
+                s->env0 = mul2(c->envR, s->env1);          
+                aux1 = sub2(c->one, c->envR);   
+                s->env0 = fma2(aux1, abs, s->env0);             
+            }
+
+            s->env1 = s->env0;
+
+            /* Gain computer */
+
+            less = cmpgt(c->thrsh, s->env0);
+
+            if (!less.val[3])
+            {   
+                set_val(&s->gc, 1.0f);
+            }
+            else
+            {   
+                aux1.vec = _mm_div_ps(s->env0.vec, c->thrsh.vec);
+                aux1.vec = _mm_div_ps(c->one.vec,  c->ratio.vec);
+
+                // s->gc = powf(aux1, aux2);
+
+                s->gc = mul2(s->gc, c->thrsh);
+                s->gc = div2(s->gc, s->env0);
+            }
+
+            /* Gain smoothing */
+            // s->gc <= s->gs1
+            less = cmple(s->gc, s->gs1);
+            if (0)
+            {
+                s->gs0 = mul2(c->gainA, s->gs1);   
+                aux1 = sub2(c->one, c->gainA);
+                s->gs0 = fma2(aux1, s->gc, s->gs0);   
+            }
+            else
+            {   
+                s->gs0 = mul2(c->gainR, s->gs1);   
+                aux1 = sub2(c->one, c->gainR);
+                s->gs0 = fma2(aux1, s->gc, s->gs0); 
+            }
+    
+            s->gs1 = s->gs0;
+            s->gm  = mul2(s->gs0, c->gainM);          
+            
+            // a[i].left  *= s->gm;
+            // a[i].right *= s->gm;
+            
+        }
+    }    
+
    
     return 0;
 }
