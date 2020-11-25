@@ -58,10 +58,10 @@ int32_t mix(void * audio, void * states, size_t samples_count, size_t frames_cou
 
     for(size_t i = 0 + n, j = 0; i < samples_count + n, j < samples_count; i++, j++) 
     {   
-        a[i].left  = s->b1[j].left  + s->b2[j].left  + s->b3[j].left  + s->b4[j].left;
-        a[i].right = s->b1[j].right + s->b2[j].right + s->b3[j].right + s->b4[j].right;
-        //  a[i].left  = s->b1[j].left + s->b3[j].left;
-        //  a[i].right = s->b2[j].left + s->b4[j].left;
+        // a[i].left  = s->b1[j].left  + s->b2[j].left  + s->b3[j].left  + s->b4[j].left;
+        // a[i].right = s->b1[j].right + s->b2[j].right + s->b3[j].right + s->b4[j].right;
+         a[i].left  = s->b1[j].left + s->b3[j].left;
+         a[i].right = s->b2[j].left + s->b4[j].left;
     }
     return 0;
 }
@@ -77,8 +77,8 @@ int32_t mix2(void * audio, void * band1, void * band2, size_t samples_count, siz
     {
         // a[i].left  = b1[j].left  + b2[j].left;
         // a[i].right = b1[j].right + b2[j].right;
-        a[i].left  = b1[j].left;  
-        a[i].right = b2[j].right;
+        // a[i].left  = b1[j].right + b3[j].right;  
+        // a[i].right = b2[j].right + b4[j].right;
     }
     return 0;
 }

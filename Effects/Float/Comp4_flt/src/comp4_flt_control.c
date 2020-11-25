@@ -18,7 +18,7 @@ int32_t comp4_control_initialize(
 {
     comp4_params_t* p = (comp4_params_t*)params;
     comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
-    for(uint32_t i = 0; i < 4; i++)
+    for(uint32_t i = 0; i < 5; i++)
     {
         p->bypass[i] = 0;
         c->bypass[i] = 0;
@@ -85,7 +85,7 @@ int32_t comp4_set_parameter(
             p->tEnvRelease[1] = value;
             break;
         case 69:
-            p->thrsh[1] = value;
+            p->thrsh[2] = value;
             break;
         case 70:
             p->ratio[2] = value;
@@ -170,14 +170,49 @@ int32_t comp4_update_coeffs(
         envA[i]  = pow(M_e, (-(log(9)) / (0.001 * p->tEnvAttack[i]  * p->sample_rate)));
         envR[i]  = pow(M_e, (-(log(9)) / (0.001 * p->tEnvRelease[i] * p->sample_rate)));
     }
+    set_vals2(&c->ratio, (float)p->ratio[3], (float)p->ratio[2], (float)p->ratio[1], (float)p->ratio[0]);
+    set_vals2(&c->thrsh, (float)thrsh[3], (float)thrsh[2], (float)thrsh[1], (float)thrsh[0]); 
+    set_vals2(&c->gainM, (float)gainM[3], (float)gainM[2], (float)gainM[1], (float)gainM[0]); 
+    set_vals2(&c->gainA, (float)gainA[3], (float)gainA[2], (float)gainA[1], (float)gainA[0]); 
+    set_vals2(&c->gainR, (float)gainR[3], (float)gainR[2], (float)gainR[1], (float)gainR[0]); 
+    set_vals2(&c-> envA,  (float)envA[3],  (float)envA[2],  (float)envA[1],  (float)envA[0]); 
+    set_vals2(&c-> envR,  (float)envR[3],  (float)envR[2],  (float)envR[1],  (float)envR[0]);  
 
-    set_vals2(&c->thrsh, thrsh[3], thrsh[2], thrsh[1], thrsh[0]); 
-    set_vals2(&c->gainM, gainM[3], gainM[2], gainM[1], gainM[0]); 
-    set_vals2(&c->gainA, gainA[3], gainA[2], gainA[1], gainA[0]); 
-    set_vals2(&c->gainR, gainR[3], gainR[2], gainR[1], gainR[0]); 
-    set_vals2(&c-> envA,  envA[3],  envA[2],  envA[1],  envA[0]); 
-    set_vals2(&c-> envR,  envR[3],  envR[2],  envR[1],  envR[0]);  
+    set_vals2(&c->oenvA, 1.0f - c->envA.val[3],
+                         1.0f - c->envA.val[2],
+                         1.0f - c->envA.val[1],
+                         1.0f - c->envA.val[0]);
+
+    set_vals2(&c->oenvR, 1.0f - c->envR.val[3],
+                         1.0f - c->envR.val[2],
+                         1.0f - c->envR.val[1],
+                         1.0f - c->envR.val[0]);
+
+    set_vals2(&c->ogainA, 1.0f - c->gainA.val[3],
+                          1.0f - c->gainA.val[2],
+                          1.0f - c->gainA.val[1],
+                          1.0f - c->gainA.val[0]);
+
+    set_vals2(&c->ogainR, 1.0f - c->gainR.val[3],
+                          1.0f - c->gainR.val[2],
+                          1.0f - c->gainR.val[1],
+                          1.0f - c->gainR.val[0]);
+
+    set_vals2(&c->oratio, 1.0f / c->ratio.val[3],
+                          1.0f / c->ratio.val[2],
+                          1.0f / c->ratio.val[1],
+                          1.0f / c->ratio.val[0]);
+
     set_val(&c->one, 1.0f);
+
+    // printv(c->thrsh);
+    // printv(c->gainM);
+    // printv(c->gainA);
+    // printv(c->gainR);
+    // printv(c-> envA);
+    // printv(c-> envR);
+    // printv(c->ratio);
+    printv(c->oratio);
 
     return 0;
 }

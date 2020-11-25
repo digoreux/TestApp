@@ -24,6 +24,12 @@ typedef struct comp4_coeffs_s {
     vector_t gainA;    
     vector_t gainR;
     vector_t gainM;  // Make Up Gain
+
+    vector_t oenvA;
+    vector_t oenvR;
+    vector_t ogainA;
+    vector_t ogainR;
+    vector_t oratio;
     bool bypass[5];
 } comp4_coeffs_t;
 
@@ -32,6 +38,7 @@ typedef struct comp4_states_s{
     vector_t gc;       // gain computer
     vector_t gs0;      // gain smoothing current
     vector_t gs1;      // gain smoothing previous
+    vector_t aux;       
     vector_t env0;     // envelope current
     vector_t env1;     // envelope previous
 } comp4_states_t;

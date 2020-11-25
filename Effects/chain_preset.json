@@ -86,41 +86,41 @@
 
 
 
-        { "id"  : 53, "val" : -16,     "name": "comp1_Threshold"},
-        { "id"  : 54, "val" : 4,      "name": "comp1_Ratio"},
+        { "id"  : 53, "val" : -8,      "name": "comp1_Threshold"},
+        { "id"  : 54, "val" : 3,      "name": "comp1_Ratio"},
         { "id"  : 55, "val" : 30,     "name": "comp1_Attack"},
         { "id"  : 56, "val" : 70,     "name": "comp1_Release"},
-        { "id"  : 57, "val" : 3,      "name": "comp1_MakeUpGain"},
+        { "id"  : 57, "val" : 0,      "name": "comp1_MakeUpGain"},
         { "id"  : 58, "val" : 48000,  "name": "comp1_samplerate"},
         { "id"  : 59, "val" : 0,      "name": "comp1_envAttack"},
-        { "id"  : 60, "val" : 500,    "name": "comp1_envRelease"},
+        { "id"  : 60, "val" : 50,    "name": "comp1_envRelease"},
 
         { "id"  : 61, "val" : -8,     "name": "comp2_Threshold"},
-        { "id"  : 62, "val" : 4,      "name": "comp2_Ratio"},
+        { "id"  : 62, "val" : 3,      "name": "comp2_Ratio"},
         { "id"  : 63, "val" : 30,     "name": "comp2_Attack"},
         { "id"  : 64, "val" : 70,     "name": "comp2_Release"},
         { "id"  : 65, "val" : 0,      "name": "comp2_MakeUpGain"},
         { "id"  : 66, "val" : 48000,  "name": "comp2_samplerate"},
         { "id"  : 67, "val" : 0,      "name": "comp2_envAttack"},
-        { "id"  : 68, "val" : 0,    "name": "comp2_envRelease"},
+        { "id"  : 68, "val" : 50,    "name": "comp2_envRelease"},
 
-        { "id"  : 69, "val" : -12,     "name": "comp3_Threshold"},
-        { "id"  : 70, "val" : 4,      "name": "comp3_Ratio"},
+        { "id"  : 69, "val" : -8,     "name": "comp3_Threshold"},
+        { "id"  : 70, "val" : 3,      "name": "comp3_Ratio"},
         { "id"  : 71, "val" : 30,     "name": "comp3_Attack"},
         { "id"  : 72, "val" : 70,     "name": "comp3_Release"},
         { "id"  : 73, "val" : 0,      "name": "comp3_MakeUpGain"},
         { "id"  : 74, "val" : 48000,  "name": "comp3_samplerate"},
         { "id"  : 75, "val" : 0,      "name": "comp3_envAttack"},
-        { "id"  : 76, "val" : 0,    "name": "comp3_envRelease"},
+        { "id"  : 76, "val" : 50,    "name": "comp3_envRelease"},
 
         { "id"  : 77, "val" : -8,     "name": "comp4_Threshold"},
-        { "id"  : 78, "val" : 30,      "name": "comp4_Ratio"},
+        { "id"  : 78, "val" : 3,       "name": "comp4_Ratio"},
         { "id"  : 79, "val" : 30,     "name": "comp4_Attack"},
         { "id"  : 80, "val" : 70,     "name": "comp4_Release"},
-        { "id"  : 81, "val" : -3,      "name": "comp4_MakeUpGain"},
+        { "id"  : 81, "val" : 0,       "name": "comp4_MakeUpGain"},
         { "id"  : 82, "val" : 48000,  "name": "comp4_samplerate"},
         { "id"  : 83, "val" : 0,      "name": "comp4_envAttack"},
-        { "id"  : 84, "val" : 0,    "name": "comp4_envRelease"}
+        { "id"  : 84, "val" : 50,    "name": "comp4_envRelease"}
 
     ]   
 }

@@ -70,6 +70,8 @@ int32_t comp_process(
                 s->gc = powf(divf(s->env0, c->thrsh), divf(1.0f,  c->ratio));
                 s->gc = mulf(s->gc, c->thrsh);
                 s->gc = divf(s->gc, s->env0);
+                // printf("env: %f \n", s->env0);
+                // printf(" gc: %f \n\n", s->gc);
             }
 
             /* Gain smoothing */
@@ -88,7 +90,9 @@ int32_t comp_process(
             s->gs1 = s->gs0;
             s->gm  = s->gs0 * c->gainM;          
             
-            a[i].left  *= s->gm;
+            // a[i].left  *= s->gm;
+            a[i].left  = s->env0;
+            // a[i].left  = s->gc;
             a[i].right *= s->gm;
             
         }

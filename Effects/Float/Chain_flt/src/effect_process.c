@@ -20,7 +20,7 @@ int32_t effect_reset(
     bq_reset(&c->bq, &s->bq);
     comp_reset(&c->comp, &s->comp);
     cross_reset(&c->cross, &s->cross);
-    // comp4_reset(&c->comp4, &s->comp4);
+    comp4_reset(&c->comp4, &s->comp4);
     cross4_reset(&c->cross4, &s->cross4); 
     // expand_reset(&c->expand, &s->expand);
     return 0;
@@ -40,10 +40,10 @@ int32_t effect_process(
     {
         // bq_process(&c->bq, &s->bq, audio, FRAME_COUNT, n);
         // eq_process(&c->eq, &s->eq, audio, FRAME_COUNT, n);
-        comp_process(&c->comp, &s->comp, audio, FRAME_COUNT, n);
+        // comp_process(&c->comp, &s->comp, audio, FRAME_COUNT, n);
         // cross_process(&c->cross, &s->cross, audio, s->cross4.b1, s->cross4.b2, FRAME_COUNT, n);
-        // cross4_process(&c->cross4, &s->cross4, audio, FRAME_COUNT, n);
-        // comp4_process(&c->comp4, &s->comp4, &s->cross4, FRAME_COUNT, n);    
+        cross4_process(&c->cross4, &s->cross4, audio, FRAME_COUNT, n);
+        comp4_process(&c->comp4, &s->comp4, &s->cross4, FRAME_COUNT, n);    
         // mix2(audio, &s->cross4.b1, &s->cross4.b3, FRAME_COUNT, n);
         mix(audio, &s->cross4, FRAME_COUNT, n);
     }
