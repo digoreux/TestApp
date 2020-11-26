@@ -41,3 +41,22 @@ int32_t eq_process(
     }
     return 0;
 }
+
+int32_t bq_cascade(
+    void const* coeffs,
+    void*       states,
+    void*       audio,
+    size_t      samples_count,
+    size_t      frames_count)
+{   
+    eq_coeffs_t *c = (eq_coeffs_t*)coeffs;
+    eq_states_t *s = (eq_states_t*)states;
+
+    // uint32_t n = samples_count * frames_count;
+    for(size_t i = 0; i < samples_count; i++)
+    {
+        
+    }
+
+    return 0;
+}

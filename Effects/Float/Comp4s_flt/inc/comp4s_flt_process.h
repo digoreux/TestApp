@@ -1,7 +1,6 @@
-#ifndef __COMP_FLT_PROCESS_H__
-#define __COMP_FLT_PROCESS_H__
-
-#include "comp_flt_control.h"
+#ifndef __COMP4S_FLT_PROCESS_H__
+#define __COMP4S_FLT_PROCESS_H__
+#include "comp4s_flt_control.h"
 
 /*******************************************************************************
  * Provides with the required data sizes for states. It is caller responsibility
@@ -11,7 +10,7 @@
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp_process_get_sizes(
+int32_t comp4s_process_get_sizes(
     size_t*     states_bytes);
  
 
@@ -23,7 +22,7 @@ int32_t comp_process_get_sizes(
  * 
  * @return 0 on success, otherwise fail
  ******************************************************************************/
-int32_t comp_reset(
+int32_t comp4s_reset(
     void const* coeffs,
     void*       states);
 
@@ -39,17 +38,10 @@ int32_t comp_reset(
  * 
  * @return 0 on success, otherwise fail
  ******************************************************************************/
-int32_t comp_process(
+int32_t comp4s_process(
     void const* coeffs,
     void*       states,
-    void*       audio,
-    size_t      samples_count,
-    size_t      frames_count);
-
-int32_t comp_process_frame(
-    void const* coeffs,
-    void*       states,
-    void*       audio,
+    void*       bands,
     size_t      samples_count,
     size_t      frames_count);
 

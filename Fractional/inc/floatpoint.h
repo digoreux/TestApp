@@ -7,7 +7,6 @@
 #define KF2 1.882353
 #define K0  0.0759776172978545212494579946726
 #define INTR 0
-#define ITER 1
 
 // #pragma pack(push, 2)
 #if INTR
@@ -45,17 +44,11 @@ static __forceinline vector_t mul2(vector_t x, vector_t y)
     return r;
     #else
     vector_t r;
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         r.val[i] = x.val[i] * y.val[i];
-    #else
-    r.val[3] = x.val[3] * y.val[3];
-    r.val[2] = x.val[2] * y.val[2];
-    r.val[1] = x.val[1] * y.val[1];
-    r.val[0] = x.val[0] * y.val[0];
+
     #endif
     return r;
-    #endif
 }
 
 static __forceinline vector_t sub2(vector_t x, vector_t y)
@@ -66,17 +59,10 @@ static __forceinline vector_t sub2(vector_t x, vector_t y)
     return r;
     #else
     vector_t r;
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         r.val[i] = x.val[i] - y.val[i];
-    #else
-    r.val[3] = x.val[3] - y.val[3];
-    r.val[2] = x.val[2] - y.val[2];
-    r.val[1] = x.val[1] - y.val[1];
-    r.val[0] = x.val[0] - y.val[0];
     #endif
     return r;
-    #endif
 }
 
 static __forceinline vector_t add2(vector_t x, vector_t y)
@@ -87,17 +73,11 @@ static __forceinline vector_t add2(vector_t x, vector_t y)
     return r;
     #else
     vector_t r;
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         r.val[i] = x.val[i] + y.val[i];
-    #else
-    r.val[3] = x.val[3] + y.val[3];
-    r.val[2] = x.val[2] + y.val[2];
-    r.val[1] = x.val[1] + y.val[1];
-    r.val[0] = x.val[0] + y.val[0];
+
     #endif
     return r;
-    #endif
 }
 
 static __forceinline vector_t div2(vector_t x, vector_t y)
@@ -109,17 +89,10 @@ static __forceinline vector_t div2(vector_t x, vector_t y)
     return r;
     #else
     vector_t r;
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         r.val[i] = x.val[i] / y.val[i];
-    #else
-    r.val[3] = x.val[3] / y.val[3];
-    r.val[2] = x.val[2] / y.val[2];
-    r.val[1] = x.val[1] / y.val[1];
-    r.val[0] = x.val[0] / y.val[0];
     #endif
     return r;
-    #endif
 }
 
 static __forceinline vector_t max2(vector_t x, vector_t y)
@@ -130,17 +103,10 @@ static __forceinline vector_t max2(vector_t x, vector_t y)
     return r;
     #else
     vector_t r;
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         r.val[i] = fmaxf(x.val[i], y.val[i]);
-    #else
-    r.val[3] = fmaxf(x.val[3], y.val[3]);
-    r.val[2] = fmaxf(x.val[2], y.val[2]);
-    r.val[1] = fmaxf(x.val[1], y.val[1]);
-    r.val[0] = fmaxf(x.val[0], y.val[0]);
     #endif
     return x;
-    #endif
 }
 
 static __forceinline vector_t cmpgt(vector_t x, vector_t y)
@@ -151,17 +117,10 @@ static __forceinline vector_t cmpgt(vector_t x, vector_t y)
     return r;
     #else
     vector_t r;
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         r.val[i] = (float)(x.val[3] > y.val[3]);
-    #else
-    r.val[3] = (float)(x.val[3] > y.val[3]);
-    r.val[2] = (float)(x.val[2] > y.val[2]);
-    r.val[1] = (float)(x.val[1] > y.val[1]);
-    r.val[0] = (float)(x.val[0] > y.val[0]);
     #endif
     return r;
-    #endif
 }
 
 static __forceinline vector_t cmplt(vector_t x, vector_t y)
@@ -172,17 +131,10 @@ static __forceinline vector_t cmplt(vector_t x, vector_t y)
     return r;
     #else
     vector_t r;
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         r.val[i] = (float)(x.val[i] < y.val[i]);
-    #else
-    r.val[3] = (float)(x.val[3] < y.val[3]);
-    r.val[2] = (float)(x.val[2] < y.val[2]);
-    r.val[1] = (float)(x.val[1] < y.val[1]);
-    r.val[0] = (float)(x.val[0] < y.val[0]);
     #endif
     return r;
-    #endif
 }
 
 static __forceinline vector_t cmple(vector_t x, vector_t y)
@@ -193,17 +145,10 @@ static __forceinline vector_t cmple(vector_t x, vector_t y)
     return r;
     #else
     vector_t r;
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         r.val[i] = (float)(x.val[i] <= y.val[i]);
-    #else
-    r.val[3] = (float)(x.val[3] <= y.val[3]);
-    r.val[2] = (float)(x.val[2] <= y.val[2]);
-    r.val[1] = (float)(x.val[1] <= y.val[1]);
-    r.val[0] = (float)(x.val[0] <= y.val[0]);
     #endif
     return r;
-    #endif
 }
  
 static __forceinline vector_t fma2(vector_t x, vector_t y, vector_t z) 
@@ -212,17 +157,10 @@ static __forceinline vector_t fma2(vector_t x, vector_t y, vector_t z)
     z.vec = _mm_fmadd_ps(x.vec, y.vec, z.vec);
     return z;
     #else 
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         z.val[i] = (x.val[i] * y.val[i]) + z.val[i];
-    #else
-    z.val[3] = (x.val[3] * y.val[3]) + z.val[3];
-    z.val[2] = (x.val[2] * y.val[2]) + z.val[2];
-    z.val[1] = (x.val[1] * y.val[1]) + z.val[1];
-    z.val[0] = (x.val[0] * y.val[0]) + z.val[0];
     #endif
     return z;
-    #endif
 } 
 
 static __forceinline vector_t fnma2(vector_t x, vector_t y, vector_t z) 
@@ -231,34 +169,16 @@ static __forceinline vector_t fnma2(vector_t x, vector_t y, vector_t z)
     z.vec = _mm_fnmadd_ps(x.vec, y.vec, z.vec);
     return z;
     #else 
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
         z.val[i] = -(x.val[i] * y.val[i]) + z.val[i];
-    #else
-    z.val[3] = -(x.val[3] * y.val[3]) + z.val[3];
-    z.val[2] = -(x.val[2] * y.val[2]) + z.val[2];
-    z.val[1] = -(x.val[1] * y.val[1]) + z.val[1];
-    z.val[0] = -(x.val[0] * y.val[0]) + z.val[0];
     #endif
     return z;
-    #endif
-
 } 
 static __forceinline vector_t vpow(vector_t x, vector_t y) 
 {
-    #if ITER
     vector_t r;
     for(uint32_t i = 0; i < NCH; i++)
-    {
         r.val[i] = powf(x.val[i], y.val[i]);
-    }
-    #else
-    vector_t r;
-    r.val[3] = powf(x.val[3], y.val[3]);
-    r.val[2] = powf(x.val[2], y.val[2]);
-    r.val[1] = powf(x.val[1], y.val[1]);
-    r.val[0] = powf(x.val[0], y.val[0]);
-    #endif
     return r;
 } 
 
@@ -285,17 +205,8 @@ static __forceinline vector_t maskload(vector_t  x, vector_t m)
     return r;
     #else 
     vector_t r;
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
-    {
         if(m.val[i]) r.val[i] = x.val[i];
-    }    
-    #else
-    if(m.val[3]) r.val[3] = x.val[3];
-    if(m.val[2]) r.val[2] = x.val[2];
-    if(m.val[1]) r.val[1] = x.val[1];
-    if(m.val[0]) r.val[0] = x.val[0];
-    #endif
     return r;
     #endif
 }
@@ -307,19 +218,10 @@ static __forceinline vector_t blendv(vector_t  x, vector_t y, vector_t m)
     r.vec = _mm_blendv_ps(x.vec, y.vec, m.vec);
     return r;
     #else 
-    #if ITER
     for(uint32_t i = 0; i < NCH; i++)
-    {
         if(m.val[i])  x.val[i] = y.val[i];
-    }  
-    #else
-    if(m.val[3]) x.val[3] = y.val[3];
-    if(m.val[2]) x.val[2] = y.val[2];
-    if(m.val[1]) x.val[1] = y.val[1];
-    if(m.val[0]) x.val[0] = y.val[0];
     #endif
     return x;
-    #endif
 }
 
 static __forceinline uint32_t set_vals2(vector_t * r, flt a, flt b, flt c, flt d)
@@ -396,7 +298,7 @@ static __forceinline uint32_t get_vals2(flt * x, vector_t y)
 static __forceinline uint32_t printv(vector_t x)
 {   
     for(uint32_t i = 0; i < NCH; i++)
-        printf("[3]: %f \n", x.val[i]);
+        printf("[%d]: %f \n",i, x.val[i]);
     return 0;
 }
 

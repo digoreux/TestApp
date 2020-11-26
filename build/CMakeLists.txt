@@ -11,6 +11,7 @@ add_subdirectory(Libs/Effects_Float/Comp_flt)
 add_subdirectory(Libs/Effects_Float/Comp4_flt)
 add_subdirectory(Libs/Effects_Float/Cross_flt)
 add_subdirectory(Libs/Effects_Float/Chain_flt)
+add_subdirectory(Libs/Effects_Float/Comp4s_flt)
 add_subdirectory(Libs/Effects_Float/Biquad_flt)
 add_subdirectory(Libs/Effects_Float/Expand_flt)
 

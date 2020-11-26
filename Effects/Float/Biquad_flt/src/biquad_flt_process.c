@@ -50,22 +50,24 @@ inline int32_t bq_process(
         {    
             set_vals(&s->x0, a[i].left, a[i].right);
             s->y0 = fma2(c->b0, s->x0, s->x1);
+
             s->x1 = fma2(c->b1, s->x0, s->x2);
             s->x1 = fma2(c->a1, s->y0, s->x1);
+
             s->x2 = mul2(c->b2, s->x0);
             s->x2 = fma2(c->a2, s->y0, s->x2);
+            
             a[i].left  = s->y0.val[3];
             a[i].right = s->y0.val[2];
 
-            // s->x0.vec = _mm_set_ps(a[i][0], a[i][1], 0.0f, 0.0f);
+            // s->x0.vec = _mm_set_ps(a[i].left, a[i].right, 0.0f, 0.0f);
             // s->y0.vec = _mm_fmadd_ps(c->b0.vec, s->x0.vec, s->x1.vec);
             // s->x1.vec = _mm_fmadd_ps(c->b1.vec, s->x0.vec, s->x2.vec);
             // s->x1.vec = _mm_fmadd_ps(c->a1.vec, s->y0.vec, s->x1.vec);
             // s->x2.vec =   _mm_mul_ps(c->b2.vec, s->x0.vec);
             // s->x2.vec = _mm_fmadd_ps(c->a2.vec, s->y0.vec, s->x2.vec);
-            
-            // a[i][0] = s->y0.val[3];
-            // a[i][1] = s->y0.val[2];
+            // a[i].left  = s->y0.val[3];
+            // a[i].right = s->y0.val[2];
             
 
             // s->sx0.left  = a[i][0];
