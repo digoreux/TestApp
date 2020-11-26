@@ -18,13 +18,10 @@ int32_t comp4_reset(
 
     set_val(&s->gc, 0.0f);
     set_val(&s->gm, 0.0f);
+    set_val(&s->gs0, 0.0f);
     set_val(&s->gs1, 1.0f);
     set_val(&s->env1, 0.0f);
-    set_vals2(&s->env0, c->envA.val[3],  c->envA.val[2], 
-                        c->envA.val[1],  c->envA.val[0]); 
-    set_vals2(&s->gs0, c->gainA.val[3], c->gainA.val[2], 
-                       c->gainA.val[1], c->gainA.val[0]);
-
+    set_val(&s->env0, 1.0f);
 
     return 0;
 }
@@ -69,61 +66,47 @@ int32_t comp4_process(
 
             /* Gain computer */
 
-            // m = cmplt(s->env0, c->thrsh);
-            // s->gc = div2(s->env0, c->thrsh);
-            // s->gc = vpow(div2(s->env0, c->thrsh), c->oratio);
-            // aux1 = mul2(s->gc, c->thrsh);
-            // printf("aux1\n");
-            // printv(aux1);
-            // aux2 = div2(aux1, s->env0);
-            // printv(s->gc);
-            // printf("aux2\n");
-            // printv(aux2);
+            m = cmplt(s->env0, c->thrsh);
+            s->gc = vpow(div2(s->env0, c->thrsh), c->oratio);
+            s->gc = mul2(s->gc, c->thrsh);
+            s->gc = div2(s->gc, s->env0);
+            s->gc = blendv(s->gc, c->one, m);
 
-            // printv(s->env0);
-            // s->gc = blendv(c->one, s->gc, m);
+            /* Gain smoothing */
 
-            // m = cmplt(s->env0, c->thrsh);
-            // aux1 = div2(s->env0, c->thrsh);
-            // s->gc = vpow(aux1, c->oratio);
+            m = cmple(s->gc, s->gs1);
+            aux1 = blendv(c->gainA, c->gainR, m);
+            aux2 = blendv(c->ogainA, c->ogainR, m);
+            s->gs0 = mul2(aux1, s->gs1);   
+            s->gs0 = fma2(aux2, s->gc, s->gs0);   
+            s->gs1 = s->gs0;
 
-            // s->gc = mul2(s->gc, c->thrsh);
-            // s->gc = div2(s->gc, s->env0);
+            s->gm  = mul2(s->gs0, c->gainM);          
 
-            // s->gc = blendv(s->gc, c->one, m);
-            // s->gc = blendv(c->one, s->gc, m);
+            // L = mul2(L, s->gm);
+            // R = mul2(R, s->gm);
+            b->b4[i].left  *= s->gm.val[3];
+            b->b4[i].right *= s->gm.val[3];
+            b->b3[i].left  *= s->gm.val[2];
+            b->b3[i].right *= s->gm.val[2];
+            b->b2[i].left  *= s->gm.val[1];
+            b->b2[i].right *= s->gm.val[1];
+            b->b1[i].left  *= s->gm.val[0];
+            b->b1[i].right *= s->gm.val[0];
 
-            // // /* Gain smoothing */
-
-            // m = cmple(s->gc, s->gs1);
-            // aux1 = blendv(c->gainA, c->gainR, m);
-            // aux2 = blendv(c->ogainA, c->ogainR, m);
-
-            // s->gs0 = mul2(aux1, s->gs1);   
-            // s->gs0 = fma2(aux2, s->gc, s->gs0);   
-            // s->gs1 = s->gs0;
-
-            // s->gm  = mul2(s->gs0, c->gainM);          
-            
-            // b->b4[i].left  *= s->gm.val[3];
-            // b->b4[i].right *= s->gm.val[3];
-            // b->b3[i].left  *= s->gm.val[2];
-            // b->b3[i].right *= s->gm.val[2];
-            // b->b2[i].left  *= s->gm.val[1];
-            // b->b2[i].right *= s->gm.val[1];
-            // b->b1[i].left  *= s->gm.val[0];
-            // b->b1[i].right *= s->gm.val[0];
-            b->b4[i].left = s->env0.val[3];
-            b->b3[i].left = s->env0.val[2];
-            b->b2[i].left = s->env0.val[1];
-            b->b1[i].left = s->env0.val[0];
+            // b->b4[i].left = s->env0.val[3];
+            // b->b3[i].left = s->env0.val[2];
+            // b->b2[i].left = s->env0.val[1];
+            // b->b1[i].left = s->env0.val[0];
             // b->b4[i].left  = s->gc.val[3];
             // b->b3[i].left  = s->gc.val[2];
             // b->b2[i].left  = s->gc.val[1];
             // b->b1[i].left  = s->gc.val[0];
+            // b->b4[i].left  = s->gm.val[3];
+            // b->b3[i].left  = s->gm.val[2];
+            // b->b2[i].left  = s->gm.val[1];
+            // b->b1[i].left  = s->gm.val[0];
 
-            // L = mul2(L, s->gm);
-            // R = mul2(R, s->gm);
         }
     }    
     return 0;

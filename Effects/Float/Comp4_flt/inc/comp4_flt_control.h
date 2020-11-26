@@ -30,6 +30,8 @@ typedef struct comp4_coeffs_s {
     vector_t ogainA;
     vector_t ogainR;
     vector_t oratio;
+
+    vector_t e;
     bool bypass[5];
 } comp4_coeffs_t;
 

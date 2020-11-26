@@ -6,7 +6,8 @@
 #define KF1 2.823529
 #define KF2 1.882353
 #define K0  0.0759776172978545212494579946726
-#define INTR 1
+#define INTR 0
+#define ITER 1
 
 // #pragma pack(push, 2)
 #if INTR
@@ -43,13 +44,17 @@ static __forceinline vector_t mul2(vector_t x, vector_t y)
     r.vec = _mm_mul_ps(x.vec, y.vec);
     return r;
     #else
-    // for(uint32_t i = 0; i < NCH; i++)
-    //     y.val[i] *= x.val[i];
-    x.val[3] *= y.val[3];
-    x.val[2] *= y.val[2];
-    x.val[1] *= y.val[1];
-    x.val[0] *= y.val[0];
-    return x;
+    vector_t r;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        r.val[i] = x.val[i] * y.val[i];
+    #else
+    r.val[3] = x.val[3] * y.val[3];
+    r.val[2] = x.val[2] * y.val[2];
+    r.val[1] = x.val[1] * y.val[1];
+    r.val[0] = x.val[0] * y.val[0];
+    #endif
+    return r;
     #endif
 }
 
@@ -60,13 +65,17 @@ static __forceinline vector_t sub2(vector_t x, vector_t y)
     r.vec = _mm_sub_ps(x.vec, y.vec);
     return r;
     #else
-    // for(uint32_t i = 0; i < NCH; i++)
-    //     y.val[i] *= x.val[i];
-    x.val[3] -= y.val[3];
-    x.val[2] -= y.val[2];
-    x.val[1] -= y.val[1];
-    x.val[0] -= y.val[0];
-    return x;
+    vector_t r;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        r.val[i] = x.val[i] - y.val[i];
+    #else
+    r.val[3] = x.val[3] - y.val[3];
+    r.val[2] = x.val[2] - y.val[2];
+    r.val[1] = x.val[1] - y.val[1];
+    r.val[0] = x.val[0] - y.val[0];
+    #endif
+    return r;
     #endif
 }
 
@@ -77,13 +86,17 @@ static __forceinline vector_t add2(vector_t x, vector_t y)
     r.vec = _mm_add_ps(x.vec, y.vec);
     return r;
     #else
-    // for(uint32_t i = 0; i < NCH; i++)
-    //     y.val[i] *= x.val[i];
-    x.val[3] -= y.val[3];
-    x.val[2] -= y.val[2];
-    x.val[1] -= y.val[1];
-    x.val[0] -= y.val[0];
-    return x;
+    vector_t r;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        r.val[i] = x.val[i] + y.val[i];
+    #else
+    r.val[3] = x.val[3] + y.val[3];
+    r.val[2] = x.val[2] + y.val[2];
+    r.val[1] = x.val[1] + y.val[1];
+    r.val[0] = x.val[0] + y.val[0];
+    #endif
+    return r;
     #endif
 }
 
@@ -95,13 +108,17 @@ static __forceinline vector_t div2(vector_t x, vector_t y)
         r.vec = _mm_div_ps(x.vec, y.vec);
     return r;
     #else
-    // for(uint32_t i = 0; i < NCH; i++)
-    //     y.val[i] *= x.val[i];
-    x.val[3] /= y.val[3];
-    x.val[2] /= y.val[2];
-    x.val[1] /= y.val[1];
-    x.val[0] /= y.val[0];
-    return x;
+    vector_t r;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        r.val[i] = x.val[i] / y.val[i];
+    #else
+    r.val[3] = x.val[3] / y.val[3];
+    r.val[2] = x.val[2] / y.val[2];
+    r.val[1] = x.val[1] / y.val[1];
+    r.val[0] = x.val[0] / y.val[0];
+    #endif
+    return r;
     #endif
 }
 
@@ -112,12 +129,16 @@ static __forceinline vector_t max2(vector_t x, vector_t y)
     r.vec = _mm_max_ps(x.vec, y.vec);
     return r;
     #else
-    // for(uint32_t i = 0; i < NCH; i++)
-    //     y.val[i] *= x.val[i];
-    x.val[3] /= y.val[3];
-    x.val[2] /= y.val[2];
-    x.val[1] /= y.val[1];
-    x.val[0] /= y.val[0];
+    vector_t r;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        r.val[i] = fmaxf(x.val[i], y.val[i]);
+    #else
+    r.val[3] = fmaxf(x.val[3], y.val[3]);
+    r.val[2] = fmaxf(x.val[2], y.val[2]);
+    r.val[1] = fmaxf(x.val[1], y.val[1]);
+    r.val[0] = fmaxf(x.val[0], y.val[0]);
+    #endif
     return x;
     #endif
 }
@@ -129,11 +150,17 @@ static __forceinline vector_t cmpgt(vector_t x, vector_t y)
     r.vec = _mm_cmpgt_ps(x.vec, y.vec);
     return r;
     #else
-    // for(uint32_t i = 0; i < NCH; i++)
-    //     y.val[i] *= x.val[i];
-    y.val[3] *= x.val[3];
-    y.val[2] *= x.val[2];
-    return y;
+    vector_t r;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        r.val[i] = (float)(x.val[3] > y.val[3]);
+    #else
+    r.val[3] = (float)(x.val[3] > y.val[3]);
+    r.val[2] = (float)(x.val[2] > y.val[2]);
+    r.val[1] = (float)(x.val[1] > y.val[1]);
+    r.val[0] = (float)(x.val[0] > y.val[0]);
+    #endif
+    return r;
     #endif
 }
 
@@ -144,11 +171,17 @@ static __forceinline vector_t cmplt(vector_t x, vector_t y)
     r.vec = _mm_cmplt_ps(x.vec, y.vec);
     return r;
     #else
-    // for(uint32_t i = 0; i < NCH; i++)
-    //     y.val[i] *= x.val[i];
-    y.val[3] *= x.val[3];
-    y.val[2] *= x.val[2];
-    return y;
+    vector_t r;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        r.val[i] = (float)(x.val[i] < y.val[i]);
+    #else
+    r.val[3] = (float)(x.val[3] < y.val[3]);
+    r.val[2] = (float)(x.val[2] < y.val[2]);
+    r.val[1] = (float)(x.val[1] < y.val[1]);
+    r.val[0] = (float)(x.val[0] < y.val[0]);
+    #endif
+    return r;
     #endif
 }
 
@@ -159,11 +192,17 @@ static __forceinline vector_t cmple(vector_t x, vector_t y)
     r.vec = _mm_cmple_ps(x.vec, y.vec);
     return r;
     #else
-    // for(uint32_t i = 0; i < NCH; i++)
-    //     y.val[i] *= x.val[i];
-    y.val[3] *= x.val[3];
-    y.val[2] *= x.val[2];
-    return y;
+    vector_t r;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        r.val[i] = (float)(x.val[i] <= y.val[i]);
+    #else
+    r.val[3] = (float)(x.val[3] <= y.val[3]);
+    r.val[2] = (float)(x.val[2] <= y.val[2]);
+    r.val[1] = (float)(x.val[1] <= y.val[1]);
+    r.val[0] = (float)(x.val[0] <= y.val[0]);
+    #endif
+    return r;
     #endif
 }
  
@@ -173,34 +212,15 @@ static __forceinline vector_t fma2(vector_t x, vector_t y, vector_t z)
     z.vec = _mm_fmadd_ps(x.vec, y.vec, z.vec);
     return z;
     #else 
-    // for(uint32_t i = 0; i < NCH; i++)
-        // z.val[i] = macf(x.val[i], y.val[i], z.val[i]);
-    // z.val[3] = macf(x.val[3], y.val[3], z.val[3]);
-    // z.val[2] = macf(x.val[2], y.val[2], z.val[2]);
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        z.val[i] = (x.val[i] * y.val[i]) + z.val[i];
+    #else
     z.val[3] = (x.val[3] * y.val[3]) + z.val[3];
     z.val[2] = (x.val[2] * y.val[2]) + z.val[2];
-    return z;
+    z.val[1] = (x.val[1] * y.val[1]) + z.val[1];
+    z.val[0] = (x.val[0] * y.val[0]) + z.val[0];
     #endif
-} 
-
-static __forceinline vector_t vpow(vector_t x, vector_t y) 
-{
-    #if INTR
-    vector_t r;
-    if(x.val[3] > 0.0 && x.val[2] > 0.0 && x.val[1] > 0.0 && x.val[0] > 0.0)
-    {
-        r.val[3] = powf(x.val[3], y.val[3]);
-        r.val[2] = powf(x.val[2], y.val[2]);
-        r.val[1] = powf(x.val[1], y.val[1]);
-        r.val[0] = powf(x.val[0], y.val[0]);
-    }
-    return r;
-    #else 
-    vector_t r;
-    r.val[3] = powf(x.val[3], y.val[3]);
-    r.val[3] = powf(x.val[2], y.val[2]);
-    r.val[3] = powf(x.val[1], y.val[1]);
-    r.val[3] = powf(x.val[0], y.val[0]);
     return z;
     #endif
 } 
@@ -211,16 +231,37 @@ static __forceinline vector_t fnma2(vector_t x, vector_t y, vector_t z)
     z.vec = _mm_fnmadd_ps(x.vec, y.vec, z.vec);
     return z;
     #else 
-    // for(uint32_t i = 0; i < NCH; i++)
-        // z.val[i] = macf(x.val[i], y.val[i], z.val[i]);
-    // z.val[3] = macf(x.val[3], y.val[3], z.val[3]);
-    // z.val[2] = macf(x.val[2], y.val[2], z.val[2]);
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+        z.val[i] = -(x.val[i] * y.val[i]) + z.val[i];
+    #else
     z.val[3] = -(x.val[3] * y.val[3]) + z.val[3];
     z.val[2] = -(x.val[2] * y.val[2]) + z.val[2];
+    z.val[1] = -(x.val[1] * y.val[1]) + z.val[1];
+    z.val[0] = -(x.val[0] * y.val[0]) + z.val[0];
+    #endif
     return z;
     #endif
 
 } 
+static __forceinline vector_t vpow(vector_t x, vector_t y) 
+{
+    #if ITER
+    vector_t r;
+    for(uint32_t i = 0; i < NCH; i++)
+    {
+        r.val[i] = powf(x.val[i], y.val[i]);
+    }
+    #else
+    vector_t r;
+    r.val[3] = powf(x.val[3], y.val[3]);
+    r.val[2] = powf(x.val[2], y.val[2]);
+    r.val[1] = powf(x.val[1], y.val[1]);
+    r.val[0] = powf(x.val[0], y.val[0]);
+    #endif
+    return r;
+} 
+
 
 static __forceinline uint32_t set_vals(vector_t * r, flt x, flt y)
 {   
@@ -244,11 +285,18 @@ static __forceinline vector_t maskload(vector_t  x, vector_t m)
     return r;
     #else 
     vector_t r;
-    if(m.ivec[3]) r->val[3] = x.val[3];
-    if(m.ivec[2]) r->val[2] = x.val[2];
-    if(m.ivec[1]) r->val[1] = x.val[1];
-    if(m.ivec[0]) r->val[0] = x.val[0];
-    return 0;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+    {
+        if(m.val[i]) r.val[i] = x.val[i];
+    }    
+    #else
+    if(m.val[3]) r.val[3] = x.val[3];
+    if(m.val[2]) r.val[2] = x.val[2];
+    if(m.val[1]) r.val[1] = x.val[1];
+    if(m.val[0]) r.val[0] = x.val[0];
+    #endif
+    return r;
     #endif
 }
 
@@ -259,12 +307,18 @@ static __forceinline vector_t blendv(vector_t  x, vector_t y, vector_t m)
     r.vec = _mm_blendv_ps(x.vec, y.vec, m.vec);
     return r;
     #else 
-    vector_t r;
-    if(m.ivec[3]) r->val[3] = x.val[3];
-    if(m.ivec[2]) r->val[2] = x.val[2];
-    if(m.ivec[1]) r->val[1] = x.val[1];
-    if(m.ivec[0]) r->val[0] = x.val[0];
-    return 0;
+    #if ITER
+    for(uint32_t i = 0; i < NCH; i++)
+    {
+        if(m.val[i])  x.val[i] = y.val[i];
+    }  
+    #else
+    if(m.val[3]) x.val[3] = y.val[3];
+    if(m.val[2]) x.val[2] = y.val[2];
+    if(m.val[1]) x.val[1] = y.val[1];
+    if(m.val[0]) x.val[0] = y.val[0];
+    #endif
+    return x;
     #endif
 }
 
@@ -340,22 +394,10 @@ static __forceinline uint32_t get_vals2(flt * x, vector_t y)
 }
 
 static __forceinline uint32_t printv(vector_t x)
-{
-    #if INTR
-    printf("[3]: %0.20f \n", x.val[3]);
-    printf("[2]: %0.20f \n", x.val[2]);
-    printf("[1]: %0.20f \n", x.val[1]);
-    printf("[0]: %0.20f \n", x.val[0]);
-    printf("\n");
+{   
+    for(uint32_t i = 0; i < NCH; i++)
+        printf("[3]: %f \n", x.val[i]);
     return 0;
-    #else
-    *x = y.val[3];
-    x++;
-    *x = y.val[2];
-    return 0;
-    #endif
 }
-
-
 
 #endif

@@ -1,7 +1,5 @@
 #include "expand_flt_control.h"
 
-# define M_e    ((flt)2.71828182846)
-
 int32_t expand_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes)

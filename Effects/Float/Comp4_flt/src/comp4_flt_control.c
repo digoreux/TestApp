@@ -159,7 +159,6 @@ int32_t comp4_update_coeffs(
     comp4_params_t* p = (comp4_params_t*)params;
     comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
     double thrsh[4], gainM[4], gainA[4], gainR[4], envA[4], envR[4];
-
     for(uint32_t i = 0; i < 4; i++)
     {
         c->bypass[i] = p->bypass[i];
@@ -204,7 +203,6 @@ int32_t comp4_update_coeffs(
                           1.0f / c->ratio.val[0]);
 
     set_val(&c->one, 1.0f);
-
     // printv(c->thrsh);
     // printv(c->gainM);
     // printv(c->gainA);
@@ -212,7 +210,7 @@ int32_t comp4_update_coeffs(
     // printv(c-> envA);
     // printv(c-> envR);
     // printv(c->ratio);
-    printv(c->oratio);
+    // printv(c->oratio);
 
     return 0;
 }
