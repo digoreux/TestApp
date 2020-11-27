@@ -8,7 +8,7 @@
 #define K0  0.0759776172978545212494579946726
 #define INTR 1
 
-// #pragma pack(push, 2)
+#pragma pack(push, 2)
 #if INTR
 typedef union vector_s {
   __m128 vec; 
@@ -20,7 +20,7 @@ typedef struct vector_s {
   flt val[4];
 } vector_t;
 #endif
-// #pragma pack(pop)
+#pragma pack(pop)
 
 
 extern flt negf(flt x);

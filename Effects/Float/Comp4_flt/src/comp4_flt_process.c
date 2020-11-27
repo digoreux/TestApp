@@ -90,15 +90,6 @@ int32_t comp4_process(
             b->b2[i].right = R.val[1];
             b->b1[i].right = R.val[0];
 
-            // b->b4[i].left  *= s->gm.val[3];
-            // b->b4[i].right *= s->gm.val[3];
-            // b->b3[i].left  *= s->gm.val[2];
-            // b->b3[i].right *= s->gm.val[2];
-            // b->b2[i].left  *= s->gm.val[1];
-            // b->b2[i].right *= s->gm.val[1];
-            // b->b1[i].left  *= s->gm.val[0];
-            // b->b1[i].right *= s->gm.val[0];
-
         }
     }    
     return 0;

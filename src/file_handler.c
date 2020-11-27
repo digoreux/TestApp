@@ -107,7 +107,7 @@ int gen_wav(utils_p utils, arg_p a, header_p meta)
 
     utils->num_samples = (meta->sample_rate / 1000) * a->time;
     utils->buff_size   = (utils->num_samples * meta->block_align);
-    utils->buffer = malloc(utils->buff_size);
+    utils->buffer = _aligned_malloc(utils->buff_size, 16);
 
     generator(utils->buffer, utils->num_samples, a->type, a);
     if(a->effect_on) apply_effect(utils);

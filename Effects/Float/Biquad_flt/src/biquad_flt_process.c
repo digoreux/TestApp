@@ -70,8 +70,8 @@ inline int32_t bq_process(
             // a[i].right = s->y0.val[2];
             
 
-            // s->sx0.left  = a[i][0];
-            // s->sx0.right = a[i][1];
+            // s->sx0.left  = a[i].left;
+            // s->sx0.right = a[i].right;
             // s->sy0.left = macf(c->sb0, s->sx0.left, s->sx1.left);
             // s->sx1.left = macf(c->sb1, s->sx0.left, s->sx2.left);
             // s->sx1.left = macf(c->sa1, s->sy0.left, s->sx1.left);
@@ -82,8 +82,8 @@ inline int32_t bq_process(
             // s->sx1.right = macf(c->sa1, s->sy0.right, s->sx1.right);
             // s->sx2.right = mulf(c->sb2, s->sx0.right);
             // s->sx2.right = macf(c->sa2, s->sy0.right, s->sx2.right);
-            // a[i][0] = s->sy0.left;
-            // a[i][1] = s->sy0.right;
+            // a[i].left  = s->sy0.left;
+            // a[i].right = s->sy0.right;
 
         }
     }
