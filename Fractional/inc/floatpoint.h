@@ -6,7 +6,7 @@
 #define KF1 2.823529
 #define KF2 1.882353
 #define K0  0.0759776172978545212494579946726
-#define INTR 0
+#define INTR 1
 
 // #pragma pack(push, 2)
 #if INTR
@@ -84,8 +84,7 @@ static __forceinline vector_t div2(vector_t x, vector_t y)
 {   
     #if INTR
     vector_t r;
-    if(x.val[3] > 0.0 && x.val[2] > 0.0 && x.val[1] > 0.0 && x.val[0] > 0.0)
-        r.vec = _mm_div_ps(x.vec, y.vec);
+    r.vec = _mm_div_ps(x.vec, y.vec);
     return r;
     #else
     vector_t r;
@@ -106,7 +105,7 @@ static __forceinline vector_t max2(vector_t x, vector_t y)
     for(uint32_t i = 0; i < NCH; i++)
         r.val[i] = fmaxf(x.val[i], y.val[i]);
     #endif
-    return x;
+    return r;
 }
 
 static __forceinline vector_t cmpgt(vector_t x, vector_t y)
@@ -118,7 +117,7 @@ static __forceinline vector_t cmpgt(vector_t x, vector_t y)
     #else
     vector_t r;
     for(uint32_t i = 0; i < NCH; i++)
-        r.val[i] = (float)(x.val[3] > y.val[3]);
+        r.val[i] = (float)(x.val[i] > y.val[i]);
     #endif
     return r;
 }
@@ -197,6 +196,16 @@ static __forceinline uint32_t set_vals(vector_t * r, flt x, flt y)
     #endif
 }
 
+static __forceinline vector_t absf2(vector_t x)
+{   
+    vector_t r;
+    r.val[3] = fabsf(x.val[3]);
+    r.val[2] = fabsf(x.val[2]);
+    r.val[1] = fabsf(x.val[1]);
+    r.val[0] = fabsf(x.val[0]);
+    return r;
+}
+
 static __forceinline vector_t maskload(vector_t  x, vector_t m)
 {   
     #if INTR
@@ -206,7 +215,7 @@ static __forceinline vector_t maskload(vector_t  x, vector_t m)
     #else 
     vector_t r;
     for(uint32_t i = 0; i < NCH; i++)
-        if(m.val[i]) r.val[i] = x.val[i];
+        if(m.val[i] ) r.val[i] = x.val[i];
     return r;
     #endif
 }

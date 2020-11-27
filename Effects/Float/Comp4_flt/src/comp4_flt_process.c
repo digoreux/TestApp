@@ -21,7 +21,7 @@ int32_t comp4_reset(
     set_val(&s->gs0, 0.0f);
     set_val(&s->gs1, 1.0f);
     set_val(&s->env1, 0.0f);
-    set_val(&s->env0, 1.0f);
+    set_val(&s->env0, 0.0f);
 
     return 0;
 }
@@ -37,31 +37,28 @@ int32_t comp4_process(
     comp4_coeffs_t  * c = (comp4_coeffs_t*)coeffs;
     comp4_states_t  * s = (comp4_states_t*)states;
     cross4_states_t * b = (cross4_states_t *)bands;
-    vector_t abs, m, L, R, aux1, aux2;
-    // printf("bypass: %d \n", c->bypass[4]);
-    if(1)
+    vector_t abs, m, L, R;
+    if(!c->bypass[4])
     {
         for (size_t i = 0 ; i < samples_count; i++)
         {   
-            set_vals2(&L, fabsf(b->b4[i].left),
-                          fabsf(b->b3[i].left),
-                          fabsf(b->b2[i].left),
-                          fabsf(b->b1[i].left));
+            set_vals2(&L, b->b4[i].left,
+                          b->b3[i].left,
+                          b->b2[i].left,
+                          b->b1[i].left);
 
-            set_vals2(&R, fabsf(b->b4[i].right),
-                          fabsf(b->b3[i].right),
-                          fabsf(b->b2[i].right),
-                          fabsf(b->b1[i].right));
+            set_vals2(&R, b->b4[i].right,
+                          b->b3[i].right,
+                          b->b2[i].right,
+                          b->b1[i].right);
 
-            abs = max2(L, R);
+            abs = max2(absf2(L), absf2(R));
  
             /* Envelope detector */
 
             m = cmpgt(abs, s->env1);
-            aux1 = blendv(c->envR, c->envA, m);
-            aux2 = blendv(c->oenvR, c->oenvA, m);
-            s->env0 = mul2(aux1, s->env1);       
-            s->env0 = fma2(aux2, abs, s->env0);  
+            s->env0 = mul2(blendv(c->envR,  c->envA,  m), s->env1);       
+            s->env0 = fma2(blendv(c->oenvR, c->oenvA, m), abs, s->env0);  
             s->env1 = s->env0;
 
             /* Gain computer */
@@ -75,37 +72,32 @@ int32_t comp4_process(
             /* Gain smoothing */
 
             m = cmple(s->gc, s->gs1);
-            aux1 = blendv(c->gainA, c->gainR, m);
-            aux2 = blendv(c->ogainA, c->ogainR, m);
-            s->gs0 = mul2(aux1, s->gs1);   
-            s->gs0 = fma2(aux2, s->gc, s->gs0);   
+            s->gs0 = mul2(blendv(c->gainA,  c->gainR,  m), s->gs1);   
+            s->gs0 = fma2(blendv(c->ogainA, c->ogainR, m), s->gc, s->gs0);   
             s->gs1 = s->gs0;
 
             s->gm  = mul2(s->gs0, c->gainM);          
 
-            // L = mul2(L, s->gm);
-            // R = mul2(R, s->gm);
-            b->b4[i].left  *= s->gm.val[3];
-            b->b4[i].right *= s->gm.val[3];
-            b->b3[i].left  *= s->gm.val[2];
-            b->b3[i].right *= s->gm.val[2];
-            b->b2[i].left  *= s->gm.val[1];
-            b->b2[i].right *= s->gm.val[1];
-            b->b1[i].left  *= s->gm.val[0];
-            b->b1[i].right *= s->gm.val[0];
+            L = mul2(L, s->gm);
+            R = mul2(R, s->gm);
+            
+            b->b4[i].left  = L.val[3];
+            b->b3[i].left  = L.val[2];
+            b->b2[i].left  = L.val[1];
+            b->b1[i].left  = L.val[0];
+            b->b4[i].right = R.val[3];
+            b->b3[i].right = R.val[2];
+            b->b2[i].right = R.val[1];
+            b->b1[i].right = R.val[0];
 
-            // b->b4[i].left = s->env0.val[3];
-            // b->b3[i].left = s->env0.val[2];
-            // b->b2[i].left = s->env0.val[1];
-            // b->b1[i].left = s->env0.val[0];
-            // b->b4[i].left  = s->gc.val[3];
-            // b->b3[i].left  = s->gc.val[2];
-            // b->b2[i].left  = s->gc.val[1];
-            // b->b1[i].left  = s->gc.val[0];
-            // b->b4[i].left  = s->gm.val[3];
-            // b->b3[i].left  = s->gm.val[2];
-            // b->b2[i].left  = s->gm.val[1];
-            // b->b1[i].left  = s->gm.val[0];
+            // b->b4[i].left  *= s->gm.val[3];
+            // b->b4[i].right *= s->gm.val[3];
+            // b->b3[i].left  *= s->gm.val[2];
+            // b->b3[i].right *= s->gm.val[2];
+            // b->b2[i].left  *= s->gm.val[1];
+            // b->b2[i].right *= s->gm.val[1];
+            // b->b1[i].left  *= s->gm.val[0];
+            // b->b1[i].right *= s->gm.val[0];
 
         }
     }    

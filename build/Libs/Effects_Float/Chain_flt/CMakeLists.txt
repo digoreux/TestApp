@@ -21,7 +21,6 @@ target_include_directories(${LIB_NAME} PRIVATE
      ${EFFECTS_PATH}/Cross_flt/inc
      ${EFFECTS_PATH}/Comp4s_flt/inc
      ${EFFECTS_PATH}/Biquad_flt/inc
-     ${EFFECTS_PATH}/Expand_flt/inc
      ${HOME_PATH}/Fractional/inc
      ${HOME_PATH}/inc)
 
@@ -32,6 +31,5 @@ target_link_libraries(${LIB_NAME} PRIVATE
     Comp_flt
     Comp4_flt
     Comp4s_flt
-    Expand_flt
     Biquad_flt
     Cross_flt)

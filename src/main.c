@@ -24,10 +24,14 @@ int main(int argc, char **argv)
     if (a->gen_opts) gen_wav(utils, a, meta);
     
     // float f = 0.0f, g = 0.5f, h = 1.2f;
-    // vector_t r, t, x, y, z, one, zero;
+    float res[4];
+    vector_t r, t, x, y, z, one, zero;
     // set_vals2(&t, 0.4f, 0.4f, 0.4f, 0.4f);
-    // set_vals2(&x, 2.0f, 2.0f, 4.0f, 5.0f);
-    // set_vals2(&y, 3.0f, 3.0f, 1.0f, 2.0f);
+    set_vals2(&x, 2.0f, 2.0f, -4.0f, 5.0f);
+    set_vals2(&y, 3.0f, 3.0f, 1.0f, 2.0f);
+    x = mul2(x, y);
+    r = max2(x, y);
+    printv(r);
     // set_val(&one, 1.0f);
     // set_val(&zero, 0.0f);
 
