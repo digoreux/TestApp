@@ -5,33 +5,6 @@
 
 #include "cross_flt_control.h"
 
-typedef struct cross4_coeffs_s {
-    cross_coeffs_t cross[3];
-    vector_t k1;
-    vector_t k2;
-    bool bypass;
-} cross4_coeffs_t;
-
-typedef struct cross4_params_s {
-    uint32_t sample_rate;
-    cross_params_t cross[3];
-    bool bypass;
-} cross4_params_t;
-
-typedef struct cross4_states_s {
-    cross_states_t cross[3];
-    vector_t xn;   // 2nd order phase correction 
-    vector_t y0;   // 2nd order phase correction 
-    vector_t x0;   // 2nd order phase correction
-    vector_t x1;   // 2nd order phase correction
-
-    stereo_t b1[32];
-    stereo_t b2[32];
-    stereo_t b3[32];
-    stereo_t b4[32];
-} cross4_states_t;
-
-
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.
  *   It is caller responsibility to allocate enough memory (bytes) for them.

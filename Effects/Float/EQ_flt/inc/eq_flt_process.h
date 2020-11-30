@@ -2,7 +2,7 @@
 #define __EQ_FLT_PROCESS_H__
 
 #include "eq_flt_control.h"
-
+#include "biquad_flt_process.h"
 
 /*******************************************************************************
  * Provides with the required data sizes for states. It is caller responsibility

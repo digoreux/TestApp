@@ -26,8 +26,13 @@ typedef float flt;
 
 typedef union {
     __m128 v;
-    flt f[4];
-} xmm;
+    flt val[4];
+} m128;
+
+typedef union {
+    __m256 v;
+    flt val[8];
+} m256;
 
 typedef struct stereo_s {
   flt left;

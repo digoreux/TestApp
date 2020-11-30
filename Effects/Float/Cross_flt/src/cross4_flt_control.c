@@ -63,6 +63,7 @@ int32_t cross4_update_coeffs(
     cross_update_coeffs(&p->cross[1], &c->cross[1]);
     cross_update_coeffs(&p->cross[2], &c->cross[2]);
 
+    set_vals(&c->k0, c->cross[0].k0.val[3], c->cross[2].k0.val[3]);
     set_vals(&c->k1, c->cross[0].k1.val[3], c->cross[2].k1.val[3]);
     set_vals(&c->k2, c->cross[0].k2.val[3], c->cross[2].k2.val[3]);
     

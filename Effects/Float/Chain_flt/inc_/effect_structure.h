@@ -29,7 +29,6 @@ typedef struct params_t {
     comp_params_t comp;
     cross_params_t cross;
     comp4_params_t comp4;
-    comp4s_params_t comp4s;
     cross4_params_t cross4;
 } params_t;
 
@@ -39,7 +38,6 @@ typedef struct coeffs_t {
     comp_coeffs_t comp;
     cross_coeffs_t cross;
     comp4_coeffs_t comp4;
-    comp4s_coeffs_t comp4s;
     cross4_coeffs_t cross4;
 } coeffs_t;
 
@@ -49,7 +47,6 @@ typedef struct states_t {
     comp_states_t comp;
     cross_states_t cross;
     comp4_states_t comp4;
-    comp4s_states_t comp4s;
     cross4_states_t cross4;
 } states_t;
 

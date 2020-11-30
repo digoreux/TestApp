@@ -10,7 +10,19 @@ add_compile_options(/fp:strict)
 
 add_library(${LIB_NAME}
     ${EFFECTS_PATH}/${LIB_NAME}/src/effect_control.c 
-    ${EFFECTS_PATH}/${LIB_NAME}/src/effect_process.c)
+    ${EFFECTS_PATH}/${LIB_NAME}/src/effect_process.c
+    ${EFFECTS_PATH}/EQ_flt/src/eq_flt_control.c
+    ${EFFECTS_PATH}/EQ_flt/src/eq_flt_process.c
+    ${EFFECTS_PATH}/Comp_flt/src/comp_flt_control.c
+    ${EFFECTS_PATH}/Comp_flt/src/comp_flt_process.c
+    ${EFFECTS_PATH}/Comp4_flt/src/comp4_flt_control.c
+    ${EFFECTS_PATH}/Comp4_flt/src/comp4_flt_process.c
+    ${EFFECTS_PATH}/Cross_flt/src/cross_flt_control.c
+    ${EFFECTS_PATH}/Cross_flt/src/cross_flt_process.c
+    ${EFFECTS_PATH}/Cross_flt/src/cross4_flt_control.c
+    ${EFFECTS_PATH}/Cross_flt/src/cross4_flt_process.c
+    ${EFFECTS_PATH}/Biquad_flt/src/biquad_flt_control.c
+    ${EFFECTS_PATH}/Biquad_flt/src/biquad_flt_process.c)
 
 
 target_include_directories(${LIB_NAME} PRIVATE 
@@ -28,10 +40,4 @@ target_include_directories(${LIB_NAME} PRIVATE
 
 
 target_link_libraries(${LIB_NAME} PRIVATE 
-    Fractional
-    EQ_flt
-    Comp_flt
-    Comp4_flt
-    Comp4s_flt
-    Biquad_flt
-    Cross_flt)
+    Fractional)

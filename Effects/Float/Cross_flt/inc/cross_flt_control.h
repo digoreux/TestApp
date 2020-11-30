@@ -3,33 +3,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#include "abstract_effect.h"
-
-#define M_PI 3.14159265358979323846
-
-typedef struct cross_params_s {
-    flt freq;
-    uint32_t sample_rate;
-    bool bypass;
-} cross_params_t;
-
-typedef struct cross_coeffs_s {
-    vector_t k0;
-    vector_t k1;
-    vector_t k2;
-    vector_t k05;
-    bool bypass;
-} cross_coeffs_t;
-
-typedef struct cross_states_s {
-    vector_t xn;
-    vector_t y0[2];   // 1st order / 2nd order
-    vector_t x0[2];   // 1st order / 2nd order
-    vector_t x1[2];   // 1st order / 2nd order
-    
-    stereo_t * band1;
-    stereo_t * band2;
-} cross_states_t;
+#include "cross_flt_structure.h"
+#include "cross_flt_utils.h"
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.
@@ -86,7 +61,5 @@ int32_t cross_set_parameter(
 int32_t cross_update_coeffs(
     void const* params,
     void*       coeffs);
-
-
 
 #endif

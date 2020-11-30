@@ -10,7 +10,6 @@ int32_t comp4_control_get_sizes(
     return 0;
 }
 
-
 int32_t comp4_control_initialize(
     void*       params,
     void*       coeffs,

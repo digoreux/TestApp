@@ -1,5 +1,6 @@
 #ifndef __COMP4S_FLT_PROCESS_H__
 #define __COMP4S_FLT_PROCESS_H__
+
 #include "comp4s_flt_control.h"
 
 /*******************************************************************************

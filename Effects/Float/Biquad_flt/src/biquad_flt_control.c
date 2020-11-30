@@ -1,6 +1,5 @@
 #include "biquad_flt_control.h" 
 
-#define M_PI  3.14159265358979323846
 
 int32_t bq_control_get_sizes(
     size_t*     params_bytes,

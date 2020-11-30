@@ -24,7 +24,7 @@ typedef union vector_s {
 } vector_t;
 #else 
 typedef union vector_s {
-  flt val[4];
+    flt val[4];
 } vector_t;
 #endif
 #pragma pack(pop)
@@ -44,6 +44,20 @@ extern flt flog2(flt x);
 extern flt fpow(flt x, flt y);
 
 
+static inline vector_t negf2(vector_t x)
+{   
+    #if SSE
+    vector_t r;
+    r.vec = _mm_mul_ps(x.vec, -1.0);
+    return r;
+    #elif AVX
+    #else
+    vector_t r;
+    for(uint32_t i = 0; i < NCH; i++)
+        r.val[i] = -x.val[i];
+    #endif
+    return r;
+}
 static inline vector_t sub2(vector_t x, vector_t y)
 {   
     #if SSE
@@ -163,10 +177,10 @@ static inline uint32_t set_vals(vector_t * r, flt x, flt y)
     return 0;
     #elif AVX
     #else 
-    r->val[0] = y;
-    r->val[1] = x;
-    r->val[2] = y;
     r->val[3] = x;
+    r->val[2] = y;
+    r->val[1] = x;
+    r->val[0] = y;
     return 0;
     #endif
 }
