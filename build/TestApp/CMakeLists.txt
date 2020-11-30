@@ -6,6 +6,8 @@ set(EFFECTS_PATH "../../../../Effects/Float")
 
 project(TestApp)
 
+add_compile_options(/fp:strict)
+
 add_executable(TestApp
     ../../src/main.c
     ../../src/file_handler.c

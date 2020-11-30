@@ -48,7 +48,10 @@ inline int32_t bq_process(
     {
         for (size_t i = 0 + n; i < samples_count + n; i++)
         {    
-            set_vals(&s->x0, a[i].left, a[i].right);
+            // set_vals(&s->x0, a[i].left, a[i].right);
+            s->x0.val[3] = a[i].left;
+            s->x0.val[2] = a[i].right;
+
             s->y0 = fma2(c->b0, s->x0, s->x1);
 
             s->x1 = fma2(c->b1, s->x0, s->x2);

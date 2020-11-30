@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.12)
 
 project(Fractional)
 
+add_compile_options(/fp:strict)
+
 add_library(Fractional
     ../../../Fractional/src/fractional.c
     ../../../Fractional/src/floatpoint.c

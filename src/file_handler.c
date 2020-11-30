@@ -44,6 +44,10 @@ int apply_effect(utils_p utils)
     void *params = malloc(psize);
     void *coeffs = _aligned_malloc(csize, 16);
     void *states = _aligned_malloc(ssize, 16);
+    memset(params, 0, psize);
+    memset(coeffs, 0, csize);
+    memset(states, 0, ssize);
+
 
     effect_control_initialize(params, coeffs, 48000);
     set_params(params);
@@ -86,6 +90,7 @@ int read_wav(utils_p utils, arg_p a, header_p meta)
     utils->num_samples = 512;  
     utils->buff_size = (utils->num_samples * meta->block_align);
     utils->buffer = _aligned_malloc(utils->buff_size, 16);
+    memset(utils->buffer, 0, utils->buff_size);
     utils->reading = 1;
     
     apply_effect(utils);
