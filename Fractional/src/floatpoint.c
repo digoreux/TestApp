@@ -22,13 +22,17 @@ inline flt subf(flt x, flt y)
 }
 
 inline flt mulf(flt x, flt y)
-{
-    return x * y;
+{   
+    flt r; 
+    r = x * y;
+    return r;
 }
 
 inline flt macf(flt x, flt y, flt z)
-{
-    return z + (x * y);
+{   
+    flt r;
+    r = z + (x * y);
+    return r;
 }
 
 
@@ -72,105 +76,3 @@ inline flt fpow(flt x, flt y)
 {
     return powf(x, y);
 }
-
-// inline vector_t mul2(vector_t x, vector_t y)
-// {   
-//     #if INTR
-//     y.vec = _mm_mul_ps(x.vec, y.vec);
-//     return y;
-//     #else
-//     // for(uint32_t i = 0; i < NCH; i++)
-//     //     y.val[i] *= x.val[i];
-//     y.val[3] *= x.val[3];
-//     y.val[2] *= x.val[2];
-//     return y;
-//     #endif
-// }
- 
-// inline vector_t fma2(vector_t x, vector_t y, vector_t z) 
-// {
-//     #if INTR
-//     z.vec = _mm_fmadd_ps(x.vec, y.vec, z.vec);
-//     return z;
-//     #else 
-//     // for(uint32_t i = 0; i < NCH; i++)
-//         // z.val[i] = macf(x.val[i], y.val[i], z.val[i]);
-//     // z.val[3] = macf(x.val[3], y.val[3], z.val[3]);
-//     // z.val[2] = macf(x.val[2], y.val[2], z.val[2]);
-//     z.val[3] = (x.val[3] * y.val[3]) + z.val[3];
-//     z.val[2] = (x.val[2] * y.val[2]) + z.val[2];
-//     return z;
-//     #endif
-
-// } 
-
-// inline uint32_t set_vals(vector_t * r, flt x, flt y)
-// {   
-//     #if INTR
-//     r->vec = _mm_set_ps(x, y, x, y);
-//     return 0;
-//     #else 
-//     r->val[0] = 0.0f;
-//     r->val[1] = 0.0f;
-//     r->val[2] = x;
-//     r->val[3] = y;
-//     return 0;
-//     #endif
-// }
-
-// inline uint32_t set_val(vector_t * r, flt x)
-// {   
-//     #if INTR
-//     r->vec = _mm_set_ps(x, x, x, x);
-//     return 0;
-//     #else 
-//     for(uint32_t i = 0; i < NCH; i++)
-//         r->val[i] = x;
-//     return 0;
-//     #endif
-// }
-
-// inline uint32_t get_vals(flt * x, vector_t y)
-// {
-//     #if INTR
-//     // xmm r;
-//     // r.v = y.val;
-//     // x[0] = r.f[3];
-//     // x[1] = r.f[2];
-//     // _mm_store_ps(r.v, y.val);
-//     return 0;
-//     #else
-//     for(uint32_t i = 0; i < NCH; i++)
-//         x[i] = y.val[i];
-//     return 0;  
-//     #endif
-// }
-// inline uint32_t get_val(flt * x, vector_t y)
-// {
-//     #if INTR
-//     x[0] = y.val[3];
-//     x[1] = y.val[2];
-//     // _mm_store_ps(r.v, y.val);
-//     return 0;
-//     #else
-//     *x = y.val[3];
-//     return 0;
-//     #endif
-// }
-
-// inline uint32_t get_vals2(flt * x, vector_t y)
-// {
-//     #if INTR
-//     flt r[4];
-//     _mm_store_ps(r, y.vec);
-//     *x = r[3];
-//     x++;
-//     *x = r[2];
-//     return 0;
-//     #else
-//     *x = y.val[3];
-//     x++;
-//     *x = y.val[2];
-//     return 0;
-//     #endif
-// }

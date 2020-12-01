@@ -49,7 +49,6 @@ int32_t bq_cascade(
     eq_coeffs_t *c = (eq_coeffs_t*)coeffs;
     eq_states_t *s = (eq_states_t*)states;
 
-    // uint32_t n = samples_count * frames_count;
     for(size_t i = 0; i < samples_count; i++)
     {
         

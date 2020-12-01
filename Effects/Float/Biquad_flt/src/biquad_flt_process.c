@@ -18,15 +18,15 @@ int32_t bq_reset(
     set_val(&s->x2, 0.0f);
     set_val(&s->y0, 0.0f);
 
-    s->sx0.left = 0;
-    s->sx1.left = 0;
-    s->sx2.left = 0;
-    s->sy0.left = 0;
+    s->sx0.left = 0.0f;
+    s->sx1.left = 0.0f;
+    s->sx2.left = 0.0f;
+    s->sy0.left = 0.0f;
 
-    s->sx0.right = 0;
-    s->sx1.right = 0;
-    s->sx2.right = 0;
-    s->sy0.right = 0;
+    s->sx0.right = 0.0f;
+    s->sx1.right = 0.0f;
+    s->sx2.right = 0.0f;
+    s->sy0.right = 0.0f;
 
     return 0;
 }
@@ -45,7 +45,7 @@ inline int32_t bq_process(
     {
         for (size_t i = 0; i < samples_count; i++)
         {    
-            // set_vals(&s->x0, a[i].left, a[i].right);
+            set_vals(&s->x0, a[i].left, a[i].right);
             s->x0.val[3] = a[i].left;
             s->x0.val[2] = a[i].right;
 
@@ -68,7 +68,7 @@ inline int32_t bq_process(
             // s->x2.vec = _mm_fmadd_ps(c->a2.vec, s->y0.vec, s->x2.vec);
             // a[i].left  = s->y0.val[3];
             // a[i].right = s->y0.val[2];
-            
+
 
             // s->sx0.left  = a[i].left;
             // s->sx0.right = a[i].right;

@@ -27,12 +27,12 @@ int32_t bq_control_initialize(
         p->type = 5;
         p->bypass = false;
         
-        c->sb0 = 0;
-        c->sb1 = 0;
-        c->sb2 = 0;
-        c->sa0 = 0;
-        c->sa1 = 0;
-        c->sa2 = 0;
+        c->sb0 = 0.0f;
+        c->sb1 = 0.0f;
+        c->sb2 = 0.0f;
+        c->sa0 = 0.0f;
+        c->sa1 = 0.0f;
+        c->sa2 = 0.0f;
 
     return 0;
 } 
@@ -44,10 +44,10 @@ int32_t bq_set_parameter(
 {   
     bq_params_t * p = (bq_params_t*)params;
     
-    p->freq = 1000;
-    p->gain = -6;
-    p->Q    = 6;
-    p->type = 2;
+    p->freq = 1000.0f;
+    p->gain = -6.0f;
+    p->Q    = 6.0f;
+    p->type = 2.0f;
     p->sample_rate = 48000;
     
     return 0;
