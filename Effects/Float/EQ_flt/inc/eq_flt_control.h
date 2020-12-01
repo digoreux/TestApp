@@ -2,7 +2,7 @@
 #define __EQ_FLT_CONTROL_H__
 
 #include "eq_flt_structure.h"
-
+#include "biquad_flt_control.h"
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.
  *   It is caller responsibility to allocate enough memory (bytes) for them.

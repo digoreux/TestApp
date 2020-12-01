@@ -3,7 +3,7 @@
 
 #include "cross_flt_structure.h"
 
-static inline vector_t apff1(void * coeffs, void * states, stereo_t * b1, stereo_t * b2, stereo_t * b)
+static inline vector_t apff1(void * coeffs, void * states, stereo_t * b1, stereo_t * b2)
 {
     cross4_coeffs_t* c = (cross4_coeffs_t*)coeffs;
     cross4_states_t* s = (cross4_states_t*)states;
@@ -16,7 +16,7 @@ static inline vector_t apff1(void * coeffs, void * states, stereo_t * b1, stereo
     return s->y0[1];
 }
 
-static inline vector_t apff2(void * coeffs, void * states, stereo_t * b1, stereo_t * b2, stereo_t * b)
+static inline vector_t apff2(void * coeffs, void * states, stereo_t * b1, stereo_t * b2)
 {
     cross4_coeffs_t* c = (cross4_coeffs_t*)coeffs;
     cross4_states_t* s = (cross4_states_t*)states;

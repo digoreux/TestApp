@@ -4,6 +4,7 @@ build/tmp
 .vs/
 .vscode/
 ./Debug/
+./Release/
 
 *.sfk
 *.DS_Store

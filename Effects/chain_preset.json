@@ -71,7 +71,7 @@
 
         
         { "id"  : 41, "val" : -8,     "name": "comp0_Threshold"},
-        { "id"  : 42, "val" : 3,      "name": "comp0_Ratio"},
+        { "id"  : 42, "val" : 4,      "name": "comp0_Ratio"},
         { "id"  : 43, "val" : 30,     "name": "comp0_Attack"},
         { "id"  : 44, "val" : 70,     "name": "comp0_Release"},
         { "id"  : 45, "val" : 0,      "name": "comp0_MakeUpGain"},

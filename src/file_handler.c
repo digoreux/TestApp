@@ -42,8 +42,8 @@ int apply_effect(utils_p utils)
     printf("states: %d\n", ssize);
 
     void *params = malloc(psize);
-    void *coeffs = _aligned_malloc(csize, 16);
-    void *states = _aligned_malloc(ssize, 16);
+    void *coeffs = _aligned_malloc(csize, 32);
+    void *states = _aligned_malloc(ssize, 32);
     memset(params, 0, psize);
     memset(coeffs, 0, csize);
     memset(states, 0, ssize);
@@ -54,7 +54,6 @@ int apply_effect(utils_p utils)
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);
 
-    // clock_t begin = clock();
     if(utils->reading == 1) 
     {   
 
@@ -68,9 +67,6 @@ int apply_effect(utils_p utils)
         effect_process(coeffs, states, utils->buffer, utils->num_samples);
         fwrite(utils->buffer, utils->buff_size, 1, utils->out);
     }
-    // clock_t end = clock();
-    // double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    // printf("time spent: %lf \n", time_spent);
 
     free(params);
     _aligned_free(coeffs);

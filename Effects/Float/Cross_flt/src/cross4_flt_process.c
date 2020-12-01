@@ -42,7 +42,8 @@ int32_t cross4_process(
     stereo_t*  a = (stereo_t*)audio;
     if(!c->bypass)
     {   
-        cross_process(&c->cross[1], &s->cross[1], audio, s->b1, s->b3, samples_count, frames_count, false);
+        cross_process(&c->cross[1], &s->cross[1], audio, s->b1, s->b3, 
+                        samples_count, frames_count, false);
         phase_correction(c, s, samples_count);
         // cross_process(&c->cross[0], &s->cross[0], s->b1, s->b1, s->b2, samples_count, frames_count, true);
         // cross_process(&c->cross[2], &s->cross[2], s->b3, s->b3, s->b4, samples_count, frames_count, true);
@@ -62,12 +63,11 @@ int32_t cross4_process2(
 {
     cross4_coeffs_t* c = (cross4_coeffs_t*)coeffs;
     cross4_states_t* s = (cross4_states_t*)states;
-    stereo_t b[4];
     vector_t y1, y2, tmp;
     for(size_t i = 0; i < samples_count; i++)
     {
-        y1 = apff1(c, s, &band1[i], &band2[i], b);
-        y2 = apff2(c, s, &band1[i], &band2[i], b);
+        y1 = apff1(c, s, &band1[i], &band2[i]);
+        y2 = apff2(c, s, &band1[i], &band2[i]);
 
         tmp = mul2(add2(y1, y2), c->cross->k05);
         s->b1[i].left  = tmp.val[3];                    

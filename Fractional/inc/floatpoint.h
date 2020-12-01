@@ -142,7 +142,7 @@ static inline vector_t fma2(vector_t x, vector_t y, vector_t z)
     return r;
     #else 
     for(uint32_t i = 0; i < NCH; i++)
-        z.val[i] = (x.val[i] * y.val[i]) + z.val[i];
+        z.val[i] =  z.val[i] + (x.val[i] * y.val[i]);
     return z;
     #endif
 } 
@@ -157,7 +157,7 @@ static inline vector_t fnma2(vector_t x, vector_t y, vector_t z)
     return z;
     #else 
     for(uint32_t i = 0; i < NCH; i++)
-        z.val[i] = -(x.val[i] * y.val[i]) + z.val[i];
+        z.val[i] = z.val[i] - (x.val[i] * y.val[i]);
     #endif
     return z;
 } 
