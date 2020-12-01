@@ -19,6 +19,11 @@
 
 #define FRAME_COUNT 32
 
+typedef struct stereo_s {
+  flt left;
+  flt right;
+} stereo_t;
+
 typedef enum {
 	LP   = 0,
 	HP   = 1,

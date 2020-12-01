@@ -30,31 +30,29 @@ int32_t comp_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count,
-    size_t      frames_count)
+    size_t      samples_count)
 {
     comp_coeffs_t* c = (comp_coeffs_t*)coeffs;
     comp_states_t* s = (comp_states_t*)states;
     stereo_t* a = (stereo_t*)audio;
-    uint32_t n = samples_count * frames_count;
-    float x_abs;
+    float abs;
     if(!c->bypass)
     {
-        for (size_t i = 0 + n; i < samples_count + n; i++)
+        for (size_t i = 0; i < samples_count; i++)
         {
-            x_abs = fmaxf(fabsf(a[i].left), fabsf(a[i].right));  
+            abs = fmaxf(fabsf(a[i].left), fabsf(a[i].right));  
 
             /* Envelope detector */
 
-            if (x_abs > s->env1)             
+            if (abs > s->env1)             
             {
                 s->env0 = mulf(c->envA, s->env1);          
-                s->env0 = macf(1.0f - c->envA, x_abs, s->env0);     
+                s->env0 = macf(1.0f - c->envA, abs, s->env0);     
             }
             else
             {
                 s->env0 = mulf(c->envR, s->env1);          
-                s->env0 = macf(1.0f - c->envR, x_abs, s->env0);             
+                s->env0 = macf(1.0f - c->envR, abs, s->env0);             
             }
             s->env1 = s->env0;
 

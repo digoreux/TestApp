@@ -35,18 +35,15 @@ inline int32_t bq_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count,
-    size_t      frames_count)
+    size_t      samples_count)
 {   
     bq_coeffs_t *c = (bq_coeffs_t*)coeffs;
     bq_states_t *s = (bq_states_t*)states;
     stereo_t   * a = (stereo_t *)audio;
 
-    uint32_t n = samples_count * frames_count;
-
-    if(!c->bypass)
+    if(c->a0.val[3] != 0)
     {
-        for (size_t i = 0 + n; i < samples_count + n; i++)
+        for (size_t i = 0; i < samples_count; i++)
         {    
             // set_vals(&s->x0, a[i].left, a[i].right);
             s->x0.val[3] = a[i].left;

@@ -21,6 +21,11 @@ typedef enum {
     LVL_SWEEP = 7,
 } gen_types;
 
+typedef struct stereo_s {
+  float left;
+  float right;
+} stereo_t;
+
 int gen_white_noise(void * buffer, size_t sample_count, float amp);
 
 int gen_delta(void * buffer, size_t sample_count);

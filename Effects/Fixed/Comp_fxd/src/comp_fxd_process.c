@@ -16,23 +16,15 @@ int32_t comp_reset(
 {
     comp_states_t* s = (comp_states_t*)states;
 
-    s->g_c.left  = 0;
-    s->g_m.left  = 0;
-    s->g_s0.left = 0;
-    s->g_s1.left = 0x7FFFFFFF;
-    s->env0.left = 0;
-    s->env1.left = 0;
-
-    s->g_c.right  = 0;
-    s->g_m.right  = 0;
-    s->g_s0.right = 0;
-    s->g_s1.right = 0x7FFFFFFF;
-    s->env0.right = 0;
-    s->env1.right = 0;
+    s->gc   = 0;
+    s->gm   = 0;
+    s->gs0  = 0;
+    s->gs1  = ONE;
+    s->env0 = 0;
+    s->env1 = 0;
 
     return 0;
 }
-
 
 int32_t comp_process(
     void const* coeffs,
@@ -42,111 +34,61 @@ int32_t comp_process(
 {
     comp_coeffs_t* c = (comp_coeffs_t*)coeffs;
     comp_states_t* s = (comp_states_t*)states;
-    comp_stereo_t* a = (comp_stereo_t*)audio;
-
-    q31 x_abs = 0;
-
+    stereo_t* a = (stereo_t*)audio;
+    q31 abs = 0;
     if(!c->bypass)
     {
-        for (uint32_t i = 0; i < samples_count; i++)
+        for (size_t i = 0; i < samples_count; i++)
         {
-            x_abs = abs_q31(a[i].left);
+            abs = max(abs_q31(a[i].left), abs_q31(a[i].right));
 
             /* Envelope detector */
 
-            if (x_abs > s->env1.left)             
+            if (abs > s->env1)             
             {
-                s->env0.left = mul_q31(c->envA, s->env1.left);          
-                s->env0.left = mac_q31(sub_q31(ONE, c->envA), x_abs, s->env0.left); 
+                s->env0 = mul_q31(c->envA, s->env1);          
+                s->env0 = mac_q31(sub_q31(ONE, c->envA), abs, s->env0); 
             }
             else
             {
-                s->env0.left = mul_q31(c->envR, s->env1.left);          
-                s->env0.left = mac_q31(sub_q31(ONE, c->envR), x_abs, s->env0.left); 
+                s->env0 = mul_q31(c->envR, s->env1);          
+                s->env0 = mac_q31(sub_q31(ONE, c->envR), abs, s->env0); 
             }
 
-            s->env1.left = s->env0.left;
+            s->env1 = s->env0;
 
             /* Gain computer */
 
-            if (s->env0.left < c->thrsh)
+            if (s->env0 < c->thrsh)
             {   
-                s->g_c.left = ONE;
+                s->gc = ONE;
             }
             else
             {   
-                s->g_c.left = div_q31(c->thrsh, s->env1.left);
-                s->g_c.left = pow_q31(s->g_c.left, c->ratio);
+                s->gc = div_q31(c->thrsh, s->env1);
+                s->gc = pow_q31(s->gc, c->ratio);
             }
 
             /* Gain smoothing */
 
-            if (s->g_c.left <= s->g_s1.left)
+            if (s->gc <= s->gs1)
             {
-                s->g_s0.left = mul_q31(c->envA, s->g_s1.left);          
-                s->g_s0.left = mac_q31(sub_q31(ONE, c->gainA), s->g_c.left, s->g_s0.left); 
+                s->gs0 = mul_q31(c->envA, s->gs1);          
+                s->gs0 = mac_q31(sub_q31(ONE, c->gainA), s->gc, s->gs0); 
             }
             else
             {
-                s->g_s0.left = mul_q31(c->envR, s->g_s1.left);          
-                s->g_s0.left = mac_q31(sub_q31(ONE, c->gainR), s->g_c.left, s->g_s0.left); 
+                s->gs0 = mul_q31(c->envR, s->gs1);          
+                s->gs0 = mac_q31(sub_q31(ONE, c->gainR), s->gc, s->gs0); 
             }
     
-            s->g_s1.left = s->g_s0.left;
-            s->g_m.left  = gethigh(left_shift_q63(mul_q63(s->g_c.left, c->gainM), 4));
-            a[i].left  = mul_q31(s->g_m.left, a[i].left);
+            s->gs1 = s->gs0;
+            s->gm  = gethigh(left_shift_q63(mul_q63(s->gc, c->gainM), 4));
 
-            /* RIGHT CHANNEL */
-
-            x_abs = abs_q31(a[i].right);
-
-            /* Envelope detector */
-
-            if (x_abs > s->env1.right)             
-            {
-                s->env0.right = mul_q31(c->envA, s->env1.right);          
-                s->env0.right = mac_q31(sub_q31(ONE, c->envA), x_abs, s->env0.right); 
-            }
-            else
-            {
-                s->env0.right = mul_q31(c->envR, s->env1.right);          
-                s->env0.right = mac_q31(sub_q31(ONE, c->envR), x_abs, s->env0.right); 
-            }
-
-            s->env1.right = s->env0.right;
-
-            /* Gain computer */
-
-            if (s->env0.right < c->thrsh)
-            {   
-                s->g_c.right = ONE;
-            }
-            else
-            {   
-                s->g_c.right = div_q31(c->thrsh, s->env1.right);
-                s->g_c.right = pow_q31(s->g_c.right, c->ratio);
-            }
-
-            /* Gain smoothing */
-
-            if (s->g_c.right <= s->g_s1.right)
-            {
-                s->g_s0.right = mul_q31(c->envA, s->g_s1.right);          
-                s->g_s0.right = mac_q31(sub_q31(ONE, c->gainA), s->g_c.right, s->g_s0.right); 
-            }
-            else
-            {
-                s->g_s0.right = mul_q31(c->envR, s->g_s1.right);          
-                s->g_s0.right = mac_q31(sub_q31(ONE, c->gainR), s->g_c.right, s->g_s0.right); 
-            }
-    
-            s->g_s1.right = s->g_s0.right;
-            s->g_m.right  = gethigh(left_shift_q63(mul_q63(s->g_c.right, c->gainM), 4));
-            a[i].right  = mul_q31(s->g_m.right, a[i].right);
-
+            a[i].left  = mul_q31(s->gm, a[i].left);
+            a[i].right = mul_q31(s->gm, a[i].right);
         }
     }
-
     return 0;
 }
 

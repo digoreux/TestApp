@@ -2,7 +2,7 @@
 #define __EQ_FXD_PROCESS_H__
 
 #include "eq_fxd_control.h"
-
+#include "biquad_fxd_process.h"
 
 /*******************************************************************************
  * Provides with the required data sizes for states. It is caller responsibility

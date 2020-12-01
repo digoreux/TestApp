@@ -6,6 +6,11 @@ project(WholeSolution)
 add_subdirectory(Libs/Fractional)
 
 add_subdirectory(Libs/Effects_Float/Chain_flt)
+#add_subdirectory(Libs/Effects_Fixed/Chain_fxd)
+
+add_subdirectory(TestApp)
+
+
 #add_subdirectory(Libs/Effects_Float/EQ_flt)
 #add_subdirectory(Libs/Effects_Float/Comp_flt)
 #add_subdirectory(Libs/Effects_Float/Comp4_flt)
@@ -18,5 +23,3 @@ add_subdirectory(Libs/Effects_Float/Chain_flt)
 #add_subdirectory(Libs/Effects_Fixed/Comp4_fxd)
 #add_subdirectory(Libs/Effects_Fixed/Cross_fxd)
 #add_subdirectory(Libs/Effects_Fixed/Chain_fxd)
-
-add_subdirectory(TestApp)

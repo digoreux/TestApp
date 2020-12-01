@@ -31,8 +31,7 @@ int32_t comp4_process(
     void const* coeffs,
     void*       states,
     void*       bands,
-    size_t      samples_count,
-    size_t      frames_count)
+    size_t      samples_count)
 {
     comp4_coeffs_t  * c = (comp4_coeffs_t*)coeffs;
     comp4_states_t  * s = (comp4_states_t*)states;

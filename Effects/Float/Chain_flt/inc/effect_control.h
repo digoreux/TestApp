@@ -62,7 +62,4 @@ int32_t effect_update_coeffs(
 
 
 
-int set_params(void * params);
-
-
 #endif

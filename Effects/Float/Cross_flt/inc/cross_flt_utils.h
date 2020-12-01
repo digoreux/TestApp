@@ -57,30 +57,28 @@ static inline vector_t apf2(void * coeffs, void * states, stereo_t * a)
 
     return s->y0[1];
 }
-static inline int32_t mix(void * audio, void * states, size_t samples_count, size_t frames_count) 
+static inline int32_t mix(void * audio, void * states, size_t samples_count) 
 {
     stereo_t * a = (stereo_t *)audio;
     cross4_states_t* s = (cross4_states_t*)states;
-    uint32_t n = samples_count * frames_count; 
 
-    for(size_t i = 0 + n, j = 0; i < samples_count + n, j < samples_count; i++, j++) 
+    for(size_t i = 0, j = 0; i < samples_count, j < FRAME_COUNT; i++, j++) 
     {   
         a[i].left  = s->b1[j].left  + s->b2[j].left  + s->b3[j].left  + s->b4[j].left;
         a[i].right = s->b1[j].right + s->b2[j].right + s->b3[j].right + s->b4[j].right;
-        //  a[i].left  = s->b1[j].left + s->b3[j].left;
-        //  a[i].right = s->b2[j].left + s->b4[j].left;
+        //  a[i].left  = s->b1[i].left + s->b3[i].left;
+        //  a[i].right = s->b2[i].left + s->b4[i].left;
     }
     return 0;
 }
 
-static inline int32_t mix2(void * audio, void * band1, void * band2, size_t samples_count, size_t frames_count) 
+static inline int32_t mix2(void * audio, void * band1, void * band2, size_t samples_count) 
 {
     stereo_t * a  = (stereo_t *)audio;
     stereo_t * b1 = (stereo_t *)band1;
     stereo_t * b2 = (stereo_t *)band2;
-    uint32_t n = samples_count * frames_count; 
 
-    for(size_t i = 0 + n, j = 0; i < samples_count + n, j < samples_count; i++, j++) 
+    for(size_t i = 0, j = 0; i < samples_count, j < FRAME_COUNT; i++, j++) 
     {
         a[i].left  = b1[j].left  + b2[j].left;
         a[i].right = b1[j].right + b2[j].right;

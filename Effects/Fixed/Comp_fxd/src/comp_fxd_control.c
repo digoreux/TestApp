@@ -95,15 +95,14 @@ int32_t comp_update_coeffs(
     float thrsh, gainM, gainA, gainR, envA, envR;
 
     c->bypass = p->bypass;
+    
     c->ratio  = float2fixed_q31(1.0f - (1.0f / p->ratio));
     c->sample_rate = float2fixed_q((flt)p->sample_rate, 13);
 
     thrsh = powf(10.0f, (p->thrsh/20.0f));  
     gainM = powf(10.0f, (p->makeUpGain/20.0f));
-
     gainA  = powf(M_e, (-(logf(9)) / (0.001f * p->tAttack  * p->sample_rate)));
     gainR  = powf(M_e, (-(logf(9)) / (0.001f * p->tRelease * p->sample_rate)));
-
     envA   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvAttack  * p->sample_rate)));
     envR   = powf(M_e, (-(logf(9)) / (0.001f * p->tEnvRelease * p->sample_rate)));
 

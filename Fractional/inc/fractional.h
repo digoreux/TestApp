@@ -34,10 +34,7 @@ typedef union {
     flt val[8];
 } m256;
 
-typedef struct stereo_s {
-  flt left;
-  flt right;
-} stereo_t;
+
 
 extern const q31 pow2lookup[512];
 extern const q31 log2lookup[512];

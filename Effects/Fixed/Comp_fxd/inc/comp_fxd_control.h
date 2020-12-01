@@ -1,61 +1,8 @@
 #ifndef __COMP_FXD_CONTROL_H__
 #define __COMP_FXD_CONTROL_H__
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stddef.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include "fractional.h"
+#include "comp_fxd_structure.h"
 
-
-typedef struct comp_stereo_s {
-    q31 left;
-    q31 right;
-} comp_stereo_t;
-
-typedef struct comp_params_s {
-    flt thrsh;
-    flt ratio;
-    flt tAttack;      // gain
-    flt tRelease;
-    flt tEnvAttack;      //env
-    flt tEnvRelease;
-    flt makeUpGain;
-    uint32_t sample_rate;
-    bool downward;
-    bool bypass;
-
-} comp_params_t;
-
-typedef struct comp_coeffs_s {
-    q31 thrsh;
-    q31 ratio;
-    q31 envA;
-    q31 envR;
-    q31 gainA;    
-    q31 gainR;
-    q31 gainM;  // Make Up Gain
-    q31 sample_rate;
-    bool bypass;
-} comp_coeffs_t;
-
-typedef struct comp_states_s{
-
-
-    comp_stereo_t g_c;      // gain computer
-
-    comp_stereo_t g_s0;     // gain smoothing current
-    comp_stereo_t g_s1;     // gain smoothing previous
-
-    comp_stereo_t g_m;      // gain make-up
-
-    comp_stereo_t env0;     // envelope current
-    comp_stereo_t env1;     // envelope previous
-
-} comp_states_t;
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.

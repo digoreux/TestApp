@@ -45,9 +45,7 @@ int32_t cross_process(
     void*       audio,
     stereo_t*   band1,
     stereo_t*   band2,
-    size_t      samples_count,
-    size_t      frames_count,
-    bool        frames_mode);
+    size_t      samples_count);
 
 
 #endif

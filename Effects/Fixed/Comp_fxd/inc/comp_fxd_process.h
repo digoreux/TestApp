@@ -1,8 +1,7 @@
-#ifndef __COMP_FLT_PROCESS_H__
-#define __COMP_FLT_PROCESS_H__
+#ifndef __COMP_FXD_PROCESS_H__
+#define __COMP_FXD_PROCESS_H__
 
 #include "comp_fxd_control.h"
-
 
 /*******************************************************************************
  * Provides with the required data sizes for states. It is caller responsibility

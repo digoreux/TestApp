@@ -14,7 +14,7 @@ add_library(${LIB_NAME}
 
 
 target_include_directories(${LIB_NAME} PRIVATE 
-     ${EFFECT_PATH}/inc
+     ${HOME_PATH}/Effects/inc
      ${EFFECT_PATH}/${LIB_NAME}/inc
      ${HOME_PATH}/Fractional/inc)
 

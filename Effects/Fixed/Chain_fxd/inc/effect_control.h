@@ -1,13 +1,8 @@
-#ifndef __CHAIN_FLT_CONTROL_H__
-#define __CHAIN_FLT_CONTROL_H__
+#ifndef __EFFECT_CONTROL_H__
+#define __EFFECT_CONTROL_H__
 
 #include <stdint.h>
 #include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.

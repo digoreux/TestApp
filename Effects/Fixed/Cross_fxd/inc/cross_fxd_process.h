@@ -3,7 +3,6 @@
 
 #include "cross_fxd_control.h"
 
-
 /*******************************************************************************
  * Provides with the required data sizes for states. It is caller responsibility
  *   to allocate enough memory (bytes) for them.
@@ -44,9 +43,9 @@ int32_t cross_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    cross_stereo_t* band1,
-    cross_stereo_t* band2,
-    size_t samples_count);
+    stereo_t*   band1,
+    stereo_t*   band2,
+    size_t      samples_count);
 
 
 #endif

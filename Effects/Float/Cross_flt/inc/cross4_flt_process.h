@@ -44,8 +44,8 @@ int32_t cross4_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count,
-    size_t      frames_count);
+    size_t      samples_count);
+
 
 int32_t cross4_process2(
     void const* coeffs,

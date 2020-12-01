@@ -6,7 +6,7 @@
         { "id"  : 0, "val" : 20,   "name": "1_freq" },
         { "id"  : 1, "val" : -6,   "name": "1_gain" }, 
         { "id"  : 2, "val" : 0.1,  "name": "1_Q" },
-        { "id"  : 3, "val" : 1,    "name": "1_type" },
+        { "id"  : 3, "val" : 5,    "name": "1_type" },
  
         { "id"  : 4, "val" : 250,  "name": "2_freq" },
         { "id"  : 5, "val" : -2,   "name": "2_gain" }, 
@@ -29,7 +29,7 @@
         { "id"  : 19, "val" : 2,    "name": "5_type" },
  
         { "id"  : 20, "val" : 4000, "name": "6_freq" },
-        { "id"  : 21, "val" : 3,    "name": "6_gain" }, 
+        { "id"  : 21, "val" : -3,    "name": "6_gain" }, 
         { "id"  : 22, "val" : 4,    "name": "6_Q" },
         { "id"  : 23, "val" : 2,    "name": "6_type" },  
  
@@ -39,18 +39,18 @@
         { "id"  : 27, "val" : 2,    "name": "7_type" },
  
         { "id"  : 28, "val" : 12000,"name": "8_freq" },
-        { "id"  : 29, "val" : 3,    "name": "8_gain" }, 
+        { "id"  : 29, "val" : -3,    "name": "8_gain" }, 
         { "id"  : 30, "val" : 6,    "name": "8_Q" },
         { "id"  : 31, "val" : 2,    "name": "8_type" },
  
-        { "id"  : 32, "val" : 14000,"name": "9_freq" },
-        { "id"  : 33, "val" : -6,   "name": "9_gain" }, 
+        { "id"  : 32, "val" : 18000,"name": "9_freq" },
+        { "id"  : 33, "val" : -2,   "name": "9_gain" }, 
         { "id"  : 34, "val" : 0.1,  "name": "9_Q" },
         { "id"  : 35, "val" : 4,    "name": "9_type" },
  
-        { "id"  : 36, "val" : 18000,"name": "10_freq" },
+        { "id"  : 36, "val" : 20000,"name": "10_freq" },
         { "id"  : 37, "val" : -6,   "name": "10_gain" }, 
-        { "id"  : 38, "val" : 0.1,  "name": "10_Q" },
+        { "id"  : 38, "val" : 0.2,  "name": "10_Q" },
         { "id"  : 39, "val" : 0,    "name": "10_type" },
  
         { "id"  : 40, "val" : 48000,"name": "sample_rate"},
@@ -73,7 +73,7 @@
         { "id"  : 41, "val" : -8,     "name": "comp0_Threshold"},
         { "id"  : 42, "val" : 4,      "name": "comp0_Ratio"},
         { "id"  : 43, "val" : 30,     "name": "comp0_Attack"},
-        { "id"  : 44, "val" : 70,     "name": "comp0_Release"},
+        { "id"  : 44, "val" : 100,     "name": "comp0_Release"},
         { "id"  : 45, "val" : 0,      "name": "comp0_MakeUpGain"},
         { "id"  : 46, "val" : 48000,  "name": "comp0_samplerate"},
         { "id"  : 47, "val" : 0,      "name": "comp0_envAttack"},

@@ -42,8 +42,8 @@ int apply_effect(utils_p utils)
     printf("states: %d\n", ssize);
 
     void *params = malloc(psize);
-    void *coeffs = _aligned_malloc(csize, 32);
-    void *states = _aligned_malloc(ssize, 32);
+    void *coeffs = _aligned_malloc(csize, 16);
+    void *states = _aligned_malloc(ssize, 16);
     memset(params, 0, psize);
     memset(coeffs, 0, csize);
     memset(states, 0, ssize);

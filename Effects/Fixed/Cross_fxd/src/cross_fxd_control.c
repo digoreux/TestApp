@@ -7,6 +7,7 @@ int32_t cross_control_get_sizes(
 {
     *params_bytes = sizeof(cross_params_t);
     *coeffs_bytes = sizeof(cross_coeffs_t);
+    
     return 0;
 }
 
@@ -17,6 +18,7 @@ int32_t cross_control_initialize(
 {   
     cross_params_t * p = (cross_params_t*)params;
     cross_coeffs_t * c = (cross_coeffs_t*)coeffs;
+    p->sample_rate = sample_rate;
     
     return 0;   
 }
@@ -27,6 +29,7 @@ int32_t cross_set_parameter(
     float       value)
 {   
     cross_params_t * p = (cross_params_t*)params;
+    p->freq = 1000;
     return 0;
 }
 

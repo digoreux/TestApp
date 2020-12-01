@@ -7,6 +7,7 @@ int32_t cross_control_get_sizes(
 {
     *params_bytes = sizeof(cross_params_t);
     *coeffs_bytes = sizeof(cross_coeffs_t);
+    
     return 0;
 }
 

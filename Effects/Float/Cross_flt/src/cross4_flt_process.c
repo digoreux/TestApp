@@ -34,19 +34,17 @@ int32_t cross4_process(
     void const* coeffs,
     void*       states,
     void*       audio,
-    size_t      samples_count,
-    size_t      frames_count)
+    size_t      samples_count)
 {   
     cross4_coeffs_t* c = (cross4_coeffs_t*)coeffs;
     cross4_states_t* s = (cross4_states_t*)states;
     stereo_t*  a = (stereo_t*)audio;
     if(!c->bypass)
     {   
-        cross_process(&c->cross[1], &s->cross[1], audio, s->b1, s->b3, 
-                        samples_count, frames_count, false);
+        cross_process(&c->cross[1], &s->cross[1], audio, s->b1, s->b3, samples_count);
         phase_correction(c, s, samples_count);
-        // cross_process(&c->cross[0], &s->cross[0], s->b1, s->b1, s->b2, samples_count, frames_count, true);
-        // cross_process(&c->cross[2], &s->cross[2], s->b3, s->b3, s->b4, samples_count, frames_count, true);
+        // cross_process(&c->cross[0], &s->cross[0], s->b1, s->b1, s->b2, samples_count);
+        // cross_process(&c->cross[2], &s->cross[2], s->b3, s->b3, s->b4, samples_count);
         cross4_process2(c, s, s->b1, s->b3, samples_count);
     }
 
