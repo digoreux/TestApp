@@ -5,8 +5,8 @@ project(WholeSolution)
 
 add_subdirectory(Libs/Fractional)
 
-add_subdirectory(Libs/Effects_Float/Chain_flt)
-#add_subdirectory(Libs/Effects_Fixed/Chain_fxd)
+#add_subdirectory(Libs/Effects_Float/Chain_flt)
+add_subdirectory(Libs/Effects_Fixed/Chain_fxd)
 
 add_subdirectory(TestApp)
 

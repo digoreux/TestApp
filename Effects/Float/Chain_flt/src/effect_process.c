@@ -40,7 +40,7 @@ int32_t effect_process(
         // comp_process(&c->comp, &s->comp, &a[i], FRAME_COUNT);
         // cross4_process(&c->cross4, &s->cross4, &a[i], FRAME_COUNT);
         // comp4_process(&c->comp4, &s->comp4, &s->cross4, FRAME_COUNT);    
-        // mix(&a[i], &s->cross4, FRAME_COUNT);
+        mix(&a[i], &s->cross4, FRAME_COUNT);
         
         bq_process(&c->bq, &s->bq, &a[i], FRAME_COUNT);
     }

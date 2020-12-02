@@ -6,8 +6,6 @@ set(EFFECT_PATH "../../../../Effects/Float")
 
 project(${LIB_NAME})
 
-add_compile_options(/fp:strict)
-
 add_library(${LIB_NAME}
     ${EFFECT_PATH}/${LIB_NAME}/src/biquad_flt_control.c 
     ${EFFECT_PATH}/${LIB_NAME}/src/biquad_flt_process.c)

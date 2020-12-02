@@ -27,6 +27,8 @@ int set_params(void * params)
         effect_set_parameter(params, id->valueint, (float)value->valuedouble);
     }
     return 0;
+
+    free(buffer);
 }
 
 int apply_effect(utils_p utils) 

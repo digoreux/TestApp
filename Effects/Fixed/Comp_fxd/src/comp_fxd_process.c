@@ -83,7 +83,7 @@ int32_t comp_process(
             }
     
             s->gs1 = s->gs0;
-            s->gm  = gethigh(left_shift_q63(mul_q63(s->gc, c->gainM), 4));
+            s->gm  = gethigh(lshift_q63(mul_q63(s->gc, c->gainM), 4));
 
             a[i].left  = mul_q31(s->gm, a[i].left);
             a[i].right = mul_q31(s->gm, a[i].right);

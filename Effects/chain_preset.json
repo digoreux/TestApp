@@ -72,8 +72,8 @@
         
         { "id"  : 41, "val" : -8,     "name": "comp0_Threshold"},
         { "id"  : 42, "val" : 4,      "name": "comp0_Ratio"},
-        { "id"  : 43, "val" : 30,     "name": "comp0_Attack"},
-        { "id"  : 44, "val" : 100,     "name": "comp0_Release"},
+        { "id"  : 43, "val" : 20,     "name": "comp0_Attack"},
+        { "id"  : 44, "val" : 50,     "name": "comp0_Release"},
         { "id"  : 45, "val" : 0,      "name": "comp0_MakeUpGain"},
         { "id"  : 46, "val" : 48000,  "name": "comp0_samplerate"},
         { "id"  : 47, "val" : 0,      "name": "comp0_envAttack"},
@@ -83,8 +83,6 @@
         { "id"  : 50, "val" : 1000,    "name": "band2"},
         { "id"  : 51, "val" : 10000,   "name": "band3"},
         { "id"  : 52, "val" : 48000,   "name": "sample_rate"},
-
-
 
         { "id"  : 53, "val" : -8,      "name": "comp1_Threshold"},
         { "id"  : 54, "val" : 30,      "name": "comp1_Ratio"},

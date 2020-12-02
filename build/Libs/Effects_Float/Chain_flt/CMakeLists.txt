@@ -6,8 +6,6 @@ set(EFFECTS_PATH "../../../../Effects/Float")
 
 project(${LIB_NAME})
 
-add_compile_options(/fp:strict)
-
 add_library(${LIB_NAME}
     ${EFFECTS_PATH}/${LIB_NAME}/src/effect_control.c 
     ${EFFECTS_PATH}/${LIB_NAME}/src/effect_process.c

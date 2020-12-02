@@ -45,11 +45,11 @@ q63 saturate(q63 r);
 q31 neg_q31(q31 x);
 q31 abs_q31(q31 x);
 
-q31 left_shift_q31(q31 x, q31 n);
-q31 right_shift_q31(q31 x, q31 n);
+q31 lshift_q31(q31 x, q31 n);
+q31 rshift_q31(q31 x, q31 n);
 
-q63 left_shift_q63(q63 x, q31 n);
-q63 right_shift_q63(q63 x, q31 n);
+q63 lshift_q63(q63 x, q31 n);
+q63 rshift_q63(q63 x, q31 n);
 
 q31 add_q31(q31 x, q31 y);
 q63 add_q63(q63 x, q63 y);

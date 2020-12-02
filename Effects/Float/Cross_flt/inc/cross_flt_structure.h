@@ -22,9 +22,6 @@ typedef struct cross_states_s {
     vector_t y0[2];   // 1st order / 2nd order
     vector_t x0[2];   // 1st order / 2nd order
     vector_t x1[2];   // 1st order / 2nd order
-    
-    stereo_t * band1;
-    stereo_t * band2;
 } cross_states_t;
 
 

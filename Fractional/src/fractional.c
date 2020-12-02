@@ -39,8 +39,8 @@ void test_fractional(void)
     // printf("abs(MAX) =  %d  \n", abs_q31(max));
     // printf("abs(MIN) =  %d  \n", abs_q31(min));
     // printf("----------------------\n");
-    // printf("lshift( 1, 31) =  %d \n", left_shift_q31(1, 31));
-    // printf("lshift(-1, 31) = %d  \n", left_shift_q31(-1, 31));
+    // printf("lshift( 1, 31) =  %d \n", lshift_q31(1, 31));
+    // printf("lshift(-1, 31) = %d  \n", lshift_q31(-1, 31));
     // printf("----------------------------\n");
     // printf("add(MAX,  10) =  %d\n", add_q31(max, 10));
     // printf("add(MIN, -10) = %d\n", add_q31(min, -10));
@@ -132,7 +132,7 @@ q31 abs_q31(q31 x)
 
 
 
-q31 left_shift_q31(q31 x, q31 n)
+q31 lshift_q31(q31 x, q31 n)
 {
     q31 r = x << n;
     if(x > 0 && r < 0) r = INT32_MAX;
@@ -140,7 +140,7 @@ q31 left_shift_q31(q31 x, q31 n)
     return r;
 }
 
-q31 right_shift_q31(q31 x, q31 n)
+q31 rshift_q31(q31 x, q31 n)
 {
     q31 r = x >> n;
     assert(n < 32);
@@ -148,7 +148,7 @@ q31 right_shift_q31(q31 x, q31 n)
     return r;
 }
 
-q63 left_shift_q63(q63 x, q31 n) 
+q63 lshift_q63(q63 x, q31 n) 
 {
     q63 r = x << n;
     if (x > 0 && r < 0) r = INT64_MAX;
@@ -156,7 +156,7 @@ q63 left_shift_q63(q63 x, q31 n)
     return r;
 };
 
-q63 right_shift_q63(q63 x, q31 n)
+q63 rshift_q63(q63 x, q31 n)
 {
     q63 r = x >> n;
     assert(n < 64);
@@ -228,7 +228,7 @@ q31 gethigh(q63 x)
 // {   
 //     q63 r = x;
 //     r += (1lu << (Q31 - 1));
-//     r = right_shift_q63(r, 32);
+//     r = rshift_q63(r, 32);
 //     return (q31)r;
 // }
 
@@ -253,7 +253,7 @@ q63 mul_q63(q31 x, q31 y)
 {   
     q63 r = x;
     r *= y;
-    r = left_shift_q63(r, 1);
+    r = lshift_q63(r, 1);
     return r;
 }
 
@@ -297,21 +297,21 @@ q31 div_q31(q31 x, q31 y)
     
     
     xi = K2 * D;               
-    xi = right_shift_q63(xi, 25);                
+    xi = rshift_q63(xi, 25);                
     xi = sub_q63(K1, xi);
 
     for (int i = 0; i < 3; i++)
     { 
         xn = xi * D;  
-        xn = right_shift_q63(xn, 25);
+        xn = rshift_q63(xn, 25);
         xn = sub_q63(one , xn);
         xn = xi * xn;
-        xn = right_shift_q63(xn, 25);
+        xn = rshift_q63(xn, 25);
         xn = add_q63(xi, xn);
         xi = xn;
     }
      r = N * xi;
-     r = right_shift_q63(r, (Q25 - (Q31 - Q25)));  
+     r = rshift_q63(r, (Q25 - (Q31 - Q25)));  
 
     return (q31)r;
 }
@@ -349,7 +349,7 @@ q31 pow_q31(q31 x, q31 y)
 {
     q63 r = y;
     r *= log2_q31(x);  
-    r = right_shift_q63(r, 31);   // Q37.26
+    r = rshift_q63(r, 31);   // Q37.26
     r = pow2_q31((q31)r);
     return (q31)r;
 }

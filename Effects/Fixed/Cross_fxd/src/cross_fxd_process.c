@@ -13,9 +13,6 @@ int32_t cross_reset(
 {
     cross_states_t * s = (cross_states_t*)states;
 
-    s->xn.left  = 0;
-    s->xn.right = 0;
-
     for(int i = 0; i < 3; i++)
     {   
         s->y0[i].left = 0;
@@ -40,11 +37,18 @@ int32_t cross_process(
     cross_coeffs_t* c = (cross_coeffs_t*)coeffs;
     cross_states_t* s = (cross_states_t*)states;
     stereo_t* a = (stereo_t*)audio;
+    stereo_t y1, y2;
 
     for(uint32_t i = 0; i < samples_count; i++)
     {   
+        y1 = apf1(c, s, &a[i]);
+        y2 = apf2(c, s, &a[i]);
 
- 
+        band1[i].left  = rshift_q63(add_q63(y1.left,  y2.left),  1);
+        band1[i].right = rshift_q63(add_q63(y1.right, y2.right), 1);
+        band2[i].left  = rshift_q63(sub_q63(y1.left,  y2.left),  1);
+        band2[i].right = rshift_q63(sub_q63(y1.right, y2.right), 1);
+
     }   
     return 0;
 }

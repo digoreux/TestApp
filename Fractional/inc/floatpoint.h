@@ -5,7 +5,7 @@
 #define KF1 2.823529
 #define KF2 1.882353
 #define K0  0.0759776172978545212494579946726
-#define SSE 1
+#define SSE 0
 #define AVX 0
 #define NCH 4
 
@@ -29,7 +29,9 @@ typedef union vector_s {
 #endif
 #pragma pack(pop)
 
-
+#pragma fp_contract(off)
+#pragma fenv_access(on)
+#pragma float_control(precise, on)
 extern flt negf(flt x);
 extern flt absf(flt x);
 extern flt addf(flt x, flt y);
@@ -98,7 +100,6 @@ static inline vector_t div2(vector_t x, vector_t y)
     #endif
     return r;
 }
-#pragma fp_contract (off)
 
 static inline vector_t mul2(vector_t x, vector_t y)
 {   
@@ -152,9 +153,7 @@ static inline vector_t fnma2(vector_t x, vector_t y, vector_t z)
     #endif
 } 
 
-#pragma fp_contract (on)
-
-
+ 
 static inline vector_t vpow(vector_t x, vector_t y) 
 {
     vector_t r;

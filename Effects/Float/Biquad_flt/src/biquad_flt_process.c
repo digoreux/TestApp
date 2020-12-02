@@ -45,7 +45,6 @@ inline int32_t bq_process(
     {
         for (size_t i = 0; i < samples_count; i++)
         {    
-            set_vals(&s->x0, a[i].left, a[i].right);
             s->x0.val[3] = a[i].left;
             s->x0.val[2] = a[i].right;
 

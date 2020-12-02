@@ -48,8 +48,8 @@ inline int32_t bq_process(
         {   
             if(c->a0 != 0)
             {     
-                s->x0.left  = right_shift_q31(a[i].left, SCALE);
-                s->x0.right = right_shift_q31(a[i].right, SCALE);
+                s->x0.left  = rshift_q31(a[i].left, SCALE);
+                s->x0.right = rshift_q31(a[i].right, SCALE);
 
                 acc =  0;
                 acc =  add_q63(acc, s->error.left);
@@ -60,8 +60,8 @@ inline int32_t bq_process(
                 acc = msub_q63(c->a2, s->y2.left, acc);
 
                 s->error.left = getlow(acc);
-                acc = left_shift_q63(acc, NORM);              
-                a[i].left = left_shift_q31(gethigh(acc), SCALE);
+                acc = lshift_q63(acc, NORM);              
+                a[i].left = lshift_q31(gethigh(acc), SCALE);
 
                 s->x2.left = s->x1.left;
                 s->x1.left = s->x0.left;
@@ -77,8 +77,8 @@ inline int32_t bq_process(
                 acc = msub_q63(c->a2, s->y2.right, acc);
 
                 s->error.right = getlow(acc);
-                acc = left_shift_q63(acc, NORM);               
-                a[i].right = left_shift_q31(gethigh(acc), SCALE);;
+                acc = lshift_q63(acc, NORM);               
+                a[i].right = lshift_q31(gethigh(acc), SCALE);;
 
                 s->x2.right = s->x1.right;
                 s->x1.right = s->x0.right;

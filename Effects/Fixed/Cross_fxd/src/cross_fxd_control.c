@@ -52,13 +52,13 @@ int32_t cross_update_coeffs(
     k1  = -cos(2 * M_PI  * p->freq / p->sample_rate);
     k1 *= (1.0 - k2);
 
-    c->k0 = double2fixed(k0);
-    c->k1 = double2fixed(k1);
-    c->k2 = double2fixed(-k2);
+    c->k0 = double2fixed_q(( k0 / 2.0), 31);
+    c->k1 = double2fixed_q(( k1 / 2.0), 31);
+    c->k2 = double2fixed_q((-k2 / 2.0), 31);
 
-    // printf("k0: %f\n", c->k0);
-    // printf("k1: %f\n", c->k1);
-    // printf("k2:  %f\n\n", c->k2);
+    // printf("k0: %f\n",    k0);
+    // printf("k1: %f\n",    k1);
+    // printf("k2:  %f\n\n", k2);
 
     return 0;
 }

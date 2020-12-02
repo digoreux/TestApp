@@ -16,6 +16,7 @@ int32_t effect_reset(
     states_t *s = (states_t*)states;
  
     eq_reset(&c->eq, &s->eq);
+    bq_reset(&c->bq, &s->bq);
     comp_reset(&c->comp, &s->comp);
     cross4_reset(&c->cross4, &s->cross4);
     // comp4_reset(&c->comp4, &s->cross4);
@@ -35,9 +36,11 @@ int32_t effect_process(
     
     for(uint32_t i = 0; i < samples_count; i += FRAME_COUNT)
     {
-        eq_process(&c->eq, &s->eq, &a[i], FRAME_COUNT);
-        comp_process(&c->comp, &s->comp, &a[i], FRAME_COUNT);
-        cross4_process(&c->cross4, &s->cross4, audio, FRAME_COUNT);
+        // bq_process(&c->bq, &s->bq, &a[i], FRAME_COUNT);
+        // eq_process(&c->eq, &s->eq, &a[i], FRAME_COUNT);
+        // comp_process(&c->comp, &s->comp, &a[i], FRAME_COUNT);
+        cross4_process(&c->cross4, &s->cross4, &a[i], FRAME_COUNT);
+        
         // comp4_process(&c->comp4, &s->comp4, &s->cross4, FRAME_COUNT, n);    
         // mix(audio, &s->cross4, FRAME_COUNT, n);
     }

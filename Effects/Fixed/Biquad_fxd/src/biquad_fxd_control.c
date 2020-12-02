@@ -44,10 +44,14 @@ int32_t bq_set_parameter(
 {   
     bq_params_t * p = (bq_params_t*)params;
     
+    // p->freq = 1000;
+    // p->gain = -6;
+    // p->Q    = 6;
+    // p->type = 2;
     p->freq = 1000;
-    p->gain = -6;
-    p->Q    = 6;
-    p->type = 2;
+    p->gain = 0;
+    p->Q    = 0.5;
+    p->type = 0;
     p->sample_rate = 48000;
     
     return 0;
@@ -128,6 +132,12 @@ int32_t bq_update_coeffs(
     a1 /= a0;
     a2 /= a0;
     
+    // printf("b0: %0.20f \n", (float)b0);
+    // printf("b1: %0.20f \n", (float)b1);
+    // printf("b2: %0.20f \n", (float)b2);
+    // printf("a1: %0.20f \n", (float)a1);
+    // printf("a2: %0.20f \n", (float)a2);
+
     c->a0 = double2fixed_q((a0 / 8), 31);
     c->a1 = double2fixed_q((a1 / 8), 31);
     c->a2 = double2fixed_q((a2 / 8), 31);
