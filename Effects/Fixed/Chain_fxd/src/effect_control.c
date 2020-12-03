@@ -43,7 +43,7 @@ int32_t effect_set_parameter(
     eq_set_parameter(&p->eq, id, value);
     comp_set_parameter(&p->comp, id, value);
     cross4_set_parameter(&p->cross4, id, value);
-    // comp4_set_parameter(&p->comp4, id, value);
+    comp4_set_parameter(&p->comp4, id, value);
 
     return 0;
 }
@@ -56,10 +56,10 @@ int32_t effect_update_coeffs(
     coeffs_t *c = (coeffs_t*)coeffs;
 
     bq_update_coeffs(&p->bq, &c->bq);   
-    // eq_update_coeffs(&p->eq, &c->eq);   
+    eq_update_coeffs(&p->eq, &c->eq);   
     comp_update_coeffs(&p->comp, &c->comp);   
     cross4_update_coeffs(&p->cross4, &c->cross4);
-    // comp4_update_coeffs(&p->comp4, &c->comp4);
+    comp4_update_coeffs(&p->comp4, &c->comp4);
 
     return 0;
 }

@@ -1,5 +1,4 @@
 #include "comp4_fxd_process.h"
-#include "comp_fxd_process.h"
 
 int32_t comp4_process_get_sizes(
     size_t*     states_bytes)
@@ -16,10 +15,8 @@ int32_t comp4_reset(
     comp4_states_t* s = (comp4_states_t*)states;
     comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
 
-    comp_reset(&c->comp1_c, &s->comp1_s);
-    comp_reset(&c->comp2_c, &s->comp2_s);
-    comp_reset(&c->comp3_c, &s->comp3_s);
-    comp_reset(&c->comp4_c, &s->comp4_s);
+    for(uint32_t i = 0; i < 4; i++)
+        comp_reset(&c->comp[i], &s->comp[i]);
 
     return 0;
 }
@@ -31,16 +28,16 @@ int32_t comp4_process(
     void*       bands,
     size_t      samples_count)
 {
-    comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
-    comp4_states_t* s = (comp4_states_t*)states;
-    comp4_bands_t * b = (comp4_bands_t*)bands;
-
+    comp4_coeffs_t  * c = (comp4_coeffs_t*)coeffs;
+    comp4_states_t  * s = (comp4_states_t*)states;
+    cross4_states_t * b = (cross4_states_t*)bands;
     if(!c->bypass)
-    {
-        if(!c->comp1_c.bypass) comp_process(&c->comp1_c, &s->comp1_s, b->band1, samples_count);
-        if(!c->comp2_c.bypass) comp_process(&c->comp2_c, &s->comp2_s, b->band2, samples_count);
-        if(!c->comp3_c.bypass) comp_process(&c->comp3_c, &s->comp3_s, b->band3, samples_count);
-        if(!c->comp4_c.bypass) comp_process(&c->comp4_c, &s->comp4_s, b->band4, samples_count);
+    {   
+        if(!c->comp[0].bypass) comp_process(&c->comp[0], &s->comp[0], b->b1, samples_count);
+        if(!c->comp[1].bypass) comp_process(&c->comp[1], &s->comp[1], b->b2, samples_count);
+        if(!c->comp[2].bypass) comp_process(&c->comp[2], &s->comp[2], b->b3, samples_count);
+        if(!c->comp[3].bypass) comp_process(&c->comp[3], &s->comp[3], b->b4, samples_count);
+            
     }
    
     return 0;

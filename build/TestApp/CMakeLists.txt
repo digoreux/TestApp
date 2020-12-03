@@ -23,13 +23,13 @@ add_executable(TestApp
 
 
 target_link_libraries(TestApp PRIVATE
-	 Chain_fxd
+	 Chain_flt
 	 Fractional)
 
 set(EXECUTABLE_OUTPUT_PATH ../../../)
 
 target_include_directories(TestApp PRIVATE ../../inc
-	 ../../Effects/Fixed/Chain_fxd/inc
+	 ../../Effects/Float/Chain_flt/inc
 	 ../../Fractional/inc)
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)

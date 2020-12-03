@@ -1,6 +1,8 @@
 #ifndef __COMP4_FXD_PROCESS_H__
 #define __COMP4_FXD_PROCESS_H__
+
 #include "comp4_fxd_control.h"
+#include "comp_fxd_process.h"
 
 /*******************************************************************************
  * Provides with the required data sizes for states. It is caller responsibility

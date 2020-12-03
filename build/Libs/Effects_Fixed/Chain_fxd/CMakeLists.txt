@@ -13,8 +13,8 @@ add_library(${LIB_NAME}
     ${EFFECTS_PATH}/EQ_fxd/src/eq_fxd_process.c
     ${EFFECTS_PATH}/Comp_fxd/src/comp_fxd_control.c
     ${EFFECTS_PATH}/Comp_fxd/src/comp_fxd_process.c
-    #${EFFECTS_PATH}/Comp4_fxd/src/comp4_fxd_control.c
-    #${EFFECTS_PATH}/Comp4_fxd/src/comp4_fxd_process.c
+    ${EFFECTS_PATH}/Comp4_fxd/src/comp4_fxd_control.c
+    ${EFFECTS_PATH}/Comp4_fxd/src/comp4_fxd_process.c
     ${EFFECTS_PATH}/Cross_fxd/src/cross_fxd_control.c
     ${EFFECTS_PATH}/Cross_fxd/src/cross_fxd_process.c
     ${EFFECTS_PATH}/Cross_fxd/src/cross4_fxd_control.c
@@ -30,7 +30,7 @@ target_include_directories(${LIB_NAME} PRIVATE
      ${EFFECTS_PATH}/EQ_fxd/inc
      ${EFFECTS_PATH}/Biquad_fxd/inc
      ${EFFECTS_PATH}/Comp_fxd/inc
-     #${EFFECTS_PATH}/Comp4_fxd/inc
+     ${EFFECTS_PATH}/Comp4_fxd/inc
      ${EFFECTS_PATH}/Cross_fxd/inc
      ${HOME_PATH}/Fractional/inc
      ${HOME_PATH}/inc)

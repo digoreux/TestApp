@@ -1,52 +1,8 @@
 #ifndef __COMP4_FXD_CONTROL_H__
 #define __COMP4_FXD_CONTROL_H__
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include "fractional.h"
-#include "comp4_fxd_control.h"
+#include "comp4_fxd_structure.h"
 #include "comp_fxd_control.h"
-
-typedef struct comp4_stereo_s {
-    q31 left;
-    q31 right;
-} comp4_stereo_t;
-
-typedef struct comp4_bands_s {
-    comp4_stereo_t * band1;
-    comp4_stereo_t * band2;
-    comp4_stereo_t * band3;
-    comp4_stereo_t * band4;
-} comp4_bands_t;
-
-typedef struct comp4_params_s {
-    comp_params_t comp1_p;
-    comp_params_t comp2_p;
-    comp_params_t comp3_p;
-    comp_params_t comp4_p;
-    uint32_t sample_rate;
-    bool bypass;
-} comp4_params_t;
-
-typedef struct comp4_coeffs_s {
-    comp_coeffs_t comp1_c;
-    comp_coeffs_t comp2_c;
-    comp_coeffs_t comp3_c;
-    comp_coeffs_t comp4_c;
-    bool bypass;
-} comp4_coeffs_t;
-
-typedef struct comp4_states_s{
-    comp_states_t comp1_s;
-    comp_states_t comp2_s;
-    comp_states_t comp3_s;
-    comp_states_t comp4_s;
-} comp4_states_t;
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.
