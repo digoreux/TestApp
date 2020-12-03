@@ -46,8 +46,14 @@ int32_t cross_process(
 
         band1[i].left  = rshift_q63(add_q63(y1.left,  y2.left),  1);
         band1[i].right = rshift_q63(add_q63(y1.right, y2.right), 1);
-        band2[i].left  = rshift_q63(sub_q63(y1.left,  y2.left),  1);
-        band2[i].right = rshift_q63(sub_q63(y1.right, y2.right), 1);
+        band2[i].left  = rshift_q63(sub_q63(y2.left,  y1.left),  1);
+        band2[i].right = rshift_q63(sub_q63(y2.right, y1.right), 1);
+
+        // band1[i].left  = y1.left;
+        // band1[i].right = y1.right;
+
+        // band2[i].left  = y2.left;
+        // band2[i].right = y2.right;
 
     }   
     return 0;

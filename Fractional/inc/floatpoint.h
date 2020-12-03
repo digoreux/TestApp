@@ -5,7 +5,7 @@
 #define KF1 2.823529
 #define KF2 1.882353
 #define K0  0.0759776172978545212494579946726
-#define SSE 1
+#define SSE 0
 #define AVX 0
 #define NCH 4
 

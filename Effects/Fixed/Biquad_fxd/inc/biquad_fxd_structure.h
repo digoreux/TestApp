@@ -3,6 +3,9 @@
 
 #include "abstract_effect.h"
 
+#define  NORM 3
+#define SCALE 1
+
 typedef struct bq_coeffs_s {
     q31  b0;
     q31  b1;

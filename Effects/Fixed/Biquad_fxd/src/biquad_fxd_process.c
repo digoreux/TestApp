@@ -3,6 +3,7 @@
 #define  NORM 3
 #define SCALE 1
 
+
 int32_t bq_process_get_sizes(
     size_t*     states_bytes)
 {   
@@ -46,6 +47,7 @@ inline int32_t bq_process(
     {
         for (size_t i = 0 ; i < samples_count ; i++)
         {   
+
             if(c->a0 != 0)
             {     
                 s->x0.left  = rshift_q31(a[i].left, SCALE);

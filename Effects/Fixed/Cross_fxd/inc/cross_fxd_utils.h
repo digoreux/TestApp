@@ -17,22 +17,22 @@ static inline stereo_t apf1(void * coeffs, void * states, stereo_t * a)
     acc = 0;
     acc =  mac_q63(c->k0, s->x0[0].left, acc);
     acc = msub_q63(c->k0, s->y1[0].left, acc);
-    acc =  add_q63(acc, lshift_q63(s->x1[0].left, 30));
+    acc =  add_q63(acc, lshift_q63(s->x1[0].left, 31));
 
     acc = lshift_q63(acc, 1);
 
-    s->x1[0].left = lshift_q31(s->x0[0].left, 1);
+    s->x1[0].left = s->x0[0].left;
     s->y1[0].left = gethigh(acc);
     s->y0[0].left = lshift_q31(gethigh(acc), SCALE);
 
     acc = 0;
     acc =  mac_q63(c->k0, s->x0[0].right, acc);
     acc = msub_q63(c->k0, s->y1[0].right, acc);
-    acc =  add_q63(acc, lshift_q63(s->x1[0].right, 30));
+    acc =  add_q63(acc, lshift_q63(s->x1[0].right, 31));
 
     acc = lshift_q63(acc, 1);
 
-    s->x1[0].right = lshift_q31(s->x0[0].left, 1);
+    s->x1[0].right = s->x0[0].right;
     s->y1[0].right = gethigh(acc);
     s->y0[0].right = lshift_q31(s->y1[0].right, SCALE);
 
@@ -54,11 +54,11 @@ static inline stereo_t apf2(void * coeffs, void * states, stereo_t * a)
     acc = msub_q63(c->k2, s->y1[1].left, acc);
     acc =  mac_q63(c->k1, s->x0[1].left, acc);
     acc = msub_q63(c->k1, s->y0[1].left, acc);
-    acc =  add_q63(acc, lshift_q63(s->x1[1].left, 30));
+    acc =  add_q63(acc, lshift_q63(s->x1[1].left, 31));
 
     acc = lshift_q63(acc, 1);
 
-    s->x1[1].left = lshift_q31(s->x0[1].left, 1);
+    s->x1[1].left = s->x0[1].left;
     s->x0[1].left = x.left;
 
     s->y1[1].left = s->y0[1].left;
@@ -71,11 +71,11 @@ static inline stereo_t apf2(void * coeffs, void * states, stereo_t * a)
     acc = msub_q63(c->k2, s->y1[1].right, acc);
     acc =  mac_q63(c->k1, s->x0[1].right, acc);
     acc = msub_q63(c->k1, s->y0[1].right, acc);
-    acc =  add_q63(acc, lshift_q63(s->x1[1].right, 30));
+    acc =  add_q63(acc, lshift_q63(s->x1[1].right, 31));
 
     acc = lshift_q63(acc, 1);
 
-    s->x1[1].right = lshift_q31(s->x0[1].right, 1);
+    s->x1[1].right = s->x0[1].right;
     s->x0[1].right = x.right;
 
     s->y1[1].right = s->y0[1].right;
@@ -138,11 +138,11 @@ static inline void apff2(
     acc = msub_q63(k2, y1->left, acc);
     acc =  mac_q63(k1, x0->left, acc);
     acc = msub_q63(k1, y0->left, acc);
-    acc =  add_q63(acc, lshift_q63(x1->left, 30));
+    acc =  add_q63(acc, lshift_q63(x1->left, 31));
 
     acc = lshift_q63(acc, 1);
 
-    x1->left = lshift_q31(x0->left, 1);
+    x1->left = x0->left;
     x0->left = x.left;
     y1->left = y0->left;
     y0->left = gethigh(acc);
@@ -154,11 +154,11 @@ static inline void apff2(
     acc = msub_q63(k2, y1->right, acc);
     acc =  mac_q63(k1, x0->right, acc);
     acc = msub_q63(k1, y0->right, acc);
-    acc =  add_q63(acc, lshift_q63(x1->right, 30));
+    acc =  add_q63(acc, lshift_q63(x1->right, 31));
 
     acc = lshift_q63(acc, 1);
 
-    x1->right = lshift_q31(x0->right, 1);
+    x1->right = x0->right;
     x0->right = x.right;
     y1->right = y0->right;
     y0->right = gethigh(acc);

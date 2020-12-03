@@ -138,12 +138,12 @@ int32_t bq_update_coeffs(
     // printf("a1: %0.20f \n", (float)a1);
     // printf("a2: %0.20f \n", (float)a2);
 
-    c->a0 = double2fixed_q((a0 / 8), 31);
-    c->a1 = double2fixed_q((a1 / 8), 31);
-    c->a2 = double2fixed_q((a2 / 8), 31);
-    c->b0 = double2fixed_q((b0 / 8), 31);
-    c->b1 = double2fixed_q((b1 / 8), 31);
-    c->b2 = double2fixed_q((b2 / 8), 31);
+    c->a0 = double2fixed_q((a0 / 8.0f), 31);
+    c->a1 = double2fixed_q((a1 / 8.0f), 31);
+    c->a2 = double2fixed_q((a2 / 8.0f), 31);
+    c->b0 = double2fixed_q((b0 / 8.0f), 31);
+    c->b1 = double2fixed_q((b1 / 8.0f), 31);
+    c->b2 = double2fixed_q((b2 / 8.0f), 31);
 
 
     return 0;
