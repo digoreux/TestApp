@@ -6,6 +6,8 @@ set(EFFECT_PATH "../../../../Effects/Float")
 
 project(${LIB_NAME})
 
+add_compile_options(/O2 /fp:fast /arch:AVX2)
+
 add_library(${LIB_NAME}
     ${EFFECT_PATH}/Comp_flt/src/comp_flt_control.c 
     ${EFFECT_PATH}/Comp_flt/src/comp_flt_process.c 

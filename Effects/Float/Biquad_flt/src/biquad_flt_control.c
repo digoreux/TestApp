@@ -46,8 +46,8 @@ int32_t bq_set_parameter(
     
     p->freq = 1000.0f;
     p->gain = -6.0f;
-    p->Q    = 6.0f;
-    p->type = 2.0f;
+    p->Q    = 0.5f;
+    p->type = 0;
     p->sample_rate = 48000;
     
     return 0;
