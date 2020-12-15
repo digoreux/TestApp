@@ -93,8 +93,8 @@ int32_t comp_update_coeffs(
 
     double thrsh, gainM, gainA, gainR, envA, envR;
     
-    // c->ratio  = (float)(1.0 - (1.0 / p->ratio));
-    c->ratio  = (float)p->ratio;
+    c->ratio  = (float)(1.0 - (1.0 / p->ratio));
+    // c->ratio  = (float)p->ratio;
     c->bypass = p->bypass;
 
     thrsh = pow(10.0, (p->thrsh/20.0));  

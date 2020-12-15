@@ -42,6 +42,7 @@ int32_t bq_process(
             s->x0.val[2] = a[i].right;
 
             s->y0 = fma2(c->b0, s->x0, s->x1);
+            
             s->x1 = fma2(c->b1, s->x0, s->x2);
             s->x1 = fma2(c->a1, s->y0, s->x1);
             s->x2 = mul2(c->b2, s->x0);

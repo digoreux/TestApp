@@ -1,16 +1,15 @@
-
 cmake_minimum_required(VERSION 3.12)
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/Libs/Effects_Float/inc/CMakeLists.txt)
 
 project(WholeSolution)
 
-#add_compile_options(/O2 /fp:fast /arch:AVX2)
-
+add_subdirectory(TestApp)
 add_subdirectory(Libs/Fractional)
 
 add_subdirectory(Libs/Effects_Float/Chain_flt)
 #add_subdirectory(Libs/Effects_Fixed/Chain_fxd)
 
-add_subdirectory(TestApp)
 
 
 #add_subdirectory(Libs/Effects_Float/EQ_flt)

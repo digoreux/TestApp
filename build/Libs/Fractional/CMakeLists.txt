@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.12)
 
 project(Fractional)
 
-#add_compile_options(/O2 /fp:fast /arch:AVX2)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../Effects_Float/inc/CMakeLists.txt)
+
 
 add_library(Fractional
     ../../../Fractional/src/fractional.c

@@ -4,9 +4,11 @@ set(LIB_NAME "Comp4_flt")
 set(HOME_PATH "../../../..")
 set(EFFECT_PATH "../../../../Effects/Float")
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/../inc/CMakeLists.txt)
+
 project(${LIB_NAME})
 
-#add_compile_options(/O2 /fp:fast /arch:AVX2)
+
 
 add_library(${LIB_NAME}
     ${EFFECT_PATH}/Comp_flt/src/comp_flt_control.c 

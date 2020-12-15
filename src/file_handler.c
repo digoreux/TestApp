@@ -79,7 +79,7 @@ int apply_effect(utils_t * utils)
         while (!feof(utils->in))
         {   
         fread(utils->buffer, utils->buff_size, 1, utils->in);
-        count++;
+        // count++;
         // to_flt(utils->buffer, utils->num_samples);
         effect_process(coeffs, states, utils->buffer, utils->num_samples);
         // to_fxd(utils->buffer, utils->num_samples);
@@ -89,7 +89,7 @@ int apply_effect(utils_t * utils)
         effect_process(coeffs, states, utils->buffer, utils->num_samples);
         fwrite(utils->buffer, utils->buff_size, 1, utils->out);
     }
-    printf("count: %d\n", count);
+    // printf("count: %d\n", count);
     free(params);
     // _aligned_free(coeffs);
     // _aligned_free(states);
@@ -105,7 +105,7 @@ int read_wav(utils_t * utils, arg_p a, header_t * meta)
     utils->out = fopen(a->output, "wb");
 
     read_header(utils->in, meta);
-    print_header(meta);
+    // print_header(meta);
     write_header(utils->out, meta);
     utils->num_samples = 480;  
     utils->buff_size = (utils->num_samples * meta->block_align);

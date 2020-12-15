@@ -64,7 +64,6 @@ int32_t cross_update_coeffs(
     // printf("k0: %0.30f \n", c->k0.val[3]);
     // printf("k1: %0.30f \n", c->k1.val[3]);
     // printf("k2: %0.30f \n", c->k2.val[3]);
-    printf("\n");
 
     return 0;
 }

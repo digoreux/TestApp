@@ -12,13 +12,11 @@
 #include "eq_flt_control.h"
 #include "comp_flt_control.h"
 #include "comp4_flt_control.h"
-#include "comp4s_flt_control.h"
 #include "cross4_flt_control.h"
 
 #include "eq_flt_process.h"
 #include "comp_flt_process.h"
 #include "comp4_flt_process.h"
-#include "comp4s_flt_process.h"
 #include "cross4_flt_process.h"
 
 typedef struct params_t {

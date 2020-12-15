@@ -46,7 +46,7 @@ int32_t comp_process(
             if (abs < c->thrsh)
                 s->gc = 1.0f;
             else
-                s->gc = powf(divf(c->thrsh, abs), (1.0 - (1.0 / c->ratio)));
+                s->gc = powf(divf(c->thrsh, abs), c->ratio);
 
             if (s->gc > s->gs1)
             {

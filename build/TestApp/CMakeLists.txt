@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 
+include(../Libs/Effects_Float/inc/CMakeLists.txt)
+
 set(LIB_NAME "TestApp")
 set(HOME_PATH "../..")
 set(EFFECTS_PATH "../../../../Effects/Float")
 
 project(TestApp)
 
-#add_compile_options(/O2 /fp:fast /arch:AVX2)
 #add_compile_options(-Wall)
 
 #add_compile_options(-O2 -pg -msse -msse2 -msse3 -msse4.1 -mfma -msse4.2 -std=c11)

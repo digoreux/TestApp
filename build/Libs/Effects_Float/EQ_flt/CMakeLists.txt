@@ -4,9 +4,9 @@ set(LIB_NAME "EQ_flt")
 set(HOME_PATH "../../../..")
 set(EFFECT_PATH "../../../../Effects/Float")
 
-project(${LIB_NAME})
+include(${CMAKE_CURRENT_SOURCE_DIR}/../inc/CMakeLists.txt)
 
-#add_compile_options(/O2 /fp:fast /arch:AVX2)
+project(${LIB_NAME})
 
 add_library(${LIB_NAME}
     ${EFFECT_PATH}/Biquad_flt/src/biquad_flt_control.c 

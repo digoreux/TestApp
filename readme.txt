@@ -1,6 +1,6 @@
 TestApp
 
-EQ parameters are set in Effect/eq_preset.json
+Chain parameters are set in Effect/chain_preset.json
 
 --in  <path-to-file>
 

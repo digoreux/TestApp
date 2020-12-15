@@ -26,7 +26,7 @@ int32_t effect_control_initialize(
     comp_control_initialize(&p->comp, &c->comp, p->comp.sample_rate);
     comp4_control_initialize(&p->comp4, &c->comp4, p->comp4.sample_rate);
     cross4_control_initialize(&p->cross4, &c->cross4, p->cross4.sample_rate);
-
+    effect_update_coeffs(p, c);
 
     return 0;
 }
