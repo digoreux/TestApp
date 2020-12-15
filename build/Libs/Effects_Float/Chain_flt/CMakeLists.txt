@@ -6,7 +6,7 @@ set(EFFECTS_PATH "../../../../Effects/Float")
 
 project(${LIB_NAME})
 
-add_compile_options(/O2 /fp:fast /arch:AVX2)
+#add_compile_options(/O2 /fp:fast /arch:AVX2)
 
 add_library(${LIB_NAME}
     ${EFFECTS_PATH}/${LIB_NAME}/src/effect_control.c 
@@ -22,21 +22,23 @@ add_library(${LIB_NAME}
     ${EFFECTS_PATH}/Cross_flt/src/cross4_flt_control.c
     ${EFFECTS_PATH}/Cross_flt/src/cross4_flt_process.c
     ${EFFECTS_PATH}/Biquad_flt/src/biquad_flt_control.c
-    ${EFFECTS_PATH}/Biquad_flt/src/biquad_flt_process.c)
+    ${EFFECTS_PATH}/Biquad_flt/src/biquad_flt_process.c
+    
+    )
 
 
 target_include_directories(${LIB_NAME} PRIVATE 
-     ${EFFECTS_PATH}/${LIB_NAME}/inc
-     ${EFFECTS_PATH}/${LIB_NAME}/inc_
-     ${EFFECTS_PATH}/inc
-     ${EFFECTS_PATH}/EQ_flt/inc
-     ${EFFECTS_PATH}/Comp_flt/inc
-     ${EFFECTS_PATH}/Comp4_flt/inc
-     ${EFFECTS_PATH}/Cross_flt/inc
-     ${EFFECTS_PATH}/Comp4s_flt/inc
-     ${EFFECTS_PATH}/Biquad_flt/inc
-     ${HOME_PATH}/Fractional/inc
-     ${HOME_PATH}/inc)
+    ${EFFECTS_PATH}/${LIB_NAME}/inc
+    ${EFFECTS_PATH}/${LIB_NAME}/inc_
+    ${EFFECTS_PATH}/inc
+    ${EFFECTS_PATH}/EQ_flt/inc
+    ${EFFECTS_PATH}/Comp_flt/inc
+    ${EFFECTS_PATH}/Comp4_flt/inc
+    ${EFFECTS_PATH}/Cross_flt/inc
+    ${EFFECTS_PATH}/Comp4s_flt/inc
+    ${EFFECTS_PATH}/Biquad_flt/inc
+    ${HOME_PATH}/Fractional/inc
+    ${HOME_PATH}/inc)
 
 
 target_link_libraries(${LIB_NAME} PRIVATE 

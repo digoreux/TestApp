@@ -42,6 +42,7 @@ int32_t cross4_process(
     if(!c->bypass)
     {   
         cross_process(&c->cross[1], &s->cross[1], audio, s->b1, s->b3, samples_count);
+        // mix2(audio, s->b1, s->b3, samples_count);
         phase_correction(c, s, samples_count);
         // cross_process(&c->cross[0], &s->cross[0], s->b1, s->b1, s->b2, samples_count);
         // cross_process(&c->cross[2], &s->cross[2], s->b3, s->b3, s->b4, samples_count);

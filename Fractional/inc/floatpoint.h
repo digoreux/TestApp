@@ -29,9 +29,9 @@ typedef union vector_s {
 #endif
 #pragma pack(pop)
 
-//  #pragma fp_contract(off)
-//  #pragma fenv_access(on)
-//  #pragma float_control(precise, on)
+// #pragma fp_contract(off)
+// #pragma float_control(precise, on)
+// #pragma fenv_access(on)
 extern flt negf(flt x);
 extern flt absf(flt x);
 extern flt addf(flt x, flt y);

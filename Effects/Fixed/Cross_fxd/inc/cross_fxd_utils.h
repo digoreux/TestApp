@@ -93,8 +93,8 @@ static inline int32_t mix(void * audio, void * states, size_t samples_count)
 
     for(size_t i = 0; i < samples_count; i++)
     {
-        a[i].left  = s->b1[i].left  + s->b2[i].left  + s->b3[i].left  + s->b4[i].left;
-        a[i].right = s->b1[i].right + s->b2[i].right + s->b3[i].right + s->b4[i].right;
+        // a[i].left  = s->b1[i].left  + s->b2[i].left  + s->b3[i].left  + s->b4[i].left;
+        // a[i].right = s->b1[i].right + s->b2[i].right + s->b3[i].right + s->b4[i].right;
         // a[i].left  = s->b1[i].left + s->b3[i].left;
         // a[i].right = s->b2[i].left + s->b4[i].left;
     }
@@ -112,8 +112,8 @@ static inline int32_t mix2(void * audio, void * band1, void * band2, size_t samp
         // a[i].left  = b1[i].left  + b2[i].left;
         // a[i].right = b1[i].right + b2[i].right;
 
-        // a[i].left  = b1[i].left;
-        // a[i].right = b2[i].left;
+        a[i].left  = b1[i].left;
+        a[i].right = b2[i].left;
     }
     return 0;
 }

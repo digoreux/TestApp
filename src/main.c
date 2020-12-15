@@ -15,8 +15,9 @@
 int main(int argc, char **argv) 
 {
     arg_p a       = (arg_p)malloc(sizeof(args_t));
-    header_p meta = (header_p)malloc(sizeof(header));
-    utils_p utils = (utils_p)malloc(sizeof(utils_t));
+    header_t * meta = (header_t *)malloc(sizeof(header_t));
+    utils_t * utils = (utils_t *)malloc(sizeof(utils_t));
+    memset(meta, 0, sizeof(header_t));
 
     get_args(argc, argv, a);
 

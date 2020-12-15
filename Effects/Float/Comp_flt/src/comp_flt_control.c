@@ -93,15 +93,16 @@ int32_t comp_update_coeffs(
 
     double thrsh, gainM, gainA, gainR, envA, envR;
     
-    c->ratio  = p->ratio;
+    // c->ratio  = (float)(1.0 - (1.0 / p->ratio));
+    c->ratio  = (float)p->ratio;
     c->bypass = p->bypass;
 
     thrsh = pow(10.0, (p->thrsh/20.0));  
     gainM = pow(10.0, (p->makeUpGain/20.0));
-    gainA = pow(M_e, (-(log(9)) / (0.001 * p->tAttack  * p->sample_rate)));
-    gainR = pow(M_e, (-(log(9)) / (0.001 * p->tRelease * p->sample_rate)));
-    envA  = pow(M_e, (-(log(9)) / (0.001 * p->tEnvAttack  * p->sample_rate)));
-    envR  = pow(M_e, (-(log(9)) / (0.001 * p->tEnvRelease * p->sample_rate)));
+    gainA = pow(M_e, (-1.0 / (0.001 * p->tAttack  * p->sample_rate)));
+    gainR = pow(M_e, (-1.0 / (0.001 * p->tRelease * p->sample_rate)));
+    envA  = pow(M_e, (-1.0 / (0.001 * p->tEnvAttack  * p->sample_rate)));
+    envR  = pow(M_e, (-1.0 / (0.001 * p->tEnvRelease * p->sample_rate)));
 
     c->thrsh = (float)thrsh; 
     c->gainM = (float)gainM; 

@@ -157,10 +157,12 @@ int32_t comp4_update_coeffs(
 {
     comp4_params_t* p = (comp4_params_t*)params;
     comp4_coeffs_t* c = (comp4_coeffs_t*)coeffs;
-    double thrsh[4], gainM[4], gainA[4], gainR[4], envA[4], envR[4];
+    double ratio[4], thrsh[4], gainM[4], gainA[4], gainR[4], envA[4], envR[4];
     for(uint32_t i = 0; i < 4; i++)
     {
         c->bypass[i] = p->bypass[i];
+
+        ratio[i] = (1.0 - (1.0 / p->ratio[i]));
         thrsh[i] = pow(10.0, (p->thrsh[i]/20.0));  
         gainM[i] = pow(10.0, (p->makeUpGain[i]/20.0));
         gainA[i] = pow(M_e, (-(log(9)) / (0.001 * p->tAttack[i]  * p->sample_rate)));
@@ -175,6 +177,7 @@ int32_t comp4_update_coeffs(
     set_vals2(&c->gainR, (float)gainR[3], (float)gainR[2], (float)gainR[1], (float)gainR[0]); 
     set_vals2(&c-> envA,  (float)envA[3],  (float)envA[2],  (float)envA[1],  (float)envA[0]); 
     set_vals2(&c-> envR,  (float)envR[3],  (float)envR[2],  (float)envR[1],  (float)envR[0]);  
+    set_vals2(&c-> envR,  (float)ratio[3],  (float)ratio[2],  (float)ratio[1],  (float)ratio[0]);  
 
     set_vals2(&c->oenvA, 1.0f - c->envA.val[3],
                          1.0f - c->envA.val[2],
@@ -196,10 +199,10 @@ int32_t comp4_update_coeffs(
                           1.0f - c->gainR.val[1],
                           1.0f - c->gainR.val[0]);
 
-    set_vals2(&c->oratio, 1.0f / c->ratio.val[3],
-                          1.0f / c->ratio.val[2],
-                          1.0f / c->ratio.val[1],
-                          1.0f / c->ratio.val[0]);
+    // set_vals2(&c->oratio, 1.0f / c->ratio.val[3],
+    //                       1.0f / c->ratio.val[2],
+    //                       1.0f / c->ratio.val[1],
+    //                       1.0f / c->ratio.val[0]);
 
     set_val(&c->one, 1.0f);
     // printv(c->thrsh);

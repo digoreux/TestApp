@@ -1,7 +1,7 @@
 ﻿#include "biquad_fxd_process.h"
 
-#define  NORM 3
-#define SCALE 1
+#define  NORM 1
+#define SCALE 0
 
 
 int32_t bq_process_get_sizes(
@@ -80,7 +80,7 @@ inline int32_t bq_process(
 
                 s->error.right = getlow(acc);
                 acc = lshift_q63(acc, NORM);               
-                a[i].right = lshift_q31(gethigh(acc), SCALE);;
+                a[i].right = lshift_q31(gethigh(acc), SCALE);
 
                 s->x2.right = s->x1.right;
                 s->x1.right = s->x0.right;

@@ -14,15 +14,18 @@
 #include "nmmintrin.h" // for SSE4.2
 #include "immintrin.h" // for AVX 
 
+// #define M_PI  3.14159
 #define M_PI  3.14159265358979323846
 #define M_e    2.71828182845904523536
 
 #define FRAME_COUNT 32
 
+// #pragma pack(push,2)
 typedef struct stereo_s {
   flt left;
   flt right;
 } stereo_t;
+// #pragma pack(pop)
 
 typedef enum {
 	LP   = 0,

@@ -1,7 +1,7 @@
-#ifndef __COMP4S_FLT_CONTROL_H__
-#define __COMP4S_FLT_CONTROL_H__
+#ifndef __BIQUAD_FLT_CONTROL_H__
+#define __BIQUAD_FLT_CONTROL_H__
 
-#include "comp4s_flt_structure.h"
+#include "biquad_flt_structure.h"
 
 /*******************************************************************************
  * Provides with the required data sizes for parameters and coefficients.
@@ -12,7 +12,7 @@
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp4s_control_get_sizes(
+int32_t bq_control_get_sizes(
     size_t*     params_bytes,
     size_t*     coeffs_bytes);
 
@@ -26,7 +26,7 @@ int32_t comp4s_control_get_sizes(
  * 
  * @return 0 if gain is initialized, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp4s_control_initialize(
+int32_t bq_control_initialize(
     void*       params,
     void*       coeffs,
     uint32_t    sample_rate);
@@ -41,7 +41,7 @@ int32_t comp4s_control_initialize(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp4s_set_parameter(
+int32_t bq_set_parameter(
     void*       params,
     int32_t     id,
     float       value);
@@ -55,7 +55,7 @@ int32_t comp4s_set_parameter(
  * 
  * @return 0 if success, non-zero error code otherwise
  ******************************************************************************/
-int32_t comp4s_update_coeffs(
+int32_t bq_update_coeffs(
     void const* params,
     void*       coeffs);
 

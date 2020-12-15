@@ -1,6 +1,5 @@
 #include "eq_flt_control.h" 
 
-#define M_PI  3.14159265358979323846
 
 int32_t eq_control_get_sizes(
     size_t*     params_bytes,
@@ -27,7 +26,6 @@ int32_t eq_control_initialize(
     for (uint32_t i = 0; i < 10; i++) 
     {
         bq_control_initialize(&p->bq[i], &c->bq[i], sample_rate);
-        // eq_update_coeffs(&p->bq[i], &c->bq[i]);
     }
 
     return 0;
@@ -192,7 +190,7 @@ int32_t eq_update_coeffs(
         // printf("b0[%d]: %f \n", i, c->bq[i].b0.val[3]);
         // printf("b1[%d]: %f \n", i, c->bq[i].b1.val[3]);
         // printf("b2[%d]: %f \n", i, c->bq[i].b2.val[3]);
-        // printf("\n");
+
     }
 
     return 0;

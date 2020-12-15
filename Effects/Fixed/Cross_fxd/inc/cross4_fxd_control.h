@@ -1,7 +1,6 @@
 #ifndef __CROSS4_FXD_CONTROL_H__
 #define __CROSS4_FXD_CONTROL_H__
 
-#define M_PI 3.14159265358979323846
 
 #include "cross_fxd_control.h"
 

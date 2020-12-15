@@ -19,7 +19,6 @@ int32_t bq_reset(
     set_val(&s->y0, 0.0f);
     set_val(&s->y1, 0.0f);
     set_val(&s->y2, 0.0f);
-    
     return 0;
 }
 
@@ -32,9 +31,7 @@ int32_t bq_process(
     bq_coeffs_t *c = (bq_coeffs_t*)coeffs;
     bq_states_t *s = (bq_states_t*)states;
     stereo_t   * a = (stereo_t *)audio;
-    float acc = 0;
-    double dacc = 0;
-    if(1)
+    if(c->a0.val[3] != 0)
     {
         for (size_t i = 0; i < samples_count; i++)
         {      
@@ -46,10 +43,9 @@ int32_t bq_process(
             s->x1 = fma2(c->a1, s->y0, s->x1);
             s->x2 = mul2(c->b2, s->x0);
             s->x2 = fma2(c->a2, s->y0, s->x2);
-
+ 
             a[i].left  = s->y0.val[3];
             a[i].right = s->y0.val[2];
-
         }
     }
     return 0;

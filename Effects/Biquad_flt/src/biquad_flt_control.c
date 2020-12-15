@@ -128,5 +128,12 @@ int32_t bq_update_coeffs(
     set_val(&c->b1, (float)b1);
     set_val(&c->b2, (float)b2);
 
+    // printf("a0: %f \n", c->a0.val[3]);
+    // printf("a1: %f \n", c->a1.val[3]);
+    // printf("a2: %f \n", c->a2.val[3]);
+    // printf("b0: %f \n", c->b0.val[3]);
+    // printf("b1: %f \n", c->b1.val[3]);
+    // printf("b2: %f \n", c->b2.val[3]);
+
     return 0;
 }

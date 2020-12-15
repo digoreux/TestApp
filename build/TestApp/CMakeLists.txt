@@ -6,7 +6,8 @@ set(EFFECTS_PATH "../../../../Effects/Float")
 
 project(TestApp)
 
-add_compile_options(/O2 /fp:fast /arch:AVX2)
+#add_compile_options(/O2 /fp:fast /arch:AVX2)
+#add_compile_options(-Wall)
 
 #add_compile_options(-O2 -pg -msse -msse2 -msse3 -msse4.1 -mfma -msse4.2 -std=c11)
 #SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -pg ")
@@ -23,7 +24,7 @@ add_executable(TestApp
 
 
 target_link_libraries(TestApp PRIVATE
-	 Chain_flt
+     Chain_flt
 	 Fractional)
 
 set(EXECUTABLE_OUTPUT_PATH ../../../)

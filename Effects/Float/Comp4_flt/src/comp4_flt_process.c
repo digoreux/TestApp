@@ -53,19 +53,10 @@ int32_t comp4_process(
 
             abs = max2(absf2(L), absf2(R));
  
-            /* Envelope detector */
-
-            m = cmpgt(abs, s->env1);
-            s->env0 = mul2(blendv(c->envR,  c->envA,  m), s->env1);       
-            s->env0 = fma2(blendv(c->oenvR, c->oenvA, m), abs, s->env0);  
-            s->env1 = s->env0;
-
             /* Gain computer */
 
-            m = cmplt(s->env0, c->thrsh);
-            s->gc = vpow(div2(s->env0, c->thrsh), c->oratio);
-            s->gc = mul2(s->gc, c->thrsh);
-            s->gc = div2(s->gc, s->env0);
+            m = cmplt(abs, c->thrsh);
+            s->gc = vpow(div2(c->thrsh, abs), c->ratio);
             s->gc = blendv(s->gc, c->one, m);
 
             /* Gain smoothing */

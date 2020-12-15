@@ -46,6 +46,10 @@ int32_t cross_process(
         band1[i].left  = tmp.val[3];
         band1[i].right = tmp.val[2];
 
+        // band1[i].left  = y1.val[3];
+        // band1[i].right = y1.val[2];
+        // band2[i].left  = y2.val[3];
+
         tmp = mul2(sub2(y2, y1), c->k05);
         band2[i].left  = tmp.val[3];
         band2[i].right = tmp.val[2];

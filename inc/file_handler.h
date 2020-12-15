@@ -11,7 +11,8 @@
 #include <time.h>
 #include "cJSON.h"
 
-typedef struct header_file 
+#pragma pack(push, 1)
+typedef struct header_s
 {
     char chunk_id[4];
     uint32_t chunk_size;
@@ -29,7 +30,8 @@ typedef struct header_file
     char subchunk2_id[4];
     uint32_t subchunk2_size;
 
-} header;
+} header_t;
+#pragma pack(pop)
 
 typedef struct utils_s 
 {
@@ -41,23 +43,24 @@ typedef struct utils_s
     uint8_t reading;
 } utils_t;
 
-typedef struct utils_s* utils_p;
-typedef struct header_file* header_p;
+int read_header(FILE * in, header_t * meta);
 
-int read_header(FILE * in, header_p meta);
+int write_header(FILE * out, header_t * meta);
 
-int write_header(FILE * out, header_p meta);
+int create_header(header_t * meta, arg_p a);
 
-int create_header(header_p meta, arg_p a);
+void print_header(header_t * meta);
 
-void print_header(header_p meta);
-
-int apply_effect(utils_p utils);
+int apply_effect(utils_t * utils);
 
 int set_params(void * params);
 
-int read_wav(utils_p utils, arg_p a, header_p meta);
+int read_wav(utils_t * utils, arg_p a, header_t * meta);
 
-int gen_wav(utils_p utils, arg_p a, header_p meta);
+int gen_wav(utils_t * utils, arg_p a, header_t * meta);
+
+void to_fxd(void * buffer, size_t samples_count);
+void to_flt(void * buffer, size_t samples_count);
+
 
 #endif // !__FILE_HANDLER_H__

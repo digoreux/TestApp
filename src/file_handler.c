@@ -1,17 +1,33 @@
 ﻿#include "file_handler.h"
 
+void to_fxd(void * buffer, size_t samples_count)
+{
+    for(size_t i = 0; i < samples_count * 2; i++)
+    {
+        ((q31*)buffer)[i] = float2fixed_q31(((flt*)buffer)[i]);
+    }
+}
+
+void to_flt(void * buffer, size_t samples_count)
+{
+    for(size_t i = 0; i < samples_count * 2; i++)
+    {
+        ((flt*)buffer)[i] = fixed2float_q31(((q31*)buffer)[i]);
+    }
+}
+
+
 int set_params(void * params)
 {   
     
     FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/chain_preset.json", "r");
-    // FILE * js = fopen("C:/Users/Intern/Desktop/TestApp/Effects/eq_preset.json", "r");
     
     fseek(js, 0, SEEK_END);
     size_t size = ftell(js);
     fseek(js, 0, SEEK_SET);
 
     char * buffer = malloc(size);
-    memset(buffer, 0, size);
+    memset(buffer, 0, size); 
     fread(buffer, size, 1, js);
 
     const cJSON *band = NULL;
@@ -31,7 +47,7 @@ int set_params(void * params)
     free(buffer);
 }
 
-int apply_effect(utils_p utils) 
+int apply_effect(utils_t * utils) 
 {
     size_t csize = 0;
     size_t ssize = 0;
@@ -44,8 +60,10 @@ int apply_effect(utils_p utils)
     printf("states: %d\n", ssize);
 
     void *params = malloc(psize);
-    void *coeffs = _aligned_malloc(csize, 16);
-    void *states = _aligned_malloc(ssize, 16);
+    // void *coeffs = _aligned_malloc(csize, 16);
+    // void *states = _aligned_malloc(ssize, 16);
+    void *coeffs = malloc(csize);
+    void *states = malloc(ssize);
     memset(params, 0, psize);
     memset(coeffs, 0, csize);
     memset(states, 0, ssize);
@@ -55,39 +73,44 @@ int apply_effect(utils_p utils)
     set_params(params);
     effect_update_coeffs(params, coeffs);
     effect_reset(coeffs, states);
-
+    int count = 0;
     if(utils->reading == 1) 
     {   
-
         while (!feof(utils->in))
         {   
         fread(utils->buffer, utils->buff_size, 1, utils->in);
+        count++;
+        // to_flt(utils->buffer, utils->num_samples);
         effect_process(coeffs, states, utils->buffer, utils->num_samples);
+        // to_fxd(utils->buffer, utils->num_samples);
         fwrite(utils->buffer, utils->buff_size, 1, utils->out);
         }
     } else {
         effect_process(coeffs, states, utils->buffer, utils->num_samples);
         fwrite(utils->buffer, utils->buff_size, 1, utils->out);
     }
-
+    printf("count: %d\n", count);
     free(params);
-    _aligned_free(coeffs);
-    _aligned_free(states);
+    // _aligned_free(coeffs);
+    // _aligned_free(states);
+    free(coeffs);
+    free(states);
 
     return 0;
 }
 
-int read_wav(utils_p utils, arg_p a, header_p meta)
+int read_wav(utils_t * utils, arg_p a, header_t * meta)
 {   
     utils->in  = fopen(a->input, "rb");
     utils->out = fopen(a->output, "wb");
 
     read_header(utils->in, meta);
-    // print_header(meta);
+    print_header(meta);
     write_header(utils->out, meta);
-    utils->num_samples = 512;  
+    utils->num_samples = 480;  
     utils->buff_size = (utils->num_samples * meta->block_align);
-    utils->buffer = _aligned_malloc(utils->buff_size, 16);
+    // utils->buffer = _aligned_malloc(utils->buff_size, 16);
+    utils->buffer = malloc(utils->buff_size);
     memset(utils->buffer, 0, utils->buff_size);
     utils->reading = 1;
     
@@ -95,13 +118,14 @@ int read_wav(utils_p utils, arg_p a, header_p meta)
 
     fclose(utils->in);
     fclose(utils->out);
-    _aligned_free(utils->buffer);
+    // _aligned_free(utils->buffer);
+    free(utils->buffer);
     
     return 0;
 }
 
 
-int gen_wav(utils_p utils, arg_p a, header_p meta)
+int gen_wav(utils_t * utils, arg_p a, header_t * meta)
 {
     utils->out = fopen(a->output, "wb");
     create_header(meta, a);
@@ -122,11 +146,11 @@ int gen_wav(utils_p utils, arg_p a, header_p meta)
 }
 
 
-int read_header(FILE * in, header_p meta)
+int read_header(FILE * in, header_t * meta)
 {
     fread(meta->chunk_id, sizeof(char), 4, in);
     fread(&meta->chunk_size, sizeof(uint32_t), 1, in);
-    fread(meta->format, sizeof(char), 4, in);
+    fread(meta->format, sizeof(uint32_t), 1, in);
 
     fread(meta->subchunk1_id, sizeof(char), 4, in);
     fread(&meta->subchunk1_size, sizeof(uint32_t), 1, in);
@@ -139,19 +163,19 @@ int read_header(FILE * in, header_p meta)
 
     if (meta->subchunk1_size != 16) fseek(in, meta->subchunk1_size - 16, SEEK_CUR);
 
-    fread(meta->subchunk2_id, sizeof(char), 4, in);
+    fread(meta->subchunk2_id, sizeof(uint32_t), 1, in);
     fread(&meta->subchunk2_size, sizeof(uint32_t), 1, in);
 
     return 0;
 }
 
-int write_header(FILE * out, header_p meta)
+int write_header(FILE * out, header_t * meta)
 {
-    fwrite(meta->chunk_id, sizeof(char), 4, out);
+    fwrite(&meta->chunk_id, sizeof(uint32_t), 1, out);
     fwrite(&meta->chunk_size, sizeof(uint32_t), 1, out);
     fwrite(meta->format, sizeof(char), 4, out);
 
-    fwrite(meta->subchunk1_id, sizeof(char), 4, out);
+    fwrite(&meta->subchunk1_id, sizeof(uint32_t), 1, out);
     fwrite(&meta->subchunk1_size, sizeof(uint32_t), 1, out);
     fwrite(&meta->audio_format, sizeof(uint16_t), 1, out);
     fwrite(&meta->num_channels, sizeof(uint16_t), 1, out);
@@ -162,13 +186,13 @@ int write_header(FILE * out, header_p meta)
 
     if (meta->subchunk1_size != 16) fseek(out, meta->subchunk1_size - 16, SEEK_CUR);
 
-    fwrite(meta->subchunk2_id, sizeof(char), 4, out);
+    fwrite(&meta->subchunk2_id, sizeof(uint32_t), 1, out);
     fwrite(&meta->subchunk2_size, sizeof(uint32_t), 1, out);
 
     return 0;
 }
 
-int create_header(header_p meta, arg_p a)
+int create_header(header_t * meta, arg_p a)
 {   
     uint32_t subchunk1_size = 16;
     uint16_t audio_format = 3;
@@ -215,7 +239,7 @@ int create_header(header_p meta, arg_p a)
     return 0;
 }
 
-void print_header(header_p meta)
+void print_header(header_t * meta)
 {   
     printf("Chunk id: %c%c%c%c\n", meta->chunk_id[0], meta->chunk_id[1], meta->chunk_id[2], meta->chunk_id[3]);
     printf("Chunk size: %d\n", meta->chunk_size);
